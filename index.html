@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aadi Nagar | Resume</title>
+    <!-- Google Fonts: Anton (headings) + Inter (body text) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- External stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Navigation bar: sticks to the top of the screen -->
+    <nav class="navbar">
+      <a href="#hero" class="brand">AADI NAGAR</a>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">about</a>
+        <a href="#on-track" class="nav-link">on track</a>
+        <a href="#off-track" class="nav-link">off track</a>
+        <a href="#resume" class="nav-link">resume</a>
+        <a href="mailto:aadi.n26@iimb.ac.in?subject=Hi%20Aadi" class="btn btn-small">Email me</a>
+      </div>
+    </nav>
+
+    <!-- Page header: name, tagline, photo and main call to action -->
+    <header id="hero">
+      <div class="hero-text">
+        <p class="label">bsc finance @ nmims bengaluru · bba dbe @ iim bangalore</p>
+        <h1>Aadi<br />Nagar</h1>
+        <p class="lead">
+          I study finance because it's the language of business, and I plan to own a few.
+        </p>
+        <p class="sub">
+          I'm looking for ambitious people from different backgrounds to start something with.
+        </p>
+        <div class="actions">
+          <a href="mailto:aadi.n26@iimb.ac.in?subject=Let%27s%20build%20something" class="btn">Let's build something</a>
+          <a href="resume.pdf" download class="btn btn-ghost">Download my resume (PDF)</a>
+        </div>
+      </div>
+      <img src="photo.jpg" alt="Aadi Nagar in a black blazer and white shirt" class="hero-photo" />
+    </header>
+
+    <main>
+      <!-- About me / summary -->
+      <section id="about" class="alt">
+        <h2>About</h2>
+        <p class="text">
+          Honestly, I took finance as a tool. I want to <strong>own multiple businesses</strong>
+          one day, and finance is how I close the gap between where I am now and getting there.
+          So I'm doing a BSc in Finance at NMIMS Bengaluru and the BBA in Digital Business &amp;
+          Entrepreneurship at IIM Bangalore at the same time. Next step: finding the right people
+          to build the first one with.
+        </p>
+      </section>
+
+      <!-- On Track: experience -->
+      <section id="on-track">
+        <h2>On<br />Track</h2>
+        <div class="card-grid">
+          <article class="card">
+            <h3 class="label">clipping</h3>
+            <p>Learnt short-form video clipping on my own, and <strong>people started paying me for it.</strong></p>
+          </article>
+          <article class="card">
+            <h3 class="label">trading</h3>
+            <p>
+              <strong>Still learning.</strong> I'm figuring out how the stock market works now,
+              so I'm ready the day my demat account opens.
+            </p>
+          </article>
+          <article class="card">
+            <h3 class="label">village build</h3>
+            <p>
+              Spent 2 days in a village with a team of 5 from my dad's office. My job was laying
+              bricks on the mud, and together <strong>we built 4 big huts</strong> for the villagers.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="alt">
+        <h2>Projects</h2>
+        <article class="card project">
+          <h3 class="label">resume website</h3>
+          <p>
+            <strong>The site you're on.</strong> I planned it, picked the look (dark, neon lime,
+            a bit of race-poster energy) and built it in HTML and CSS with AI as my coding partner.
+            It has a sticky nav, Flexbox and Grid layouts, a phone layout and a resume that prints
+            on one page.
+          </p>
+          <p class="tools">Tools: HTML, CSS, Google Fonts, GitHub Pages</p>
+        </article>
+      </section>
+
+      <!-- Education -->
+      <section id="education">
+        <h2>Education</h2>
+        <ul class="rows">
+          <li><span>BSc Finance, NMIMS Bengaluru</span><span class="label">2026 – present</span></li>
+          <li><span>BBA, Digital Business &amp; Entrepreneurship, IIM Bangalore</span><span class="label">2026 – present</span></li>
+        </ul>
+      </section>
+
+      <!-- Skills table and certifications -->
+      <section id="skills" class="alt">
+        <h2>Skills</h2>
+        <table class="skills-table">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Where I used it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Short-form video editing</td>
+              <td>Got paid for clipping work</td>
+            </tr>
+            <tr>
+              <td>HTML &amp; CSS</td>
+              <td>This website</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 class="sub-heading">Certifications</h3>
+        <p>Website Development (In the age of AI), IIMBx, 2026. Doing it right now.</p>
+      </section>
+
+      <!-- Off Track: life outside class -->
+      <section id="off-track">
+        <h2>Off<br />Track</h2>
+        <div class="card-grid two">
+          <article class="card">
+            <figure class="photo-frame">
+              <img src="marathon.jpg" alt="Me as a kid holding my finisher's medal at the Thrill Zone Mumbai Half Marathon, December 2016" />
+              <figcaption class="photo-date"><time datetime="2016-12-18">dec 2016</time></figcaption>
+            </figure>
+            <h3 class="label">running</h3>
+            <p>
+              Ran <strong>the 10K</strong> at the Thrill Zone Mumbai Half Marathon back in 2016.
+              Still into sports and fitness.
+            </p>
+          </article>
+          <article class="card">
+            <figure class="photo-frame">
+              <img src="travel.jpg" alt="Me at the wheel of a boat on the water at sunset" class="travel-photo" />
+            </figure>
+            <h3 class="label">travel</h3>
+            <p><strong>I travel a lot.</strong> Almost every month it's a new city.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Paper resume: this section is what prints as resume.pdf -->
+      <section id="resume" class="alt">
+        <h2>Resume</h2>
+        <p><a href="resume.pdf" download class="btn">Download my resume (PDF)</a></p>
+        <article class="sheet">
+          <h3><span class="mark">Aadi Nagar</span></h3>
+          <p>aadi.n26@iimb.ac.in · bsc finance @ nmims bengaluru · bba dbe @ iim bangalore</p>
+          <p class="sheet-lead">
+            I study finance because it's the language of business, and I plan to own a few.
+            Looking for ambitious people to start something with.
+          </p>
+          <h4>On Track</h4>
+          <ul>
+            <li><strong>Clipping:</strong> Learnt short-form video clipping on my own and <strong>got paid for it.</strong></li>
+            <li><strong>Trading:</strong> Learning how the stock market works, so I'm ready to invest once my demat account opens.</li>
+            <li><strong>Village build volunteer:</strong> Laid bricks with a 5-person team from my dad's office; <strong>we built 4 huts in 2 days.</strong></li>
+          </ul>
+          <h4>Projects</h4>
+          <ul>
+            <li><strong>Resume website:</strong> Planned and designed this site; built it in HTML &amp; CSS with AI as my coding partner; hosted on GitHub Pages.</li>
+          </ul>
+          <h4>Education</h4>
+          <ul>
+            <li>BSc Finance, NMIMS Bengaluru, 2026 – present</li>
+            <li>BBA, Digital Business &amp; Entrepreneurship, IIM Bangalore, 2026 – present</li>
+            <li>Website Development (In the age of AI), IIMBx, 2026 (in progress)</li>
+          </ul>
+          <div class="sheet-cols">
+            <div>
+              <h4>Skills</h4>
+              <ul>
+                <li>Short-form video editing (paid clipping work)</li>
+                <li>HTML &amp; CSS (built this website)</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Off Track</h4>
+              <ul>
+                <li>Ran the 10K, Thrill Zone Mumbai Half Marathon 2016</li>
+                <li>Travel: a new city almost every month</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <h2>Let's<br />Build</h2>
+        <p class="text">If you're ambitious and good at something I'm not, let's talk.</p>
+        <div class="actions">
+          <a href="mailto:aadi.n26@iimb.ac.in?subject=Let%27s%20build%20something" class="btn">Let's build something</a>
+          <a href="mailto:aadi.n26@iimb.ac.in?subject=I%20have%20a%20startup%20idea" class="btn btn-ghost">I have a startup idea</a>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2026 aadi nagar · built with html &amp; css</p>
+      <a href="#hero">back to top ↑</a>
+    </footer>
+  </body>
+</html>
