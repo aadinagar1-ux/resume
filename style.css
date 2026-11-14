@@ -212,5 +212,6 @@ footer { display: flex; justify-content: space-between; padding: 2rem; border-to
   body { background: #ffffff; color: #000000; }
   .navbar, #hero, footer, main > section:not(#resume), #resume > h2, #resume > p { display: none; }
   #resume { padding: 0; background: #ffffff; }
-  .sheet { max-width: none; margin: 0; padding: 0; color: #000000; font-size: 11.5pt; }
+  .sheet { max-width: none; margin: 0; padding: 0; color: #000000; font-size: 10.5pt; }
+  .sheet h4 { margin-top: 1rem; }
 }
