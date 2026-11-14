@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aadi Nagar | Resume</title>
-    <!-- Google Fonts: Anton (headings) + Inter (body text) -->
+    <!-- fonts: Anton for the big headings, Inter for reading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap"
       rel="stylesheet"
     />
-    <!-- External stylesheet -->
+    <!-- my stylesheet -->
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <!-- Navigation bar: sticks to the top of the screen -->
+    <!-- nav, stays stuck to the top -->
     <nav class="navbar">
       <a href="#hero" class="brand">AADI NAGAR</a>
       <div class="nav-links">
@@ -24,213 +24,285 @@
         <a href="#on-track" class="nav-link">on track</a>
         <a href="#right-now" class="nav-link">right now</a>
         <a href="#off-track" class="nav-link">off track</a>
-        <a href="#resume" class="nav-link">resume</a>
-        <a href="#contact" class="btn btn-small">Contact me</a>
+        <a href="#resume" class="nav-link">on paper</a>
+        <a href="#contact" class="btn btn-sm">Contact</a>
       </div>
     </nav>
 
-    <!-- Page header: name, tagline, photo and main call to action -->
+    <!-- top of the page: name, one line about me, photo -->
     <header id="hero">
       <div class="hero-text">
-        <p class="label">bsc finance @ nmims bengaluru · bba dbe @ iim bangalore</p>
-        <h1>Aadi<br />Nagar</h1>
-        <p class="lead">
-          I study finance because it's the language of business, and I plan to own a few.
+        <p class="mini">bsc finance @ nmims bengaluru | bba dbe @ iim bangalore</p>
+        <h1>
+          <span class="line"><span>Aadi</span></span>
+          <span class="line outline"><span>Nagar</span></span>
+        </h1>
+        <p class="intro">
+          I study finance because it's the language of business, and I plan to
+          <span class="highlight">own a few.</span>
         </p>
-        <p class="sub">
-          I'm looking for ambitious people from different backgrounds to start something with.
+        <p class="sub-line">
+          Looking for ambitious people from different backgrounds to start something with.
         </p>
         <div class="actions">
-          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aadinagar1@gmail.com&amp;su=Let%27s%20build%20something" target="_blank" rel="noopener" class="btn">Let's build something</a>
-          <a href="resume.pdf" download class="btn btn-ghost">Download my resume (PDF)</a>
+          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aadinagar1@gmail.com&amp;su=Let%27s%20build%20something" target="_blank" class="btn">Let's build something</a>
+          <a href="resume.pdf" download class="btn btn-line">Download resume</a>
         </div>
       </div>
-      <img src="photo.jpg" alt="Aadi Nagar in a black blazer and white shirt" class="hero-photo" />
+
+      <figure class="hero-photo">
+        <img src="photo.jpg" alt="Aadi Nagar in a black blazer and white shirt" />
+      </figure>
     </header>
 
     <main>
-      <!-- About me / summary -->
-      <section id="about" class="alt">
+      <!-- about -->
+      <section id="about" class="light">
         <h2>About</h2>
         <p class="text">
-          Honestly, I took finance as a tool. I want to <strong>own multiple businesses</strong>
-          one day, and finance is how I close the gap between where I am now and getting there.
-          So I'm doing a BSc in Finance at NMIMS Bengaluru and the BBA in Digital Business &amp;
-          Entrepreneurship at IIM Bangalore at the same time. Next step: finding the right people
-          to build the first one with.
+          I chose finance mostly as a tool. I want to <strong>own a few businesses</strong> one day,
+          and I figured understanding money properly is where that starts. Right now I'm doing my
+          BSc Finance at NMIMS Bengaluru along with the BBA in Digital Business &amp;
+          Entrepreneurship from IIM Bangalore. What I'm looking for next is the right people to
+          start the first one with.
         </p>
       </section>
 
-      <!-- On Track: experience -->
+      <!-- on track = what I've done. numbered list, cards stack while scrolling -->
       <section id="on-track">
-        <h2>On<br />Track</h2>
-        <div class="card-grid two">
-          <article class="card featured">
-            <h3 class="label">review cards</h3>
-            <p>
-              Sold Google review cards to gyms and cafés near me: cards that take customers straight
-              to the shop's Google review page. <strong>Made a profit on it.</strong>
-            </p>
-          </article>
-          <article class="card">
-            <h3 class="label">research</h3>
-            <p>
-              <strong>Abstract accepted for presentation at ICMAI-MAC 2026, NIT Goa.</strong> Co-wrote
-              it on how much water cold-plate liquid cooling could save in US AI data centres by 2030.
-            </p>
-          </article>
-          <article class="card">
-            <h3 class="label">clipping</h3>
-            <p>Learnt short-form video clipping on my own, and <strong>people started paying me for it.</strong></p>
-          </article>
-          <article class="card">
-            <h3 class="label">village build</h3>
-            <p>
-              Spent 2 days in a village with a team of 5 from my dad's office. My job was laying
-              bricks on the mud, and together <strong>we built 4 big huts</strong> for the villagers.
-            </p>
-          </article>
-          <article class="card">
-            <h3 class="label">mun</h3>
-            <p>
-              Took part in <strong>HFS MUN 2024</strong>, representing Chimanbhai Patel in the
-              Indian Crisis Committee.
-            </p>
-          </article>
+        <div class="track-layout">
+          <div class="track-head">
+            <h2>On<br />Track</h2>
+            <p class="section-note">Things I've actually done so far.</p>
+          </div>
+        <ol class="stack">
+          <li class="card stack-card">
+            <p class="card-no">01</p>
+            <div>
+              <h3 class="mini">review cards</h3>
+              <p>
+                Sold Google review cards to 5 gyms and 3 cafés in my area. Customers use the card to
+                go straight to the shop's Google review page. Small, but <strong>it made a
+                profit.</strong>
+              </p>
+            </div>
+          </li>
+          <li class="card stack-card">
+            <p class="card-no">02</p>
+            <div>
+              <h3 class="mini">research</h3>
+              <p>
+                <strong>Our abstract got accepted for presentation at ICMAI-MAC 2026, NIT Goa.</strong>
+                Co-wrote it with a batchmate.
+                <cite>Water Saved by Cold-Plate Cooling in US AI Data Centres: A Monte Carlo-Sobol Study</cite>
+              </p>
+            </div>
+          </li>
+          <li class="card stack-card">
+            <p class="card-no">03</p>
+            <div>
+              <h3 class="mini">clipping</h3>
+              <p>
+                Learnt clipping on my own, cutting long videos into YouTube Shorts and Instagram Reels.
+                I paid for the editing software subscription myself and after a while <strong>started
+                getting paid for clips.</strong>
+              </p>
+            </div>
+          </li>
+          <li class="card stack-card">
+            <p class="card-no">04</p>
+            <div>
+              <h3 class="mini">village build</h3>
+              <p>
+                Summer 2019. Went to a village in Kharghar for 2 days with a team of 5 from my dad's
+                company (DMart). I was laying bricks on the mud and by the end <strong>we built 4 big
+                huts</strong> for the villagers.
+              </p>
+            </div>
+          </li>
+          <li class="card stack-card">
+            <p class="card-no">05</p>
+            <div>
+              <h3 class="mini">mun</h3>
+              <p>
+                <strong>HFS MUN 2024</strong> (3-4 August). Represented Chimanbhai Patel in the
+                Indian Crisis Committee.
+              </p>
+            </div>
+          </li>
+        </ol>
         </div>
       </section>
 
-      <!-- Right Now: what I'm working on at the moment -->
-      <section id="right-now" class="alt">
+      <!-- right now = still learning -->
+      <section id="right-now" class="light">
         <h2>Right<br />Now</h2>
-        <div class="card-grid two">
+        <p class="section-note">Still learning these.</p>
+        <div class="card-grid">
           <article class="card">
-            <h3 class="label">web development</h3>
+            <h3 class="mini">web development</h3>
             <p>
-              Learning to build websites so I can make them for local businesses. The money's nice,
-              but <strong>the connections matter more.</strong>
+              Learning to build websites so I can make them for local businesses. Mostly <strong>for
+              the connections</strong>, the money is a bonus.
             </p>
+            <div class="in-progress"></div>
           </article>
           <article class="card">
-            <h3 class="label">trading</h3>
+            <h3 class="mini">trading</h3>
             <p>
-              <strong>Learning how the stock market works</strong>, so I'm ready the day my demat
-              account opens.
+              <strong>Learning how the stock market works.</strong> Opening my demat account soon.
             </p>
+            <div class="in-progress"></div>
           </article>
         </div>
       </section>
 
-      <!-- Projects -->
+      <!-- projects -->
       <section id="projects">
         <h2>Projects</h2>
         <article class="card project">
-          <h3 class="label">resume website</h3>
+          <h3 class="mini">resume website</h3>
           <p>
-            <strong>The site you're on.</strong> I planned it, picked the look and built it in HTML
-            and CSS. The dark, neon-lime, race-poster feel comes from landonorris.com, because Lando
-            Norris is my favourite F1 driver. It has a sticky nav, Flexbox and Grid layouts, a phone
-            layout and a resume that prints on one page.
+            <strong>This website.</strong> Made with HTML and CSS and hosted on GitHub Pages. The look
+            is inspired by landonorris.com.
           </p>
-          <p class="tools">Tools: HTML, CSS, Google Fonts, GitHub Pages</p>
+          <p class="tools">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Google Fonts</span><span class="tag">GitHub Pages</span>
+          </p>
         </article>
       </section>
 
-      <!-- Education -->
-      <section id="education" class="alt">
+      <!-- education table (rowspan + colspan) -->
+      <section id="education" class="light">
         <h2>Education</h2>
-        <ul class="rows">
-          <li><span>BSc Finance, NMIMS Bengaluru</span><span class="label">2026 – present</span></li>
-          <li><span>BBA, Digital Business &amp; Entrepreneurship, IIM Bangalore</span><span class="label">2026 – present</span></li>
-          <li><span>Class 12, ISC (Commerce with Maths)</span><span class="label">85.2%</span></li>
-          <li><span>Class 10, ICSE (Science)</span><span class="label">89.4%</span></li>
-        </ul>
+        <table class="edu-table">
+          <thead>
+            <tr>
+              <th rowspan="2">when</th>
+              <th colspan="2">what and where</th>
+              <th rowspan="2">result</th>
+            </tr>
+            <tr>
+              <th>course</th>
+              <th>at</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2" class="when">now</td>
+              <td>BSc Finance</td>
+              <td>NMIMS Bengaluru</td>
+              <td class="result">Jul 2026 - now</td>
+            </tr>
+            <tr>
+              <td>BBA, Digital Business &amp; Entrepreneurship</td>
+              <td>IIM Bangalore</td>
+              <td class="result">Aug 2026 - now</td>
+            </tr>
+            <tr>
+              <td rowspan="2" class="when">school</td>
+              <td>Class 12, ISC, Commerce with Maths <span class="year">2026</span></td>
+              <td rowspan="2">Hiranandani Foundation School, Powai</td>
+              <td class="result">85.2%</td>
+            </tr>
+            <tr>
+              <td>Class 10, ICSE, Science <span class="year">2024</span></td>
+              <td class="result">89.4%</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
-      <!-- Skills table and certifications -->
+      <!-- skills + certificates -->
       <section id="skills">
         <h2>Skills</h2>
         <table class="skills-table">
           <thead>
             <tr>
-              <th>Skill</th>
-              <th>Where I used it</th>
+              <th>what I can do</th>
+              <th>where I've done it</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Sales</td>
-              <td>Sold Google review cards to gyms and cafés</td>
-            </tr>
-            <tr>
-              <td>Short-form video editing</td>
-              <td>Got paid for clipping work</td>
-            </tr>
-            <tr>
-              <td>Research writing</td>
-              <td>ICMAI-MAC 2026 abstract</td>
-            </tr>
-            <tr>
-              <td>Debate &amp; public speaking</td>
-              <td>HFS MUN 2024</td>
-            </tr>
-            <tr>
-              <td>Markets &amp; finance basics</td>
-              <td>Bloomberg Market Concepts certificate</td>
-            </tr>
-            <tr>
-              <td>HTML &amp; CSS</td>
-              <td>This website</td>
-            </tr>
+            <tr><td>Sales</td><td>Sold review cards to 5 gyms and 3 cafés</td></tr>
+            <tr><td>Short-form video editing</td><td>Paid clipping for YouTube Shorts and Instagram Reels</td></tr>
+            <tr><td>Research writing</td><td>ICMAI-MAC 2026 abstract, NIT Goa</td></tr>
+            <tr><td>Debate &amp; public speaking</td><td>HFS MUN 2024</td></tr>
+            <tr><td>Markets &amp; finance basics</td><td>Bloomberg Market Concepts certificate</td></tr>
+            <tr><td>HTML &amp; CSS</td><td>This website</td></tr>
           </tbody>
         </table>
-        <h3 class="sub-heading">Certifications</h3>
-        <p>Bloomberg Market Concepts, Bloomberg for Education<br />Website Development, IIMBx, 2026. Doing it right now.</p>
-      </section>
 
-      <!-- Off Track: life outside class -->
-      <section id="off-track" class="alt">
-        <h2>Off<br />Track</h2>
-        <div class="card-grid two">
-          <article class="card">
-            <figure class="photo-frame">
-              <img src="marathon.jpg" alt="Me as a kid holding my finisher's medal at the Thrill Zone Mumbai Half Marathon, December 2016" />
-              <figcaption class="photo-date"><time datetime="2016-12-18">dec 2016</time></figcaption>
-            </figure>
-            <h3 class="label">running</h3>
+        <!-- tools + languages -->
+        <div class="kit">
+          <div>
+            <h3 class="sub-heading">Tools</h3>
             <p>
-              Ran <strong>the 10K</strong> at the Thrill Zone Mumbai Half Marathon back in 2016.
-              Still into sports and fitness.
+              <span class="tag">Excel</span><span class="tag">Word</span><span class="tag">PowerPoint</span><span class="tag">Photoshop</span><span class="tag">After Effects (basics)</span>
             </p>
-          </article>
-          <article class="card">
-            <figure class="photo-frame">
-              <img src="travel.jpg" alt="Me at the wheel of a boat on the water at sunset" class="travel-photo" />
-            </figure>
-            <h3 class="label">travel</h3>
-            <p><strong>I travel a lot.</strong> Almost every month it's a new city.</p>
-          </article>
+          </div>
+          <div>
+            <h3 class="sub-heading">Languages</h3>
+            <ul class="langs">
+              <li class="fluent">English <span>fluent</span></li>
+              <li class="fluent">Hindi <span>fluent</span></li>
+              <li class="basic">Marathi <span>basic</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="sub-heading">Certifications</h3>
+        <div class="stamps">
+          <p class="stamp">Bloomberg Market Concepts<small>completed, Bloomberg for Education</small></p>
+          <p class="stamp stamp-pending">Website Development<small>in progress, IIMBx 2026</small></p>
         </div>
       </section>
 
-      <!-- Paper resume: this section is what prints as resume.pdf -->
+      <!-- off track. photos are floated so the text wraps around them -->
+      <section id="off-track" class="light">
+        <h2>Off<br />Track</h2>
+        <article class="story">
+          <figure class="frame float-left">
+            <img src="marathon.jpg" alt="Me as a kid holding my finisher's medal at the Thrill Zone Mumbai Half Marathon, December 2016" />
+            <figcaption>thrill zone mumbai half marathon, 2016</figcaption>
+          </figure>
+          <h3 class="mini">running</h3>
+          <p>
+            Ran <strong>the 10K</strong> at the Thrill Zone Mumbai Half Marathon in December 2016 and
+            finished with a medal. Still into sports and fitness.
+          </p>
+        </article>
+        <article class="story">
+          <figure class="frame float-right">
+            <img src="travel.jpg" alt="Me at the wheel of a boat on the water at sunset" />
+            <figcaption>on a boat trip</figcaption>
+          </figure>
+          <h3 class="mini">travel</h3>
+          <p>
+            I travel often, usually a new city every month. Mumbai is home and I'm in Bengaluru for
+            college.
+          </p>
+        </article>
+      </section>
+
+      <!-- paper resume. this is the part that prints (resume.pdf) -->
       <section id="resume">
-        <h2>Resume</h2>
-        <p><a href="resume.pdf" download class="btn">Download my resume (PDF)</a></p>
+        <h2>On<br />Paper</h2>
+        <p><a href="resume.pdf" download class="btn">Download resume</a></p>
         <article class="sheet">
           <h3><span class="mark">Aadi Nagar</span></h3>
-          <p>aadinagar1@gmail.com · linkedin.com/in/aadi-nagar-8253911b7 · bsc finance @ nmims bengaluru · bba dbe @ iim bangalore</p>
+          <p>aadinagar1@gmail.com | linkedin.com/in/aadi-nagar-8253911b7 | Bengaluru</p>
           <p class="sheet-lead">
             I study finance because it's the language of business, and I plan to own a few.
             Looking for ambitious people to start something with.
           </p>
           <h4>On Track</h4>
           <ul>
-            <li><strong>Review cards:</strong> Sold Google review cards to gyms and cafés near me; <strong>made a profit.</strong></li>
-            <li><strong>Research:</strong> <strong>Abstract accepted for presentation at ICMAI-MAC 2026, NIT Goa</strong>; co-written, on how much water cold-plate liquid cooling could save in US AI data centres by 2030.</li>
-            <li><strong>Clipping:</strong> Learnt short-form video clipping on my own and <strong>got paid for it.</strong></li>
-            <li><strong>Village build volunteer:</strong> Laid bricks with a 5-person team from my dad's office; <strong>we built 4 huts in 2 days.</strong></li>
-            <li><strong>MUN:</strong> HFS MUN 2024, Indian Crisis Committee, as Chimanbhai Patel.</li>
+            <li><strong>Review cards:</strong> Sold Google review cards to 5 gyms and 3 cafés near me; <strong>made a profit.</strong></li>
+            <li><strong>Research:</strong> <strong>Abstract accepted for presentation at ICMAI-MAC 2026, NIT Goa</strong>; co-written: <em>Water Saved by Cold-Plate Cooling in US AI Data Centres: A Monte Carlo-Sobol Study</em></li>
+            <li><strong>Clipping:</strong> Self-taught; cut YouTube Shorts and Instagram Reels and <strong>got paid for clips.</strong></li>
+            <li><strong>Village build volunteer (summer 2019):</strong> Laid bricks with a 5-person team from DMart in a village in Kharghar; <strong>we built 4 huts in 2 days.</strong></li>
+            <li><strong>MUN:</strong> HFS MUN 2024 (3-4 Aug), Indian Crisis Committee, as Chimanbhai Patel.</li>
           </ul>
           <h4>Right Now</h4>
           <ul>
@@ -239,14 +311,15 @@
           </ul>
           <h4>Projects</h4>
           <ul>
-            <li><strong>Resume website:</strong> Planned, designed and built this site in HTML &amp; CSS, inspired by landonorris.com; hosted on GitHub Pages.</li>
+            <li><strong>Resume website:</strong> Made with HTML &amp; CSS, hosted on GitHub Pages.</li>
           </ul>
           <h4>Education</h4>
           <ul>
-            <li>BSc Finance, NMIMS Bengaluru, 2026 – present</li>
-            <li>BBA, Digital Business &amp; Entrepreneurship, IIM Bangalore, 2026 – present</li>
-            <li>Class 12, ISC (Commerce with Maths): 85.2% · Class 10, ICSE (Science): 89.4%</li>
-            <li>Bloomberg Market Concepts (Bloomberg for Education) · Website Development, IIMBx, 2026 (in progress)</li>
+            <li>BSc Finance, NMIMS Bengaluru, Jul 2026 - present</li>
+            <li>BBA, Digital Business &amp; Entrepreneurship, IIM Bangalore, Aug 2026 - present</li>
+            <li>Class 12, ISC (Commerce with Maths), Hiranandani Foundation School, Powai, 2026: 85.2%</li>
+            <li>Class 10, ICSE (Science), Hiranandani Foundation School, Powai, 2024: 89.4%</li>
+            <li>Certificates: Bloomberg Market Concepts; Website Development, IIMBx (in progress)</li>
           </ul>
           <div class="sheet-cols">
             <div>
@@ -263,31 +336,56 @@
             <div>
               <h4>Off Track</h4>
               <ul>
-                <li>Ran the 10K, Thrill Zone Mumbai Half Marathon 2016</li>
+                <li>Ran the 10K, Thrill Zone Mumbai Half Marathon, Dec 2016</li>
                 <li>Travel: a new city almost every month</li>
+              </ul>
+              <h4>Tools &amp; Languages</h4>
+              <ul>
+                <li>Excel, Word, PowerPoint, Photoshop, After Effects (basics)</li>
+                <li>English, Hindi (fluent); Marathi (basic)</li>
               </ul>
             </div>
           </div>
         </article>
       </section>
 
-      <!-- Contact -->
-      <section id="contact" class="alt">
-        <h2>Let's<br />Build</h2>
-        <p class="text">If you're ambitious and good at something I'm not, let's talk.</p>
-        <p class="sub">Or write to me directly at <a href="mailto:aadinagar1@gmail.com">aadinagar1@gmail.com</a></p>
-        <div class="actions">
-          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aadinagar1@gmail.com&amp;su=Let%27s%20build%20something" target="_blank" rel="noopener" class="btn">Let's build something</a>
-          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aadinagar1@gmail.com&amp;su=I%20have%20a%20startup%20idea" target="_blank" rel="noopener" class="btn btn-ghost">I have a startup idea</a>
-          <a href="https://www.linkedin.com/in/aadi-nagar-8253911b7/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+      <!-- contact form. su = subject, body = message, it opens gmail with both filled in -->
+      <section id="contact" class="shade">
+        <h2>Let's<br /><span class="outline-text">Build</span></h2>
+        <div class="contact-grid">
+          <form class="contact-form" action="https://mail.google.com/mail/" method="get" target="_blank">
+            <input type="hidden" name="view" value="cm" />
+            <input type="hidden" name="fs" value="1" />
+            <input type="hidden" name="to" value="aadinagar1@gmail.com" />
+
+            <label for="su">what's this about?</label>
+            <select id="su" name="su">
+              <option>Let's build something</option>
+              <option>I want to pitch you an idea</option>
+              <option>I need a website for my business</option>
+              <option>Just saying hi</option>
+            </select>
+
+            <label for="body">your message</label>
+            <textarea id="body" name="body" rows="5" placeholder="Tell me what you're working on..." required></textarea>
+
+            <button type="submit" class="btn">Send it</button>
+          </form>
+
+          <div class="direct">
+            <p class="text">Working on something, or want to start something? Message me.</p>
+            <p class="mini">email / linkedin</p>
+            <a href="mailto:aadinagar1@gmail.com" class="big-link">aadinagar1@gmail.com</a>
+            <a href="https://www.linkedin.com/in/aadi-nagar-8253911b7/" target="_blank" class="big-link">LinkedIn</a>
+          </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer -->
+    <!-- footer -->
     <footer>
-      <p>© 2026 aadi nagar · built with html &amp; css · design inspired by landonorris.com</p>
-      <p><a href="https://www.linkedin.com/in/aadi-nagar-8253911b7/" target="_blank" rel="noopener">linkedin</a> · <a href="#hero">back to top ↑</a></p>
+      <p>© 2026 Aadi Nagar | made with HTML &amp; CSS</p>
+      <p><a href="#hero">back to top</a></p>
     </footer>
   </body>
 </html>
