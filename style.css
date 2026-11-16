@@ -1,5 +1,4 @@
 /* Aadi Nagar - resume website */
-
 /* my colours and fonts, all in one place so I only change them here */
 :root {
   --black: #0e0f0c; /* almost black, slightly green */
@@ -32,6 +31,44 @@ body {
   font-size: 17px;
   line-height: 1.6;
   overflow-x: hidden;
+  /* small lime dot instead of the normal arrow */
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='5' fill='%23d2ff3a' stroke='%230e0f0c' stroke-width='2'/%3E%3C/svg%3E") 10 10, auto;
+}
+
+/* bigger lime ring over anything you can click */
+a,
+button,
+select,
+label {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='14' fill='none' stroke='%23d2ff3a' stroke-width='2'/%3E%3Ccircle cx='18' cy='18' r='3' fill='%23d2ff3a'/%3E%3C/svg%3E") 18 18, pointer;
+}
+
+/* LOADING SCREEN
+   a lime panel with my name covers the page for a moment, then slides up */
+body::after {
+  content: "AADI NAGAR";
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--lime);
+  color: #0e0f0c;
+  font-family: var(--heading-font);
+  font-size: 12vw;
+  letter-spacing: 2px;
+  pointer-events: none;
+  animation: curtain 0.8s cubic-bezier(0.7, 0, 0.2, 1) 0.45s both;
+}
+
+@keyframes curtain {
+  to {
+    transform: translateY(-100%);
+  }
 }
 
 /* headings */
@@ -44,7 +81,7 @@ h2 {
 }
 
 h1 {
-  font-size: 10rem;
+  font-size: 11.5rem;
   margin: 1.2rem 0;
 }
 
@@ -88,7 +125,8 @@ h1:hover .outline span {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 2rem;
-  background-color: rgba(14, 15, 12, 0.88);
+  background-color: rgba(14, 15, 12, 0.75);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--edge);
 }
 
@@ -178,12 +216,45 @@ h1:hover .outline span {
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: background-size 0.35s, color 0.35s;
+  transition: background-size 0.35s, color 0.35s, transform 0.3s;
 }
 
 .btn:hover {
   background-size: 100% 100%;
   color: var(--lime);
+}
+
+/* on hover the text rolls up and a copy (from data-text) comes up from below */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn span {
+  display: inline-block;
+  transition: transform 0.35s;
+}
+
+.btn::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(100%);
+  transition: transform 0.35s;
+}
+
+.btn:hover span {
+  transform: translateY(-160%);
+}
+
+.btn:hover::after {
+  transform: translateY(0);
 }
 
 .btn:active {
@@ -270,6 +341,7 @@ section {
   align-items: center;
   justify-content: space-between;
   gap: 3rem;
+  min-height: 92vh;
   padding: 4rem 2rem 6rem;
   background-image: radial-gradient(circle, #2b2f26 1.2px, transparent 1.6px);
   background-size: 22px 22px;
@@ -278,16 +350,19 @@ section {
 /* name slides up when the page loads */
 .line {
   display: block;
-  overflow: hidden;
+  /* only cut off the top and bottom (for the rise-up), never the sides */
+  clip-path: inset(0 -100vw);
 }
 
-.line span {
+.line .word {
+  display: inline-block;
+}
+
+/* each letter rises on its own, a little after the one before (--i is set in the html) */
+.line .ch {
   display: inline-block;
   animation: rise-up 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.line:nth-of-type(2) span {
-  animation-delay: 0.15s;
+  animation-delay: calc(0.8s + var(--i) * 0.06s);
 }
 
 @keyframes rise-up {
@@ -304,23 +379,23 @@ section {
 #hero .intro,
 #hero .sub-line,
 #hero .actions {
-  animation: fade-up 0.8s ease both;
+  animation: fade-up 0.8s ease 0.9s both;
 }
 
 #hero .intro {
-  animation-delay: 0.35s;
+  animation-delay: 1.15s;
   font-size: 1.45rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
 #hero .sub-line {
-  animation-delay: 0.5s;
+  animation-delay: 1.3s;
   color: var(--grey);
 }
 
 #hero .actions {
-  animation-delay: 0.65s;
+  animation-delay: 1.45s;
 }
 
 @keyframes fade-up {
@@ -341,7 +416,7 @@ section {
   background-image: linear-gradient(var(--lime), var(--lime));
   background-repeat: no-repeat;
   background-size: 0% 100%;
-  animation: highlight 0.8s ease 1.1s forwards;
+  animation: highlight 0.8s ease 1.9s forwards;
 }
 
 @keyframes highlight {
@@ -356,8 +431,7 @@ section {
   position: relative;
   flex-shrink: 0;
   width: 34%;
-  max-width: 380px;
-  animation: fade-up 1s ease 0.3s both;
+  max-width: 420px;
 }
 
 .hero-photo::before {
@@ -369,6 +443,7 @@ section {
   height: 100%;
   background-color: var(--lime);
   transition: top 0.4s, left 0.4s;
+  animation: fade-up 0.6s ease 1.9s both;
 }
 
 .hero-photo img {
@@ -377,6 +452,18 @@ section {
   object-fit: cover;
   filter: grayscale(100%) contrast(1.1);
   transition: filter 0.5s;
+  animation: wipe-up 1.1s cubic-bezier(0.7, 0, 0.2, 1) 0.9s both;
+}
+
+/* photo gets uncovered from the bottom up when the page loads */
+@keyframes wipe-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 .hero-photo:hover img {
@@ -391,17 +478,19 @@ section {
 /* ABOUT */
 #about .text {
   position: relative;
-  font-size: 1.25rem;
+  max-width: 900px;
+  margin-bottom: 1.4rem;
+  font-size: 1.45rem;
 }
 
 /* drop cap */
-#about .text::first-letter {
+#about p.text:first-of-type::first-letter {
   float: left;
-  margin: 0.45rem 0.6rem 0 0;
+  margin: 0.45rem 0.9rem 0 0;
   font-family: var(--heading-font);
   font-size: 4.6rem;
   line-height: 0.8;
-  padding: 0.3rem 0.4rem 0;
+  padding: 0.35rem 0.85rem 0.2rem;
   background-color: var(--lime);
   color: #0e0f0c;
 }
@@ -416,21 +505,6 @@ section {
 
 .card h3 {
   margin-bottom: 0.5rem;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.card-grid .card {
-  transition: transform 0.3s, border-color 0.3s;
-}
-
-.card-grid .card:hover {
-  transform: translateY(-6px);
-  border-color: var(--lime);
 }
 
 /* on track: heading on the left stays put, cards on the right */
@@ -487,9 +561,11 @@ section {
   --i: 4;
 }
 
+/* each card shows the year it happened */
 .card-no {
+  flex-shrink: 0;
   font-family: var(--heading-font);
-  font-size: 4.5rem;
+  font-size: 3.6rem;
   line-height: 1;
   color: transparent;
   -webkit-text-stroke: 1.5px var(--lime);
@@ -502,6 +578,24 @@ section {
 
 .stack-card:hover .card-no {
   color: var(--lime);
+}
+
+/* lime bar grows up the left edge of the card on hover */
+.stack-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--lime);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.4s;
+}
+
+.stack-card:hover::before {
+  transform: scaleY(1);
 }
 
 cite {
@@ -611,55 +705,6 @@ th {
   font-size: 1.2rem;
 }
 
-/* tools + languages side by side */
-.kit {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 3rem;
-  max-width: 900px;
-}
-
-.kit .tag {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--white);
-}
-
-.langs {
-  list-style: none;
-}
-
-.langs li {
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.langs span {
-  float: right;
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: var(--grey);
-}
-
-/* language bars. width comes from --level */
-.langs li::after {
-  content: "";
-  display: block;
-  height: 4px;
-  margin-top: 0.4rem;
-  border-radius: 999px;
-  background-image: linear-gradient(to right, var(--lime) var(--level), var(--edge) var(--level));
-}
-
-.langs .fluent {
-  --level: 100%;
-}
-
-.langs .basic {
-  --level: 30%;
-}
-
 /* certificates. double border = done, dashed = in progress */
 .stamps {
   display: flex;
@@ -698,6 +743,72 @@ th {
 
 .stamp:hover {
   background-color: rgba(210, 255, 58, 0.08);
+}
+
+.verify {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.verify a {
+  color: var(--lime);
+  text-underline-offset: 4px;
+}
+
+.sheet a {
+  color: inherit;
+}
+
+/* 3D flip card: the stamp is the front, the real certificate is the back */
+.stamps {
+  align-items: center;
+}
+
+.flip {
+  display: inline-block;
+  width: 340px;
+  max-width: 100%;
+  height: 240px;
+  perspective: 1000px;
+  text-decoration: none;
+}
+
+.flip-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.flip:hover .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-front {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+
+.flip-back {
+  object-fit: cover;
+  background-color: #ffffff;
+  border: 2px solid var(--lime);
+  border-radius: 6px;
+  transform: rotateY(180deg);
 }
 
 /* OFF TRACK */
@@ -897,27 +1008,64 @@ textarea {
 
 /* FOOTER */
 footer {
+  padding: 3rem 2rem 2rem;
+  border-top: 1px solid var(--edge);
+  color: var(--grey);
+  font-size: 0.9rem;
+  overflow: hidden;
+}
+
+/* huge outlined name, fills in lime on hover */
+.footer-name {
+  font-family: var(--heading-font);
+  font-size: 16.5vw;
+  line-height: 0.85;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--edge);
+  transition: color 0.5s, -webkit-text-stroke-color 0.5s;
+}
+
+.footer-name:hover {
+  color: var(--lime);
+  -webkit-text-stroke-color: var(--lime);
+}
+
+.footer-row {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 2rem;
-  border-top: 1px solid var(--edge);
-  color: var(--grey);
-  font-size: 0.9rem;
+  margin-top: 2rem;
 }
 
 /* SCROLL ANIMATION
    section headings slide in from the left as they come on screen */
 @supports (animation-timeline: view()) {
-  main h2,
-  .card-grid,
-  .edu-table,
-  .skills-table,
-  .story {
+  main h2 {
+    animation: rise-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }.edu-table,
+.skills-table,
+.story {
     animation: slide-in linear both;
     animation-timeline: view();
     animation-range: entry 0% entry 70%;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -929,6 +1077,1186 @@ footer {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* NUMBERS
+   @property lets the browser animate a whole number, and counter() prints it */
+@property --num {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.count {
+  --num: var(--to);
+  counter-reset: n var(--num);
+  display: block;
+  font-family: var(--heading-font);
+  font-size: 7rem;
+  line-height: 1;
+  color: var(--lime);
+  animation: count-up 2s ease-out 0.3s both;
+}
+
+.count::before {
+  content: attr(data-prefix) counter(n);
+}
+
+.count::after {
+  content: attr(data-suffix);
+}
+
+@keyframes count-up {
+  from {
+    --num: 0;
+  }
+
+  to {
+    --num: var(--to);
+  }
+}
+
+/* LIME BAND */
+.band {
+  overflow: hidden;
+  padding: 1.6rem 0;
+  background-color: var(--lime);
+  color: #0e0f0c;
+}
+
+.band-text {
+  font-family: var(--heading-font);
+  font-size: 6.5rem;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.band .hollow {
+  color: transparent;
+  -webkit-text-stroke: 2px #0e0f0c;
+}
+
+/* SCROLL EFFECTS (only in browsers that support scroll-linked animation) */
+@supports (animation-timeline: view()) {
+  /* numbers count up while they scroll into view */
+  .count {
+    animation: count-up linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 45%;
+  }
+
+  /* band words slide left as you scroll down */
+  .band-text {
+    animation: band-move linear both;
+    animation-timeline: view();
+  }
+
+  /* about text darkens line by line, like you're reading it */
+  #about .text {
+    color: transparent;
+    background-image: linear-gradient(to bottom, var(--white) 50%, #b3b7aa 50%);
+    background-size: 100% 200%;
+    background-position: 0 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: read-fill linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 55%;
+  }
+}
+
+@keyframes band-move {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-40%);
+  }
+}
+
+@keyframes read-fill {
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* SIDEWAYS SECTION (off track)
+   normally the panels just sit one under the other (phones, older browsers) */
+.big-word {
+  font-family: var(--heading-font);
+  font-size: 11rem;
+  text-transform: uppercase;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 3px var(--lime);
+  margin-bottom: 1rem;
+}
+
+.panel-gym .big-word {
+  -webkit-text-stroke-color: var(--white);
+  transition: color 0.4s;
+}
+
+.panel-gym:hover .big-word {
+  color: var(--lime);
+  -webkit-text-stroke-color: var(--lime);
+}
+
+@supports (animation-timeline: view()) {
+  @media (min-width: 701px) {
+    /* the section is 3 screens tall. while you scroll through it,
+       .ride-pin stays stuck to the screen and the track moves left */
+    .ride {
+      height: 300vh;
+      padding: 0;
+      view-timeline-name: --ride;
+      view-timeline-inset: 0;
+    }
+
+    .ride-pin {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .ride-track {
+      display: flex;
+      align-items: center;
+      gap: 5rem;
+      width: max-content;
+      padding: 0 4rem 0 2rem;
+      animation: ride linear both;
+      animation-timeline: --ride;
+      animation-range: contain 0% contain 100%;
+    }
+
+    .panel {
+      flex-shrink: 0;
+      width: 55vw;
+      max-width: none;
+      font-size: 1.35rem;
+    }
+
+    .ride .frame {
+      width: 360px;
+    }
+
+    .panel-title {
+      width: 30vw;
+    }
+
+    .panel-gym {
+      width: 40vw;
+    }
+
+    /* these already move sideways, so no slide-in for them */
+    .ride .story,
+    .ride h2 {
+      animation: none;
+    }
+  }
+}
+
+@keyframes ride {
+  to {
+    transform: translateX(calc(-100% + 100vw));
+  }
+}
+
+/* EXTRA TOUCHES */
+/* trailing cursor ring (script.js moves it). hidden until the script runs */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 2px solid var(--lime);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: width 0.25s, height 0.25s, margin 0.25s, background-color 0.25s, opacity 0.3s;
+}
+
+.has-cursor .cursor {
+  opacity: 1;
+}
+
+.cursor.is-big {
+  width: 70px;
+  height: 70px;
+  margin: -35px 0 0 -35px;
+  background-color: rgba(210, 255, 58, 0.15);
+}
+
+/* nav links roll their text like the buttons */
+.nav-links > .nav-link {
+  overflow: hidden;
+}
+
+.nav-link span {
+  display: inline-block;
+  transition: transform 0.35s;
+}
+
+.nav-link::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  color: var(--lime);
+  transform: translateY(100%);
+  transition: transform 0.35s;
+}
+
+.nav-link:hover span {
+  transform: translateY(-160%);
+}
+
+.nav-link:hover::before {
+  transform: translateY(-50%);
+}
+
+/* bottom of the hero: clock and a scroll hint with a line that keeps dropping */
+#hero {
+  position: relative;
+}
+
+.local-time {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  padding-bottom: 3.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--grey);
+  transform: translateX(-50%);
+}
+
+.scroll-hint::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 1px;
+  height: 2.6rem;
+  background-color: var(--lime);
+  transform-origin: top;
+  animation: drop 1.8s ease-in-out infinite;
+}
+
+@keyframes drop {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+
+  51% {
+    transform-origin: bottom;
+  }
+
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* loading screen: a percentage counts up in the corner while the lime panel is down */
+@property --load {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+body::before {
+  counter-reset: load var(--load);
+  content: counter(load) "%";
+  position: fixed;
+  right: 2rem;
+  bottom: 1.5rem;
+  z-index: 101;
+  font-family: var(--heading-font);
+  font-size: 3rem;
+  color: #0e0f0c;
+  pointer-events: none;
+  animation: load-count 0.45s linear both, count-away 0.8s cubic-bezier(0.7, 0, 0.2, 1) 0.45s both;
+}
+
+@keyframes count-away {
+  to {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes load-count {
+  from {
+    --load: 0;
+  }
+
+  to {
+    --load: 100;
+  }
+}
+
+/* two bands crossing like an X */
+.bands {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  background-color: var(--black);
+}
+
+.bands .band {
+  position: absolute;
+  left: -5%;
+  width: 110%;
+  top: 50%;
+}
+
+.band-a {
+  transform: translateY(-50%) rotate(-4deg);
+  z-index: 2;
+}
+
+.band-b {
+  transform: translateY(-50%) rotate(4deg);
+  background-color: #0e0f0c;
+  color: var(--lime);
+  border-top: 2px solid var(--lime);
+  border-bottom: 2px solid var(--lime);
+}
+
+.band-b .hollow {
+  -webkit-text-stroke-color: var(--lime);
+}
+
+/* big number on each right now panel */
+.panel-no {
+  font-family: var(--heading-font);
+  font-size: 4rem;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--grey);
+  margin-bottom: 1rem;
+  transition: color 0.3s, -webkit-text-stroke-color 0.3s;
+}
+
+.card:hover .panel-no {
+  color: var(--lime);
+  -webkit-text-stroke-color: var(--lime);
+}
+
+/* phones / older browsers: sideways sections just stack */
+.ride-track > * + * {
+  margin-top: 1.5rem;
+}
+
+.ride .card {
+  max-width: 700px;
+}
+
+@supports (animation-timeline: view()) {
+  @media (min-width: 701px) {
+    .ride-track > * + * {
+      margin-top: 0;
+    }
+
+    /* right now runs the other way: the row is reversed and slides right */
+    .ride-reverse .ride-track {
+      flex-direction: row-reverse;
+      animation-name: ride-back;
+    }
+
+    .ride .card.panel {
+      width: 34vw;
+      max-width: none;
+      min-height: 52vh;
+      font-size: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .ride-reverse .panel-title {
+      width: 26vw;
+    }
+
+    /* the hero splits apart as you scroll away from it */
+    #hero {
+      view-timeline-name: --hero;
+      view-timeline-inset: 0;
+    }
+
+    #hero .line:first-child .word,
+    #hero .line:last-child .word,
+    .hero-photo {
+      animation-timeline: --hero;
+      animation-range: exit 0% exit 100%;
+      animation-fill-mode: both;
+      animation-timing-function: linear;
+    }
+
+    #hero .line:first-child .word {
+      animation-name: split-left;
+    }
+
+    #hero .line:last-child .word {
+      animation-name: split-right;
+    }
+
+    .hero-photo {
+      animation-name: photo-away;
+    }
+
+    /* crossed bands slide in opposite directions */
+    .band-a .band-text {
+      animation: band-move linear both;
+      animation-timeline: view();
+    }
+
+    .band-b .band-text {
+      animation: band-move-back linear both;
+      animation-timeline: view();
+    }
+
+    /* on track cards tip up from flat as they come in */
+    .stack {
+      perspective: 1200px;
+    }
+
+    .stack-card {
+      animation: tip-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+
+    /* table rows flip down into place one by one as you scroll */
+    .edu-table tbody tr,
+    .skills-table tbody tr {
+      animation: flip-row linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+
+    /* certificates turn over like cards */
+    .flip .stamp {
+      animation: none;
+    }
+
+    .flip,
+    .stamp {
+      animation: turn-over linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
+
+    /* the paper resume gets put down on the desk */
+    .sheet {
+      animation: put-down linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+
+    /* contact opens up from a rounded box to the full screen */
+    #contact,
+    #numbers {
+      animation: open-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+
+    /* off track photos drift inside their frames */
+    .ride .frame img {
+      animation: drift linear both;
+      animation-timeline: --ride;
+    }
+  }
+}
+
+@keyframes split-left {
+  to {
+    transform: translateX(-35vw);
+    opacity: 0.2;
+  }
+}
+
+@keyframes split-right {
+  to {
+    transform: translateX(35vw);
+    opacity: 0.2;
+  }
+}
+
+@keyframes photo-away {
+  to {
+    transform: scale(0.8) rotate(-6deg);
+    opacity: 0.3;
+  }
+}
+
+@keyframes band-move-back {
+  from {
+    transform: translateX(-40%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes ride-back {
+  from {
+    transform: translateX(calc(-100% + 100vw));
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes tip-up {
+  from {
+    transform: rotateX(35deg) translateY(80px) scale(0.92);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes flip-row {
+  from {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: rotateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes turn-over {
+  from {
+    transform: perspective(600px) rotateY(180deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: perspective(600px) rotateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes put-down {
+  from {
+    transform: translateY(120px) rotate(-7deg) scale(0.9);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes open-up {
+  from {
+    clip-path: inset(6% 5% round 40px);
+  }
+
+  to {
+    clip-path: inset(0 0 round 0);
+  }
+}
+
+@keyframes drift {
+  from {
+    object-position: center 20%;
+    transform: scale(1.15);
+  }
+
+  to {
+    object-position: center 80%;
+    transform: scale(1);
+  }
+}
+
+/* PHOTOS, CHART, TRACKER */
+/* village photo cut into bricks. each span shows its own piece of the photo */
+.bricks-wrap {
+  margin-top: 1.4rem;
+  max-width: 560px;
+}
+
+.bricks {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 3px;
+  aspect-ratio: 16 / 9;
+}
+
+.bricks span {
+  background-image: url("village-3.jpg");
+  background-size: 600% 400%;
+  background-position: calc(var(--c) * 20%) calc(var(--r) * 33.333%);
+  border-radius: 2px;
+}
+
+.bricks-wrap figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--grey);
+}
+
+/* portrait certificate: show the whole page instead of cropping it */
+.flip-back.tall {
+  object-fit: contain;
+}
+
+/* MUN badge photo, tilted a little, straightens on hover */
+.badge-photo {
+  float: right;
+  width: 150px;
+  margin: 0 0 1rem 1.5rem;
+  border: 2px solid var(--lime);
+  border-radius: 6px;
+  transform: rotate(4deg);
+  transition: transform 0.4s;
+}
+
+.badge-photo:hover {
+  position: relative;
+  z-index: 2;
+  transform: rotate(0deg) scale(1.6);
+}
+
+/* research chart */
+.chart {
+  max-width: 560px;
+  margin-top: 1.2rem;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.chart .axis {
+  stroke: var(--edge);
+  stroke-width: 2;
+}
+
+.chart .range {
+  stroke: var(--lime);
+  stroke-width: 14;
+  stroke-linecap: round;
+}
+
+.chart .median {
+  fill: #0e0f0c;
+  stroke: var(--lime);
+  stroke-width: 4;
+}
+
+.chart text {
+  fill: var(--grey);
+  font-family: var(--text-font);
+  font-size: 13px;
+}
+
+.chart .val {
+  fill: var(--white);
+  font-family: var(--heading-font);
+  font-size: 22px;
+}
+
+.chart .val.big {
+  fill: var(--lime);
+  font-size: 34px;
+}
+
+.chart figcaption {
+  font-size: 0.85rem;
+  color: var(--grey);
+}
+
+/* section tracker on the right edge */
+.tracker {
+  position: fixed;
+  top: 50%;
+  right: 1.2rem;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transform: translateY(-50%);
+}
+
+.tracker {
+  transition: opacity 0.4s;
+}
+
+.tracker:not(:has(.is-here)) {
+  opacity: 0;
+}
+
+.tracker a {
+  position: relative;
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--grey);
+  opacity: 0.5;
+  transition: height 0.3s, background-color 0.3s, opacity 0.3s;
+}
+
+.tracker a::before {
+  content: attr(data-label);
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--lime);
+  opacity: 0;
+  transform: translate(8px, -50%);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.tracker a:hover::before {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.tracker a.is-here {
+  height: 28px;
+  background-color: var(--lime);
+  opacity: 1;
+}
+
+
+
+/* top of the page follows the mouse (script.js sets --px and --py from -0.5 to 0.5).
+   "translate" is used instead of "transform" so it doesn't clash with the load and scroll animations */
+.hero-photo img {
+  transition: filter 0.5s;
+}
+
+.hero-photo::before {
+  translate: calc(var(--px, 0) * -40px) calc(var(--py, 0) * -30px);
+}
+
+#hero .line:first-child .word {
+  translate: calc(var(--px, 0) * 30px) calc(var(--py, 0) * 12px);
+}
+
+#hero .line:last-child .word {
+  translate: calc(var(--px, 0) * 55px) calc(var(--py, 0) * 20px);
+}
+
+.intro,
+.sub-line {
+  translate: calc(var(--px, 0) * 14px) 0;
+}
+
+@supports (animation-timeline: view()) {
+  @media (min-width: 701px) {
+    /* bricks get laid from the bottom row up. --o is each brick's place in the order */
+    .bricks span {
+      animation: lay-brick linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--o) * 1%) entry calc(var(--o) * 1% + 30%);
+    }
+
+    /* the chart draws itself */
+    .chart .range {
+      stroke-dasharray: 300;
+      animation: draw-line linear both;
+      animation-timeline: view();
+      animation-range: entry 30% cover 45%;
+    }
+
+    .chart .median,
+    .chart .val {
+      animation: pop-in linear both;
+      animation-timeline: view();
+      animation-range: cover 35% cover 50%;
+    }
+  }
+}
+
+@keyframes lay-brick {
+  from {
+    opacity: 0;
+    transform: translateY(-60px) rotate(-8deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 300;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* PHOTO WALL: three columns sliding past each other */
+.frames {
+  padding: 0 2rem;
+  overflow: hidden;
+  background-color: var(--black);
+}
+
+.frames-wall {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  height: 130vh;
+}
+
+.frames-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tile {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.tile img {
+  display: block;
+  width: 100%;
+  height: 42vh;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter 0.5s, scale 0.6s;
+}
+
+.tile:hover img {
+  filter: grayscale(0%);
+  scale: 1.06;
+}
+
+.tile figcaption {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.8rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background-color: rgba(14, 15, 12, 0.75);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+.tile-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22vh;
+  background-color: var(--lime);
+  color: #0e0f0c;
+  font-family: var(--heading-font);
+  font-size: 5rem;
+  text-transform: uppercase;
+}
+
+.tile-word.hollow {
+  background-color: transparent;
+  border: 2px solid var(--edge);
+  color: transparent;
+  -webkit-text-stroke: 2px var(--white);
+}
+
+@supports (animation-timeline: view()) {
+  @media (min-width: 701px) {
+    .col-up {
+      animation: col-up linear both;
+      animation-timeline: view();
+    }
+
+    .col-down {
+      animation: col-down linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes col-up {
+  from {
+    transform: translateY(10%);
+  }
+
+  to {
+    transform: translateY(-30%);
+  }
+}
+
+@keyframes col-down {
+  from {
+    transform: translateY(-35%);
+  }
+
+  to {
+    transform: translateY(5%);
+  }
+}
+
+/* SMALLER DETAILS */
+
+/* the sentence with the numbers in it, at the end of about */
+#about .numbers-line {
+  margin-top: 4rem;
+}
+
+.light .numbers-line {
+  color: var(--grey);
+}
+
+.light .numbers-line .count {
+  padding: 0.05em 0.15em;
+  border-radius: 6px;
+  background-color: var(--lime);
+  color: #0e0f0c;
+}
+
+/* on paper: the formal bits sit above the sheet */
+.paper-extras {
+  margin-bottom: 5rem;
+}
+
+.paper-extras > .sub-heading:first-child {
+  margin-top: 2rem;
+}
+
+.numbers-line {
+  max-width: 1150px;
+  font-size: 2.6rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--grey);
+}
+
+.numbers-line .count {
+  display: inline-block;
+  min-width: 0.6em;
+  font-size: 1.5em;
+  line-height: 1;
+  text-align: center;
+  color: var(--lime);
+}
+
+/* a line from the acceptance email */
+.mail {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  background-color: #0e0f0c;
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  color: var(--white);
+}
+
+.mail span {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--grey);
+}
+
+/* status word on each right now panel */
+.panel-no {
+  font-size: 3.2rem;
+  text-transform: uppercase;
+}
+
+/* photo wall data tiles: big figure, small line under it */
+.tile-word {
+  flex-direction: column;
+  font-size: 4.2rem;
+  line-height: 1;
+}
+
+.tile-word small {
+  margin-top: 0.6rem;
+  font-family: var(--text-font);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  -webkit-text-stroke: 0;
+  color: inherit;
+}
+
+.tile-word.hollow small {
+  color: var(--grey);
+}
+
+/* contact form written like a note */
+.note-form p {
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+.note-form select {
+  display: inline-block;
+  width: auto;
+  padding: 0.1rem 0.4rem;
+  border: none;
+  border-bottom: 2px solid var(--lime);
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--lime);
+  font-size: 1.5rem;
+}
+
+.note-form label {
+  display: block;
+  margin-top: 1.5rem;
+}
+
+.note-form select {
+  min-height: 0;
+}
+
+.note-form option {
+  background-color: #0e0f0c;
+  color: #f1f2ec;
+}
+
+/* webgl photo: the canvas sits exactly over the photo, and the photo hides behind it */
+.hero-gl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.hero-photo.has-gl img {
+  visibility: hidden;
+}
+
+/* section-to-section wipe */
+.wipe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--lime);
+  color: #0e0f0c;
+  font-family: var(--heading-font);
+  font-size: 10vw;
+  text-transform: uppercase;
+  pointer-events: none;
+  transform: translateY(100%);
+}
+
+.wipe-in {
+  animation: wipe-in 0.55s cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+.wipe-out {
+  animation: wipe-out 0.6s cubic-bezier(0.7, 0, 0.2, 1) 0.1s both;
+}
+
+@keyframes wipe-in {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes wipe-out {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+/* SMALLER LAPTOPS AND TABLETS */
+@media (max-width: 1100px) {
+  h1 {
+    font-size: 8.5rem;
+  }
+
+  .big-link {
+    font-size: 1.8rem;
+  }
+
+  .numbers-line {
+    font-size: 2.1rem;
+  }
+
+  .tile-word {
+    font-size: 3.2rem;
   }
 }
 
@@ -953,6 +2281,48 @@ footer {
 
   h1 {
     font-size: 4.5rem;
+  }
+
+  .count {
+    font-size: 4.5rem;
+  }
+
+  .band-text {
+    font-size: 3.5rem;
+  }
+
+  .bands {
+    height: 220px;
+  }
+
+  .local-time {
+    display: none;
+  }
+
+  .tracker {
+    display: none;
+  }
+
+  .frames-wall {
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+  }
+
+  .frames-col:nth-child(3) {
+    display: none;
+  }
+
+  .tile-word {
+    font-size: 2.2rem;
+  }
+
+  .numbers-line {
+    font-size: 1.6rem;
+  }
+
+  .note-form p,
+  .note-form select {
+    font-size: 1.15rem;
   }
 
   h2 {
@@ -996,11 +2366,6 @@ footer {
 
   .card-no {
     font-size: 3rem;
-  }
-
-  .kit {
-    grid-template-columns: 1fr;
-    gap: 0;
   }
 
   th,
@@ -1055,16 +2420,25 @@ footer {
   body {
     background: #ffffff;
     color: #000000;
-  }
-
-  body::before,
-  .navbar,
-  #hero,
-  .tapes,
-  footer,
-  main > section:not(#resume),
-  #resume > h2,
-  #resume > p {
+  }body::before,
+body::after,
+.paper-extras,
+.cursor,
+.wipe,
+.tracker,
+.hero-gl,
+.frames,
+.bands,
+.local-time,
+.scroll-hint,
+.band,
+#numbers,
+.navbar,
+#hero,
+footer,
+main > section:not(#resume),
+#resume > h2,
+#resume > p {
     display: none;
   }
 
@@ -1078,6 +2452,8 @@ footer {
     margin: 0;
     padding: 0;
     box-shadow: none;
+    animation: none;
+    transform: none;
     color: #000000;
     font-size: 10.5pt;
   }
