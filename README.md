@@ -20,4 +20,5 @@ The look is inspired by landonorris.com: a dark page, one neon lime colour, big 
 ## Contact
 
 Email: aadinagar1@gmail.com
+
 LinkedIn: https://www.linkedin.com/in/aadi-nagar-8253911b7/
