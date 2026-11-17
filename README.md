@@ -1,24 +1,23 @@
 # Aadi Nagar, Resume Website
 
-My resume website for the Website Development course (IIMBx, BBA DBE). Built with HTML and CSS, plus a small JavaScript file for the bits CSS can't do on its own.
+My resume website for the Website Development course (IIMBx, BBA DBE).
 
-Live site: https://aadinagar1-ux.github.io/resume/
+Live: https://aadinagar1-ux.github.io/resume/
 
-## About the design
+The site is the floor plan of a headquarters I haven't built yet. Every room is something I've done, and on a big screen scrolling flies a camera from room to room.
 
-The look is inspired by landonorris.com: a dark page, one neon lime colour, big headings, and the site split into On Track (work) and Off Track (life outside it). Most of the movement is CSS, including the sideways sections, the stacking cards and the scroll animations.
+## What's in here
 
-## Files
+- `index.html` - the page, one section per room
+- `style.css` - all the styling, including the floor plan and the camera's route
+- `script.js` - smooth scrolling, cursor, clock, the corner map, room links and the small simulation in the research lab
+- `gl.js` - my photo in the lobby, drawn as dots with WebGL
+- `resume.pdf` - one-page resume (printed from the page itself)
+- the `.jpg` files - photos and certificates
 
-- `index.html`: the page
-- `style.css`: all the styling (fonts, colour variables, Flexbox, Grid, positioning, animations, phone layout and print style)
-- `script.js`: smooth scrolling, the cursor ring, the clock and the section wipe
-- `gl.js`: the photo at the top drawn as dots with WebGL
-- `resume.pdf`: the one-page resume, printed from the site
-- `.jpg` files: photos and certificates used on the page
+Built with HTML, CSS and a small amount of JavaScript. No frameworks.
 
 ## Contact
 
-Email: aadinagar1@gmail.com
-
-LinkedIn: https://www.linkedin.com/in/aadi-nagar-8253911b7/
+aadinagar1@gmail.com
+https://www.linkedin.com/in/aadi-nagar-8253911b7/
