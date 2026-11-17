@@ -1,12 +1,12 @@
 // my photo at the top, redrawn as a few thousand dots with webgl.
 // the dots fly in to form my face.
 // a round window follows the mouse and the real photo shows through it.
-// on phones, or if webgl isn't there, none of this runs and the normal photo stays.
+// on phones, with motion switched off, or if webgl isn't there, none of this runs and the normal photo stays.
 (function () {
   const hero = document.getElementById("hero");
   const box = document.querySelector(".hero-photo");
   const img = box && box.querySelector("img");
-  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const calm = document.documentElement.classList.contains("still"); // the motion button is off
   if (!hero || !img || calm || !window.matchMedia("(pointer: fine)").matches || window.innerWidth < 700) return;
 
   const canvas = document.createElement("canvas");

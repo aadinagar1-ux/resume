@@ -8,8 +8,10 @@
 // 7. my name leaning away from the mouse
 // 8. the lime wipe when you jump to a room
 // 9. the small simulation in the research lab
+// 10. the motion button
 
-const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// calm is true when the motion button in the menu has been switched off
+const calm = document.documentElement.classList.contains("still");
 const finePointer = window.matchMedia("(pointer: fine)").matches;
 
 // 1. smooth scroll: the wheel sets a target and the page eases towards it
@@ -305,4 +307,19 @@ if (sim) {
   ready.observe(sim);
 
   document.getElementById("again").addEventListener("click", runSim);
+}
+
+// 10. motion button: remembers the choice and reloads, so the page starts again with or without the camera
+const motion = document.getElementById("motion");
+if (motion) {
+  motion.textContent = calm ? "motion: off" : "motion: on";
+  motion.addEventListener("click", () => {
+    try {
+      localStorage.setItem("motion", calm ? "on" : "off");
+    } catch (e) {
+      return; // storage is blocked, so there's nothing to remember
+    }
+    window.scrollTo(0, 0);
+    location.reload();
+  });
 }

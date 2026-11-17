@@ -15,6 +15,17 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <!-- plan.css is the floor plan and the camera. it is a separate file so the motion button can switch it off -->
+    <link rel="stylesheet" href="plan.css" id="plan-css" />
+    <script>
+      // if motion was switched off last time, drop the floor plan before the page shows
+      try {
+        if (localStorage.getItem("motion") === "off") {
+          document.getElementById("plan-css").disabled = true;
+          document.documentElement.className = "still";
+        }
+      } catch (e) {}
+    </script>
     <!-- script.js: scrolling, cursor, clock, the map in the corner and the small simulation. gl.js: the photo made of dots -->
     <script src="script.js" defer></script>
     <script src="gl.js" defer></script>
@@ -41,6 +52,7 @@
         <a href="#gym" class="nav-link" data-text="off the clock"><span>off the clock</span></a>
         <a href="#records" class="nav-link keep" data-text="records"><span>records</span></a>
         <a href="#vacant" class="nav-link keep" data-text="contact"><span>contact</span></a>
+        <button type="button" class="nav-link motion" id="motion">motion: on</button>
       </div>
     </nav>
 
