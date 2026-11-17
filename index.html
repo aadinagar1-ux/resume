@@ -3,554 +3,612 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Aadi Nagar, finance student at NMIMS Bengaluru and IIM Bangalore. Research, work so far and a one-page resume." />
+    <meta name="theme-color" content="#0e0f0c" />
     <title>Aadi Nagar | Resume</title>
-    <!-- fonts: Anton for the big headings, Inter for reading -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23d2ff3a'/%3E%3Cpath d='M6 25 13 7h6l7 18h-5l-1-3h-8l-1 3z' fill='%230e0f0c'/%3E%3C/svg%3E" />
+    <!-- fonts: Anton for titles and numbers, Instrument Sans for reading, Instrument Serif (italic) for the small side notes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap"
       rel="stylesheet"
     />
-    <!-- my stylesheet -->
     <link rel="stylesheet" href="style.css" />
-    <!-- small script: smooth scrolling, the trailing cursor, magnetic buttons and the clock -->
+    <!-- script.js: scrolling, cursor, clock, the map in the corner and the small simulation. gl.js: the photo made of dots -->
     <script src="script.js" defer></script>
-    <!-- webgl version of the top photo (made of dots) -->
     <script src="gl.js" defer></script>
   </head>
 
   <body>
-    <!-- small section tracker on the right. script.js lights up the section you're in -->
-    <nav class="tracker">
-      <a href="#about" data-label="about"></a>
-      <a href="#on-track" data-label="on track"></a>
-      <a href="#right-now" data-label="right now"></a>
-      <a href="#frames" data-label="photos"></a>
-      <a href="#off-track" data-label="off track"></a>
-      <a href="#resume" data-label="on paper"></a>
-      <a href="#contact" data-label="contact"></a>
-    </nav>
+    <!-- loading screen: counts to 100, then opens down the middle (all css) -->
+    <div class="loader"><span class="loader-count"></span><span class="loader-line"></span></div>
 
-    <!-- lime panel used when jumping between sections (script.js) -->
+    <!-- lime panel that covers the page when you jump to a room from the menu -->
     <div class="wipe"></div>
 
-    <!-- ring that follows the mouse (moved by script.js) -->
+    <!-- ring that trails the mouse -->
     <div class="cursor"></div>
-    <!-- nav, stays stuck to the top -->
+
+    <!-- bottom corner: a small map of the building with a dot for where you are, and the room's name -->
+    <p class="hud" aria-hidden="true"><span class="map"><span class="map-dot"></span></span><span id="where">lobby</span></p>
+
     <nav class="navbar">
-      <a href="#hero" class="brand">AADI NAGAR</a>
+      <a href="#hero" class="brand" data-text="lobby">Aadi Nagar</a>
       <div class="nav-links">
-        <a href="#about" class="nav-link" data-text="about"><span>about</span></a>
-        <a href="#on-track" class="nav-link" data-text="on track"><span>on track</span></a>
-        <a href="#right-now" class="nav-link" data-text="right now"><span>right now</span></a>
-        <a href="#off-track" class="nav-link" data-text="off track"><span>off track</span></a>
-        <a href="#resume" class="nav-link" data-text="on paper"><span>on paper</span></a>
-        <a href="#contact" class="btn btn-sm" data-text="Contact"><span>Contact</span></a>
+        <a href="#directory" class="nav-link" data-text="directory"><span>directory</span></a>
+        <a href="#lab" class="nav-link keep" data-text="work"><span>work</span></a>
+        <a href="#gym" class="nav-link" data-text="off the clock"><span>off the clock</span></a>
+        <a href="#records" class="nav-link keep" data-text="records"><span>records</span></a>
+        <a href="#vacant" class="nav-link keep" data-text="contact"><span>contact</span></a>
       </div>
     </nav>
 
-    <!-- top of the page: name, one line about me, photo -->
-    <header id="hero">
-      <div class="hero-text">
-        <p class="mini">bsc finance @ nmims bengaluru | bba dbe @ iim bangalore</p>
-        <h1>
-          <span class="line"><span class="word"><span class="ch" style="--i: 0">A</span><span class="ch" style="--i: 1">a</span><span class="ch" style="--i: 2">d</span><span class="ch" style="--i: 3">i</span></span></span>
-          <span class="line outline"><span class="word"><span class="ch" style="--i: 4">N</span><span class="ch" style="--i: 5">a</span><span class="ch" style="--i: 6">g</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">r</span></span></span>
-        </h1>
-        <p class="intro">
-          I study finance because it's the language of business, and I plan to
-          <span class="highlight">own a few.</span>
-        </p>
-        <p class="sub-line">
-          Looking for ambitious people from different backgrounds to start something with.
-        </p>
-        <div class="actions">
-          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aadinagar1@gmail.com&amp;su=Let%27s%20build%20something" target="_blank" class="btn" data-text="Email me"><span>Email me</span></a>
-          <a href="resume.pdf" download class="btn btn-line" data-text="Resume, 1 page PDF"><span>Resume, 1 page PDF</span></a>
-        </div>
-      </div>
-
-      <figure class="hero-photo">
-        <img src="photo.jpg" alt="Aadi Nagar in a black blazer and white shirt" />
-      </figure>
-
-      <p class="local-time">bengaluru, in <span id="clock">--:--</span> ist</p>
-      <a href="#about" class="scroll-hint" data-label="about">scroll</a>
-    </header>
-
-    <main>
-      <!-- about -->
-      <section id="about" class="light">
-        <h2>About</h2>
-        <p class="text">
-          I chose finance mostly as a tool. I want to <strong>own a few businesses</strong> one day,
-          and I figured understanding money properly is where that starts. Right now I'm doing my
-          BSc Finance at NMIMS Bengaluru along with the BBA in Digital Business &amp;
-          Entrepreneurship from IIM Bangalore. What I'm looking for next is the right people to
-          start the first one with.
-        </p>
-        <p class="text">
-          Outside class I keep trying small things, like selling, editing and research, because I
-          learn fastest by <strong>actually doing something</strong> and seeing what works.
-        </p>
-      <!-- the numbers sit inside a normal sentence and count up as you scroll to them -->
-        <p class="numbers-line">
-          So far I've sold review cards to <span class="count" style="--to: 8"></span> local
-          businesses, helped build <span class="count" style="--to: 4"></span> huts in
-          <span class="count" style="--to: 2"></span> days, placed in the top
-          <span class="count" style="--to: 1" data-prefix="0." data-suffix="%"></span> of ICSE
-          candidates in Physical Education, and I'm doing <span class="count" style="--to: 2"></span>
-          degrees at once.
-        </p>
-      </section>
-
-      <!-- two bands crossing each other. they move in opposite directions as you scroll -->
-      <div class="bands">
-        <div class="band band-a">
-          <p class="band-text">
-            nmims bengaluru / <span class="hollow">iim bangalore</span> / icmai-mac 2026 / <span class="hollow">nit goa</span> / nmims bengaluru / <span class="hollow">iim bangalore</span>
-          </p>
-        </div>
-        <div class="band band-b">
-          <p class="band-text">
-            bloomberg / <span class="hollow">python</span> / photoshop / <span class="hollow">hfs mun 2024</span> / after effects / <span class="hollow">bloomberg</span> / python
-          </p>
-        </div>
-      </div>
-
-      <!-- on track: what I've done. each card shows its year, and the cards stack while scrolling -->
-      <section id="on-track">
-        <div class="track-layout">
-          <div class="track-head">
-            <h2>On<br />Track</h2>
-            <p class="section-note">Most important first.</p>
-          </div>
-        <ol class="stack">
-          <li class="card stack-card">
-            <p class="card-no">2026</p>
-            <div>
-              <h3 class="mini">research</h3>
-              <p>
-                <strong>Accepted for an oral presentation at ICMAI-MAC 2026</strong>, the 1st International
-                Conference on Mathematics and AI at NIT Goa (10-11 December 2026). I did the
-                research and ran the Monte Carlo simulations in Python on Google Colab, and my
-                co-author wrote up the final abstract from it. With a Sobol sensitivity analysis on
-                top, the model puts the saving from cold-plate cooling at <strong>around 84 billion
-                litres of water a year</strong> in US AI data centres by 2030.
-                <cite>Water Saved by Cold-Plate Cooling in US AI Data Centres: A Monte Carlo-Sobol Study</cite>
-              </p>
-              <!-- one line from the acceptance email, typed out like the real thing -->
-              <blockquote class="mail">
-                <span>from: icmai-mac 2026 organising committee, nit goa</span>
-                "...your abstract has been accepted for oral presentation..."
-              </blockquote>
-              <!-- our result drawn as a range. it draws itself as you scroll to it -->
-              <figure class="chart">
-                <svg viewBox="0 0 520 120">
-                  <line class="axis" x1="20" y1="80" x2="500" y2="80" />
-                  <text x="20" y="105">0</text>
-                  <text x="180" y="105">50</text>
-                  <text x="340" y="105">100</text>
-                  <text x="490" y="105">150</text>
-                  <line class="range" x1="170" y1="80" x2="468" y2="80" />
-                  <circle class="median" cx="289" cy="80" r="8" />
-                  <text class="val" x="160" y="55">47</text>
-                  <text class="val big" x="270" y="45">84</text>
-                  <text class="val" x="452" y="55">140</text>
-                </svg>
-                <figcaption>billion litres of water saved a year by 2030: our middle estimate (84) and range (47 to 140)</figcaption>
-              </figure>
-            </div>
-          </li>
-          <li class="card stack-card">
-            <p class="card-no">2020</p>
-            <div>
-              <h3 class="mini">habitat for humanity india</h3>
-              <p>
-                <strong>Volunteer build with Habitat for Humanity India</strong> (31 Jan - 1 Feb 2020),
-                through my dad's company, DMart. Two days in a village in Kharghar with a team of 5,
-                laying bricks on the mud. By the end <strong>we had built 4 huts</strong> for families
-                in need.
-              </p>
-              <!-- the photo is cut into 24 "bricks" that get laid one row at a time as you scroll -->
-              <figure class="bricks-wrap">
-                <div class="bricks" role="img" aria-label="Me in a red t-shirt and white helmet carrying a brick at the village build">
-                  <span style="--c: 0; --r: 0; --o: 42"></span>
-                  <span style="--c: 1; --r: 0; --o: 45"></span>
-                  <span style="--c: 2; --r: 0; --o: 48"></span>
-                  <span style="--c: 3; --r: 0; --o: 51"></span>
-                  <span style="--c: 4; --r: 0; --o: 54"></span>
-                  <span style="--c: 5; --r: 0; --o: 57"></span>
-                  <span style="--c: 0; --r: 1; --o: 28"></span>
-                  <span style="--c: 1; --r: 1; --o: 31"></span>
-                  <span style="--c: 2; --r: 1; --o: 34"></span>
-                  <span style="--c: 3; --r: 1; --o: 37"></span>
-                  <span style="--c: 4; --r: 1; --o: 40"></span>
-                  <span style="--c: 5; --r: 1; --o: 43"></span>
-                  <span style="--c: 0; --r: 2; --o: 14"></span>
-                  <span style="--c: 1; --r: 2; --o: 17"></span>
-                  <span style="--c: 2; --r: 2; --o: 20"></span>
-                  <span style="--c: 3; --r: 2; --o: 23"></span>
-                  <span style="--c: 4; --r: 2; --o: 26"></span>
-                  <span style="--c: 5; --r: 2; --o: 29"></span>
-                  <span style="--c: 0; --r: 3; --o: 0"></span>
-                  <span style="--c: 1; --r: 3; --o: 3"></span>
-                  <span style="--c: 2; --r: 3; --o: 6"></span>
-                  <span style="--c: 3; --r: 3; --o: 9"></span>
-                  <span style="--c: 4; --r: 3; --o: 12"></span>
-                  <span style="--c: 5; --r: 3; --o: 15"></span>
+    <!-- the whole site is one floor plan. on a big screen .stage stays pinned while you scroll,
+         .cam turns and zooms, and .world slides, so it feels like a camera flying from room to room.
+         on a phone the rooms simply come one after another -->
+    <main class="plan">
+      <div class="stage">
+        <div class="cam">
+          <div class="world">
+            <!-- room 1, the lobby: my name either side of my photo -->
+            <header class="room" id="hero" data-exit="right">
+              <div class="hero-top">
+                <p class="hero-what">
+                  Finance student, first year. BSc Finance at NMIMS Bengaluru and the BBA in Digital
+                  Business &amp; Entrepreneurship from IIM Bangalore.
+                </p>
+                <div class="hero-side">
+                  <p class="hero-clock">Bengaluru, <span id="clock">--:--</span> IST</p>
+                  <div class="actions">
+                    <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aadinagar1@gmail.com&amp;su=Let%27s%20build%20something" target="_blank" class="btn" data-text="Email me"><span>Email me</span></a>
+                    <a href="resume.pdf" download class="btn btn-line" data-text="Resume, 1 page PDF"><span>Resume, 1 page PDF</span></a>
+                  </div>
                 </div>
-                <figcaption>kharghar, 2020. me in red, with the white helmet.</figcaption>
+              </div>
+
+              <!-- gl.js redraws this photo as dots and opens a round window to the real one -->
+              <figure class="hero-photo">
+                <img src="photo.jpg" alt="Aadi Nagar in a black blazer and white shirt" />
               </figure>
-            </div>
-          </li>
-          <li class="card stack-card">
-            <p class="card-no">2024</p>
-            <div>
-              <h3 class="mini">model united nations</h3>
-              <img class="badge-photo" src="mun-badge.jpg" alt="My delegate badge from HFS MUN 2024: Aadi Nagar, ICC - Chimanbhai Patel" />
-              <p>
-                <strong>HFS MUN 2024</strong> (3-4 August). Represented Chimanbhai Patel, former
-                Chief Minister of Gujarat, in the Indian Crisis Committee. Two days of crisis updates
-                and speeches, arguing for someone else's position.
-              </p>
-            </div>
-          </li>
-          <li class="card stack-card">
-            <p class="card-no">2026</p>
-            <div>
-              <h3 class="mini">review cards</h3>
-              <p>
-                July to August 2026. Sold Google review cards to 5 gyms and 3 cafés in my area, helping
-                them collect more reviews. <strong>Made a profit.</strong>
-              </p>
-            </div>
-          </li>
-          <li class="card stack-card">
-            <p class="card-no">2023</p>
-            <div>
-              <h3 class="mini">video and gfx editing</h3>
-              <p>
-                Self-taught in Photoshop and After Effects since 2023. Since October 2026 I've also been
-                editing short-form clips for YouTube Shorts and Instagram Reels as <strong>paid
-                work.</strong>
-              </p>
-            </div>
-          </li>
-        </ol>
-        </div>
-      </section>
+              <p class="note hero-note">Every dot is a pixel from my photo. Move the mouse and the real one shows through.</p>
 
-      <!-- right now. another sideways section, but this one moves the other way -->
-      <section id="right-now" class="light ride ride-reverse">
-        <div class="ride-pin">
-          <div class="ride-track">
-            <div class="panel panel-title">
-              <h2>Right<br />Now</h2>
-              <p class="section-note">Still in progress.</p>
-            </div>
-            <article class="card panel">
-              <p class="panel-no">learning</p>
-              <h3 class="mini">web development</h3>
-              <p>
-                Learning to build websites so I can make them for local businesses. This site is the
-                first one I've built and put online. Mostly <strong>for the
-                connections</strong>, the money is a bonus.
-              </p>
-              <div class="in-progress"></div>
-            </article>
-            <article class="card panel">
-              <p class="panel-no">learning</p>
-              <h3 class="mini">trading</h3>
-              <p>
-                <strong>Learning how the stock market works</strong>, starting with Bloomberg Market
-                Concepts. Next step is opening my demat account.
-              </p>
-              <div class="in-progress"></div>
-            </article>
-            <article class="card panel">
-              <p class="panel-no">next</p>
-              <h3 class="mini">the plan</h3>
-              <p>
-                Find the right people and <strong>start the first business.</strong> Build websites
-                for local businesses along the way.
-              </p>
-              <div class="in-progress"></div>
-            </article>
-            <article id="projects" class="card panel project">
-              <p class="panel-no">live</p>
-              <h3 class="mini">project: resume website</h3>
-              <p>
-                <strong>This website.</strong> HTML and CSS, with a small JavaScript file for smooth
-                scrolling and the cursor, hosted on GitHub Pages. The look is inspired by landonorris.com.
-              </p>
-              <p class="tools">
-                <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Google Fonts</span><span class="tag">GitHub Pages</span>
-              </p>
-            </article>
+              <h1>
+                <span class="line first"><span class="ch" style="--i: 0">A</span><span class="ch" style="--i: 1">a</span><span class="ch" style="--i: 2">d</span><span class="ch" style="--i: 3">i</span></span>
+                <span class="line last"><span class="ch" style="--i: 4">N</span><span class="ch" style="--i: 5">a</span><span class="ch" style="--i: 6">g</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">r</span></span>
+              </h1>
+              <a href="#directory" class="scroll-hint" data-text="directory">scroll</a>
+            </header>
+
+            <!-- room 2: what this place is, and the directory -->
+            <section class="room" id="directory" data-exit="right">
+              <header class="plate">
+                <p class="plate-no">02</p>
+                <h2 data-decode>Directory</h2>
+                <p class="note">What this place is, and where everything is.</p>
+              </header>
+              <div class="room-body">
+                <div class="room-text">
+                  <p>
+                    This is the floor plan of a company that doesn't exist yet. I plan to own a few
+                    businesses, so I've drawn the headquarters first.
+                  </p>
+                  <p>
+                    Every room is something I've actually done. Two are still being built, and the
+                    one in the middle is empty.
+                  </p>
+                </div>
+                <!-- works like the board next to a lift: the room, what happened in it, what I took from it -->
+                <table class="dir-table">
+                  <thead>
+                    <tr>
+                      <th>room</th>
+                      <th>what happened there</th>
+                      <th>what I took from it</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><a href="#lab" data-text="research lab">03 Research lab</a></td><td>Monte Carlo study, ICMAI-MAC 2026</td><td>Research &amp; modelling</td></tr>
+                    <tr><td><a href="#site" data-text="build site">04 Build site</a></td><td>4 huts, Habitat for Humanity India</td><td>Working in a team of 5</td></tr>
+                    <tr><td><a href="#hall" data-text="debate hall">05 Debate hall</a></td><td>HFS MUN 2024</td><td>Debate &amp; public speaking</td></tr>
+                    <tr><td><a href="#sales" data-text="sales floor">06 Sales floor</a></td><td>Review cards for 5 gyms and 3 cafés</td><td>Sales</td></tr>
+                    <tr><td><a href="#studio" data-text="studio">07 Studio</a></td><td>Photoshop, After Effects, paid clips</td><td>Design &amp; video editing</td></tr>
+                    <tr><td><a href="#workshop" data-text="workshop">08 Workshop</a></td><td>This website</td><td>HTML, CSS &amp; JavaScript</td></tr>
+                    <tr><td><a href="#desk" data-text="trading desk">09 Trading desk</a></td><td>Bloomberg Market Concepts</td><td>Markets &amp; finance basics</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- rooms 3 to 7: the work. script.js drops 400 dots onto the axis in the lab, one for each made-up run -->
+            <section class="room" id="lab" data-exit="right">
+              <header class="plate">
+                <p class="plate-no">03</p>
+                <h2 data-decode>Research lab</h2>
+                <p class="note">2026. Oral presentation at NIT Goa, 10-11 December.</p>
+              </header>
+              <div class="room-body">
+                <div class="entry-text">
+                  <p>
+                    <strong>Accepted for an oral presentation at ICMAI-MAC 2026</strong>, the 1st
+                    International Conference on Mathematics and AI at NIT Goa (10-11 December 2026).
+                    I did the research and ran the Monte Carlo simulations in Python on Google Colab,
+                    and my co-author wrote up the final abstract from it. With a Sobol sensitivity
+                    analysis on top, the model puts the saving from cold-plate cooling at
+                    <strong>around 84 billion litres of water a year</strong> in US AI data centres
+                    by 2030.
+                  </p>
+                  <p><cite>Water Saved by Cold-Plate Cooling in US AI Data Centres: A Monte Carlo-Sobol Study</cite></p>
+                  <!-- one line from the acceptance email -->
+                  <blockquote class="mail">
+                    <span>from the ICMAI-MAC 2026 organising committee, NIT Goa</span>
+                    "...your abstract has been accepted for oral presentation..."
+                  </blockquote>
+                </div>
+                <!-- script.js drops 400 dots onto this axis, one for each made-up run -->
+                <figure class="sim">
+                  <canvas id="sim" width="1040" height="380"></canvas>
+                  <svg class="sim-axis" viewBox="0 0 520 46" aria-hidden="true">
+                    <line class="axis" x1="0" y1="2" x2="520" y2="2" />
+                    <line class="range" x1="163" y1="2" x2="485" y2="2" />
+                    <text x="0" y="24">0</text>
+                    <text class="val" x="163" y="38" text-anchor="middle">47</text>
+                    <text class="val mid" x="291" y="38" text-anchor="middle">84</text>
+                    <text class="val" x="485" y="38" text-anchor="middle">140</text>
+                    <text x="520" y="24" text-anchor="end">150</text>
+                  </svg>
+                  <figcaption>
+                    Billion litres of water saved a year by 2030. Our middle estimate is 84 and the
+                    range is 47 to 140. Each dot is one run: these 400 are drawn in your browser from
+                    that range, the real ones ran in Python.
+                    <button type="button" id="again" class="again">Run it again</button>
+                  </figcaption>
+                </figure>
+              </div>
+            </section>
+
+            <section class="room" id="site" data-exit="down">
+              <header class="plate">
+                <p class="plate-no">04</p>
+                <h2 data-decode>Build site</h2>
+                <p class="note">2020. Habitat for Humanity India, Kharghar.</p>
+              </header>
+              <div class="room-body">
+                <div class="entry-text">
+                  <p>
+                    <strong>Volunteer build with Habitat for Humanity India</strong> (31 Jan - 1 Feb
+                    2020), through my dad's company, DMart. Two days in a village in Kharghar with a
+                    team of 5, laying bricks on the mud. By the end <strong>we had built 4
+                      huts</strong> for families in need.
+                  </p>
+                </div>
+                <!-- the photo is cut into 24 bricks that get laid one row at a time -->
+                <figure class="bricks-wrap">
+                  <div class="bricks" role="img" aria-label="Me in a red t-shirt and white helmet carrying a brick at the village build">
+                    <span style="--c: 0; --r: 0; --o: 42"></span>
+                    <span style="--c: 1; --r: 0; --o: 45"></span>
+                    <span style="--c: 2; --r: 0; --o: 48"></span>
+                    <span style="--c: 3; --r: 0; --o: 51"></span>
+                    <span style="--c: 4; --r: 0; --o: 54"></span>
+                    <span style="--c: 5; --r: 0; --o: 57"></span>
+                    <span style="--c: 0; --r: 1; --o: 28"></span>
+                    <span style="--c: 1; --r: 1; --o: 31"></span>
+                    <span style="--c: 2; --r: 1; --o: 34"></span>
+                    <span style="--c: 3; --r: 1; --o: 37"></span>
+                    <span style="--c: 4; --r: 1; --o: 40"></span>
+                    <span style="--c: 5; --r: 1; --o: 43"></span>
+                    <span style="--c: 0; --r: 2; --o: 14"></span>
+                    <span style="--c: 1; --r: 2; --o: 17"></span>
+                    <span style="--c: 2; --r: 2; --o: 20"></span>
+                    <span style="--c: 3; --r: 2; --o: 23"></span>
+                    <span style="--c: 4; --r: 2; --o: 26"></span>
+                    <span style="--c: 5; --r: 2; --o: 29"></span>
+                    <span style="--c: 0; --r: 3; --o: 0"></span>
+                    <span style="--c: 1; --r: 3; --o: 3"></span>
+                    <span style="--c: 2; --r: 3; --o: 6"></span>
+                    <span style="--c: 3; --r: 3; --o: 9"></span>
+                    <span style="--c: 4; --r: 3; --o: 12"></span>
+                    <span style="--c: 5; --r: 3; --o: 15"></span>
+                  </div>
+                  <figcaption class="note">Kharghar, 2020. I'm the one in red with the white helmet.</figcaption>
+                </figure>
+              </div>
+            </section>
+
+            <section class="room" id="hall" data-exit="down">
+              <header class="plate">
+                <p class="plate-no">05</p>
+                <h2 data-decode>Debate hall</h2>
+                <p class="note">2024. Indian Crisis Committee, HFS MUN.</p>
+              </header>
+              <div class="room-body">
+                <div class="entry-text">
+                  <p>
+                    <strong>HFS MUN 2024</strong> (3-4 August). Represented Chimanbhai Patel, former
+                    Chief Minister of Gujarat, in the Indian Crisis Committee. Two days of crisis
+                    updates and speeches, arguing for someone else's position.
+                  </p>
+                </div>
+                <!-- my badge, hanging from its lanyard. it swings as it scrolls in -->
+                <figure class="badge">
+                  <img src="mun-badge.jpg" alt="My delegate badge from HFS MUN 2024: Aadi Nagar, ICC - Chimanbhai Patel" />
+                </figure>
+              </div>
+            </section>
+
+            <section class="room" id="sales" data-exit="down">
+              <header class="plate">
+                <p class="plate-no">06</p>
+                <h2 data-decode>Sales floor</h2>
+                <p class="note">2026. 5 gyms and 3 cafés, July to August.</p>
+              </header>
+              <div class="room-body">
+                <div class="entry-text">
+                  <p>
+                    July to August 2026. Sold Google review cards to 5 gyms and 3 cafés in my area,
+                    helping them collect more reviews. <strong>Made a profit.</strong>
+                  </p>
+                </div>
+                <!-- one card for each business -->
+                <ul class="fan" aria-label="One card for each of the 8 businesses">
+                  <li style="--n: 0">gym</li>
+                  <li style="--n: 1">gym</li>
+                  <li style="--n: 2">gym</li>
+                  <li style="--n: 3">gym</li>
+                  <li style="--n: 4">gym</li>
+                  <li style="--n: 5">café</li>
+                  <li style="--n: 6">café</li>
+                  <li style="--n: 7">café</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="room" id="studio" data-exit="left">
+              <header class="plate">
+                <p class="plate-no">07</p>
+                <h2 data-decode>Studio</h2>
+                <p class="note">Since 2023. Paid work since October 2026.</p>
+              </header>
+              <div class="room-body">
+                <div class="entry-text">
+                  <p>
+                    Self-taught in Photoshop and After Effects since 2023. Since October 2026 I've
+                    also been editing short-form clips for YouTube Shorts and Instagram Reels as
+                    <strong>paid work.</strong>
+                  </p>
+                </div>
+                <!-- laid out like the timeline in an editing app: one bar per thing, starting when I started -->
+                <figure class="timeline">
+                  <p class="years"><span>2023</span><span>2024</span><span>2025</span><span>2026</span></p>
+                  <p class="layer" style="--from: 0%">Photoshop</p>
+                  <p class="layer" style="--from: 0%">After Effects</p>
+                  <p class="layer paid" style="--from: 94%"><span>paid clips</span></p>
+                </figure>
+              </div>
+            </section>
+
+            <!-- rooms 8 and 9: what I'm still learning, so they're taped off -->
+            <section class="room" id="workshop" data-exit="left">
+              <header class="plate">
+                <p class="plate-no">08</p>
+                <h2 data-decode>Workshop</h2>
+                <p class="note">Right now. Still being built.</p>
+              </header>
+              <div class="room-body">
+                <div class="room-text">
+                  <p>
+                    Learning to build websites so I can make them for local businesses. This site is
+                    the first one I've built and put online. Mostly for the connections, the money is
+                    a bonus.
+                  </p>
+                  <p class="note">It's about 50% CSS, 33% HTML and 17% JavaScript. No frameworks.</p>
+                </div>
+                <p class="tape"><span>under construction</span></p>
+              </div>
+            </section>
+
+            <section class="room" id="desk" data-exit="left">
+              <header class="plate">
+                <p class="plate-no">09</p>
+                <h2 data-decode>Trading desk</h2>
+                <p class="note">Right now. Still being built.</p>
+              </header>
+              <div class="room-body">
+                <div class="room-text">
+                  <p>
+                    Learning how the stock market works, starting with the Bloomberg Market Concepts
+                    certificate. Next is opening a demat account.
+                  </p>
+                  <ol class="steps">
+                    <li class="done">Bloomberg Market Concepts</li>
+                    <li>Open a demat account</li>
+                  </ol>
+                </div>
+                <p class="tape"><span>under construction</span></p>
+              </div>
+            </section>
+
+            <!-- room 10: outside work and study. it is drawn upside down on the plan, so the camera turns right over to visit it -->
+            <section class="room flipped" id="gym" data-exit="up">
+              <header class="plate">
+                <p class="plate-no">10</p>
+                <h2 data-decode>Gym</h2>
+                <p class="note">Off the clock. The only room that is upside down.</p>
+              </header>
+              <div class="room-body gym-row">
+                <article class="off">
+                  <figure class="frame float-left">
+                    <img src="marathon.jpg" alt="Me as a kid holding my finisher's medal at the Thrill Zone Mumbai Half Marathon, December 2016" />
+                    <figcaption class="note">Thrill Zone Mumbai Half Marathon, 2016</figcaption>
+                  </figure>
+                  <h3>Running</h3>
+                  <p>
+                    Ran <strong>the 10K</strong> at the Thrill Zone Mumbai Half Marathon in December
+                    2016 and finished with a medal. Still into sports and fitness.
+                  </p>
+                </article>
+                <article class="off off-lift">
+                  <p class="big-word">Lift</p>
+                  <h3>Gym and powerlifting</h3>
+                  <p>
+                    I train at the gym and do powerlifting for fun. It keeps me disciplined outside
+                    of work and study.
+                  </p>
+                </article>
+                <article class="off">
+                  <figure class="frame float-right">
+                    <img src="travel.jpg" alt="Me at the wheel of a boat on the water at sunset" />
+                    <figcaption class="note">On a boat trip</figcaption>
+                  </figure>
+                  <h3>Travel</h3>
+                  <p>I travel often. Mumbai is home and Bengaluru is where I study.</p>
+                </article>
+              </div>
+            </section>
+
+            <!-- rooms 11 to 13: the formal side. education, certificates and the one-page resume -->
+            <section class="room" id="records" data-exit="up">
+              <header class="plate">
+                <p class="plate-no">11</p>
+                <h2 data-decode>Records room</h2>
+                <p class="note">Education, tools and languages.</p>
+              </header>
+              <div class="room-body">
+                <div class="room-text">
+                  <dl class="kit">
+                    <dt>Tools</dt>
+                    <dd>Excel, Word, PowerPoint, Photoshop, After Effects, Python (Google Colab)</dd>
+                    <dt>Languages</dt>
+                    <dd>English and Hindi (fluent), Marathi (basic)</dd>
+                  </dl>
+                </div>
+                <table class="edu-table">
+                  <thead>
+                    <tr>
+                      <th rowspan="2">when</th>
+                      <th colspan="2">what and where</th>
+                      <th rowspan="2">result</th>
+                    </tr>
+                    <tr>
+                      <th>course</th>
+                      <th>at</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td rowspan="2" class="when">now</td>
+                      <td>BSc Finance</td>
+                      <td>NMIMS Bengaluru</td>
+                      <td class="result">Jul 2026 - now</td>
+                    </tr>
+                    <tr>
+                      <td>BBA, Digital Business &amp; Entrepreneurship</td>
+                      <td>IIM Bangalore</td>
+                      <td class="result">Aug 2026 - now</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="2" class="when">school</td>
+                      <td>Class 12, ISC, Commerce with Maths <span class="year">2026</span></td>
+                      <td rowspan="2">Hiranandani Foundation School, Powai</td>
+                      <td class="result">85.2%</td>
+                    </tr>
+                    <tr>
+                      <td>Class 10, ICSE, Science <span class="year">2024</span></td>
+                      <td class="result">89.4%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="room" id="vault" data-exit="right">
+              <header class="plate">
+                <p class="plate-no">12</p>
+                <h2 data-decode>Vault</h2>
+                <p class="note">Two certificates. Turn them over.</p>
+              </header>
+              <div class="room-body vault-body">
+                <div class="certs">
+                  <!-- hover and the card turns over to show the real certificate. this one links to bloomberg's own check -->
+                  <a class="flip" data-cursor="verify" href="https://portal.bloombergforeducation.com/certificates/1JG1cVTaVncCDWKcCM5b7ojW" target="_blank">
+                    <span class="flip-inner">
+                      <span class="flip-front">Bloomberg Market Concepts<small>Completed, Bloomberg for Education. The certificate is on the back.</small></span>
+                      <img class="flip-back" src="bmc.jpg" alt="My Bloomberg Market Concepts certificate of completion" />
+                    </span>
+                  </a>
+                  <!-- same card for my CISCE certificate of merit (personal numbers removed from the photo) -->
+                  <div class="flip flip-tall">
+                    <span class="flip-inner">
+                      <span class="flip-front">Top 0.1% in Physical Education<small>CISCE certificate of merit, ICSE 2024. The certificate is on the back.</small></span>
+                      <img class="flip-back" src="cisce.jpg" alt="My CISCE Certificate of Merit for being in the top 0.1 percent in Physical Education, ICSE 2024" />
+                    </span>
+                  </div>
+                </div>
+                <p class="verify">
+                  <a href="https://portal.bloombergforeducation.com/certificates/1JG1cVTaVncCDWKcCM5b7ojW" target="_blank">Verify my Bloomberg certificate on Bloomberg for Education</a>
+                </p>
+                <p class="pending">Website Development, IIMBx: in progress, 2026.</p>
+              </div>
+            </section>
+
+            <section class="room" id="print" data-exit="right">
+              <header class="plate">
+                <p class="plate-no">13</p>
+                <h2 data-decode>Print room</h2>
+                <p class="note">The one-page version.</p>
+              </header>
+              <div class="room-body">
+                <div class="room-text">
+                  <p>
+                    The whole building on one A4 page. Only this sheet prints, so the button and
+                    Ctrl+P give you the same thing.
+                  </p>
+                  <a href="resume.pdf" download class="btn" data-text="Resume, 1 page PDF"><span>Resume, 1 page PDF</span></a>
+                </div>
+                <article class="sheet">
+                  <h3><span class="mark">Aadi Nagar</span></h3>
+                  <p>aadinagar1@gmail.com | linkedin.com/in/aadi-nagar-8253911b7 | Bengaluru</p>
+                  <p class="sheet-lead">
+                    I study finance because it's the language of business, and I plan to own a few.
+                    Looking for ambitious people to start something with.
+                  </p>
+                  <h4>On Track</h4>
+                  <ul>
+                    <li><strong>Research:</strong> <strong>Accepted for oral presentation at ICMAI-MAC 2026, NIT Goa.</strong> Did the research and Monte Carlo simulations in Python (Google Colab): <em>Water Saved by Cold-Plate Cooling in US AI Data Centres: A Monte Carlo-Sobol Study</em></li>
+                    <li><strong>Habitat for Humanity India volunteer (Jan-Feb 2020):</strong> Laid bricks with a 5-person team from DMart in Kharghar; <strong>we built 4 huts in 2 days.</strong></li>
+                    <li><strong>MUN:</strong> HFS MUN 2024 (3-4 Aug), Indian Crisis Committee, as Chimanbhai Patel.</li>
+                    <li><strong>Review cards:</strong> Sold Google review cards to 5 gyms and 3 cafés; <strong>made a profit.</strong></li>
+                    <li><strong>Video and GFX editing:</strong> Photoshop and After Effects; <strong>paid short-form clipping.</strong></li>
+                  </ul>
+                  <h4>Right Now</h4>
+                  <ul>
+                    <li>Learning web development to build websites for local businesses.</li>
+                    <li>Learning how the stock market works, ahead of opening my demat account.</li>
+                  </ul>
+                  <h4>Projects</h4>
+                  <ul>
+                    <li><strong>Resume website:</strong> Made with HTML, CSS &amp; JavaScript, hosted on GitHub Pages.</li>
+                  </ul>
+                  <h4>Education</h4>
+                  <ul>
+                    <li>BSc Finance, NMIMS Bengaluru, Jul 2026 - present</li>
+                    <li>BBA, Digital Business &amp; Entrepreneurship, IIM Bangalore, Aug 2026 - present</li>
+                    <li>Class 12, ISC (Commerce with Maths), Hiranandani Foundation School, Powai, 2026: 85.2%</li>
+                    <li>Class 10, ICSE (Science), Hiranandani Foundation School, Powai, 2024: 89.4%</li>
+                    <li>Certificates: <a href="https://portal.bloombergforeducation.com/certificates/1JG1cVTaVncCDWKcCM5b7ojW">Bloomberg Market Concepts (verify)</a>; Website Development, IIMBx (in progress)</li>
+                    <li>Award: CISCE Certificate of Merit, top 0.1% in Physical Education, ICSE 2024</li>
+                  </ul>
+                  <div class="sheet-cols">
+                    <div>
+                      <h4>Skills</h4>
+                      <ul>
+                        <li>Research and modelling (Python, Monte Carlo)</li>
+                        <li>Graphic design and video editing</li>
+                        <li>Sales (review cards)</li>
+                        <li>Debate (HFS MUN 2024)</li>
+                        <li>Markets (Bloomberg Market Concepts)</li>
+                        <li>HTML, CSS &amp; JavaScript (this website)</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4>Off Track</h4>
+                      <ul>
+                        <li>Gym and powerlifting</li>
+                        <li>Ran the 10K, Thrill Zone Mumbai Half Marathon, Dec 2016</li>
+                      </ul>
+                      <h4>Tools &amp; Languages</h4>
+                      <ul>
+                        <li>Excel, Word, PowerPoint, Photoshop, After Effects, Python (Google Colab)</li>
+                        <li>English, Hindi (fluent); Marathi (basic)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <!-- room 14: about me -->
+            <section class="room" id="office" data-exit="down">
+              <header class="plate">
+                <p class="plate-no">14</p>
+                <h2 data-decode>Office</h2>
+                <p class="note">Who is building this.</p>
+              </header>
+              <div class="room-body office-body">
+                <div class="about-cols">
+                  <p class="text">
+                    Finance is mostly a tool for me. Understanding money properly seemed like the right
+                    place to start, so I'm doing my BSc Finance at NMIMS Bengaluru along with the BBA in
+                    Digital Business &amp; Entrepreneurship from IIM Bangalore. What I'm looking for next
+                    is ambitious people from different backgrounds to start the first one with.
+                  </p>
+                  <p class="text">
+                    Outside class I keep trying small things, like selling, editing and research, because
+                    I learn fastest by actually doing something and seeing what works.
+                  </p>
+                </div>
+                <!-- the numbers sit inside a normal sentence and count up when the camera arrives -->
+                <p class="numbers-line">
+                  So far I've sold review cards to <span class="count" style="--to: 8"></span> local
+                  businesses, helped build <span class="count" style="--to: 4"></span> huts in
+                  <span class="count" style="--to: 2"></span> days, placed in the top
+                  <span class="count" style="--to: 1" data-prefix="0." data-suffix="%"></span> of ICSE
+                  candidates in Physical Education, and I'm doing
+                  <span class="count" style="--to: 2"></span> degrees at once.
+                </p>
+              </div>
+            </section>
+
+            <!-- room 15: just one sentence. it fills in as the camera arrives -->
+            <section class="room" id="corridor" data-exit="left">
+              <p class="lead"><span class="fill">I study finance because it's the language of business, and I plan to own a few.</span></p>
+              <p class="note">Next door is the reason for all of this.</p>
+            </section>
+
+            <!-- room 16, in the middle of the building: empty, kept for the first business. this is the contact part -->
+            <section class="room flood" id="vacant">
+              <header class="plate">
+                <p class="plate-no">16</p>
+                <h2 data-decode>Vacant</h2>
+                <p class="note">Kept for the first business. Got an idea, or want to build one with me? Knock here.</p>
+              </header>
+              <div class="room-body contact-grid">
+                <!-- the form is written like a note, and opens gmail with it filled in (su = subject, body = message) -->
+                <form class="note-form" action="https://mail.google.com/mail/" method="get" target="_blank">
+                  <input type="hidden" name="view" value="cm" />
+                  <input type="hidden" name="fs" value="1" />
+                  <input type="hidden" name="to" value="aadinagar1@gmail.com" />
+                  <p>
+                    Hi Aadi, I'd like to talk about
+                    <select id="su" name="su" aria-label="topic">
+                      <option>starting something together</option>
+                      <option>a website for my business</option>
+                      <option>your research</option>
+                      <option>something else</option>
+                    </select>
+                  </p>
+                  <label for="body">Here's the short version:</label>
+                  <textarea id="body" name="body" rows="4" placeholder="A few lines is enough." required></textarea>
+                  <button type="submit" class="btn" data-text="Open in Gmail"><span>Open in Gmail</span></button>
+                </form>
+                <div class="direct">
+                  <p>Email is the quickest way to reach me.</p>
+                  <a href="mailto:aadinagar1@gmail.com" class="big-link">aadinagar1@gmail.com</a>
+                  <a href="https://www.linkedin.com/in/aadi-nagar-8253911b7/" target="_blank" class="big-link">LinkedIn</a>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
-      </section>
-
-      <!-- a wall of photos in three columns. scrolling down moves the outer columns up
-           and the middle column down, so they slide past each other -->
-      <section id="frames" class="frames">
-        <div class="frames-wall">
-          <div class="frames-col col-up">
-            <figure class="tile"><img src="marathon.jpg" alt="Me as a kid with my finisher's medal at the Mumbai Half Marathon" /><figcaption>10k, mumbai, 2016</figcaption></figure>
-            <p class="tile tile-word ">84bn L<small>water saved a year, our estimate</small></p>
-            <p class="tile tile-word hollow">10-11 dec<small>presenting at nit goa</small></p>
-            <p class="tile tile-word ">python<small>monte carlo on google colab</small></p>
-          </div>
-          <div class="frames-col col-down">
-            <p class="tile tile-word hollow">2<small>degrees at once, nmims and iimb</small></p>
-            <figure class="tile"><img src="photo.jpg" alt="Portrait of me in a black blazer" /><figcaption>aadi nagar</figcaption></figure>
-            <p class="tile tile-word ">icc<small>indian crisis committee</small></p>
-            <figure class="tile"><img src="village-1.jpg" alt="Volunteers laying bricks at the Habitat for Humanity India build" /><figcaption>habitat for humanity, 2020</figcaption></figure>
-          </div>
-          <div class="frames-col col-up">
-            <figure class="tile"><img src="travel.jpg" alt="Me at the wheel of a boat at sunset" /><figcaption>off track</figcaption></figure>
-            <p class="tile tile-word ">0.1%<small>physical education, icse 2024</small></p>
-            <figure class="tile"><img src="mun-badge.jpg" alt="My HFS MUN 2024 delegate badge" /><figcaption>hfs mun 2024</figcaption></figure>
-            <p class="tile tile-word hollow">2023<small>editing in photoshop and after effects</small></p>
-          </div>
-        </div>
-      </section>
-
-      <!-- off track. scrolling down moves this section sideways.
-           the outer section is tall, the inner part sticks to the screen and the track slides left -->
-      <section id="off-track" class="light ride">
-        <div class="ride-pin">
-          <div class="ride-track">
-            <div class="panel panel-title">
-              <h2>Off<br />Track</h2>
-              <p class="section-note">Outside work and study.</p>
-            </div>
-            <article class="story panel">
-              <figure class="frame float-left">
-                <img src="marathon.jpg" alt="Me as a kid holding my finisher's medal at the Thrill Zone Mumbai Half Marathon, December 2016" />
-                <figcaption>thrill zone mumbai half marathon, 2016</figcaption>
-              </figure>
-              <h3 class="mini">running</h3>
-              <p>
-                Ran <strong>the 10K</strong> at the Thrill Zone Mumbai Half Marathon in December 2016
-                and finished with a medal. Still into sports and fitness.
-              </p>
-            </article>
-            <article class="story panel">
-              <figure class="frame float-right">
-                <img src="travel.jpg" alt="Me at the wheel of a boat on the water at sunset" />
-                <figcaption>on a boat trip</figcaption>
-              </figure>
-              <h3 class="mini">travel</h3>
-              <p>
-                I travel often. Mumbai is home and Bengaluru is where I study.
-              </p>
-            </article>
-            <article class="story panel panel-gym">
-              <p class="big-word">Lift</p>
-              <h3 class="mini">gym and powerlifting</h3>
-              <p>
-                I train at the gym and do powerlifting for fun. It keeps me disciplined outside of
-                work and study.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- on paper: education, skills, certificates and the paper resume. only the sheet prints (resume.pdf) -->
-      <section id="resume">
-        <h2>On<br />Paper</h2>
-        <p class="section-note">Education, skills and certificates, then the one-page version.</p>
-        <!-- the formal details live here, next to the printable version -->
-        <div class="paper-extras">
-        <h3 class="sub-heading">Education</h3>
-        <table class="edu-table">
-          <thead>
-            <tr>
-              <th rowspan="2">when</th>
-              <th colspan="2">what and where</th>
-              <th rowspan="2">result</th>
-            </tr>
-            <tr>
-              <th>course</th>
-              <th>at</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td rowspan="2" class="when">now</td>
-              <td>BSc Finance</td>
-              <td>NMIMS Bengaluru</td>
-              <td class="result">Jul 2026 - now</td>
-            </tr>
-            <tr>
-              <td>BBA, Digital Business &amp; Entrepreneurship</td>
-              <td>IIM Bangalore</td>
-              <td class="result">Aug 2026 - now</td>
-            </tr>
-            <tr>
-              <td rowspan="2" class="when">school</td>
-              <td>Class 12, ISC, Commerce with Maths <span class="year">2026</span></td>
-              <td rowspan="2">Hiranandani Foundation School, Powai</td>
-              <td class="result">85.2%</td>
-            </tr>
-            <tr>
-              <td>Class 10, ICSE, Science <span class="year">2024</span></td>
-              <td class="result">89.4%</td>
-            </tr>
-          </tbody>
-        </table>
-        <h3 class="sub-heading">Skills</h3>
-        <table class="skills-table">
-          <thead>
-            <tr>
-              <th>what I can do</th>
-              <th>where I've done it</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Research &amp; modelling</td><td>Monte Carlo simulations in Python (Google Colab), ICMAI-MAC 2026</td></tr>
-            <tr><td>Markets &amp; finance basics</td><td>Bloomberg Market Concepts certificate</td></tr>
-            <tr><td>Graphic design &amp; video editing</td><td>Photoshop, After Effects, paid short-form clipping</td></tr>
-            <tr><td>Debate &amp; public speaking</td><td>HFS MUN 2024</td></tr>
-            <tr><td>Sales</td><td>Review cards for 5 gyms and 3 cafés</td></tr>
-            <tr><td>HTML, CSS &amp; JavaScript</td><td>This website</td></tr>
-          </tbody>
-        </table>
-
-        <dl class="kit-list">
-          <dt>Tools</dt>
-          <dd>Excel, Word, PowerPoint, Photoshop, After Effects, Python (Google Colab)</dd>
-          <dt>Languages</dt>
-          <dd>English and Hindi (fluent), Marathi (basic)</dd>
-        </dl>
-
-        <h3 class="sub-heading">Certifications &amp; awards</h3>
-        <div class="stamps">
-          <!-- hover the bloomberg stamp and it flips over to show the real certificate -->
-          <a class="flip" href="https://portal.bloombergforeducation.com/certificates/1JG1cVTaVncCDWKcCM5b7ojW" target="_blank">
-            <span class="flip-inner">
-              <span class="flip-front stamp">Bloomberg Market Concepts<small>completed, Bloomberg for Education. hover to see it</small></span>
-              <img class="flip-back" src="bmc.jpg" alt="My Bloomberg Market Concepts certificate of completion" />
-            </span>
-          </a>
-          <!-- same flip, for my CISCE certificate of merit (personal numbers removed from the photo) -->
-          <div class="flip">
-            <span class="flip-inner">
-              <span class="flip-front stamp">Top 0.1% in Physical Education<small>CISCE certificate of merit, ICSE 2024. hover to see it</small></span>
-              <img class="flip-back tall" src="cisce.jpg" alt="My CISCE Certificate of Merit for being in the top 0.1 percent in Physical Education, ICSE 2024" />
-            </span>
-          </div>
-          <p class="stamp stamp-pending">Website Development<small>in progress, IIMBx 2026</small></p>
-        </div>
-        <p class="verify">
-          <a href="https://portal.bloombergforeducation.com/certificates/1JG1cVTaVncCDWKcCM5b7ojW" target="_blank">Verify my Bloomberg certificate on Bloomberg for Education</a>
-        </p>
-        </div>
-
-        <p class="paper-download"><a href="resume.pdf" download class="btn" data-text="Resume, 1 page PDF"><span>Resume, 1 page PDF</span></a></p>
-        <article class="sheet">
-          <h3><span class="mark">Aadi Nagar</span></h3>
-          <p>aadinagar1@gmail.com | linkedin.com/in/aadi-nagar-8253911b7 | Bengaluru</p>
-          <p class="sheet-lead">
-            I study finance because it's the language of business, and I plan to own a few.
-            Looking for ambitious people to start something with.
-          </p>
-          <h4>On Track</h4>
-          <ul>
-            <li><strong>Research:</strong> <strong>Accepted for oral presentation at ICMAI-MAC 2026, NIT Goa.</strong> Did the research and Monte Carlo simulations in Python (Google Colab): <em>Water Saved by Cold-Plate Cooling in US AI Data Centres: A Monte Carlo-Sobol Study</em></li>
-            <li><strong>Habitat for Humanity India volunteer (Jan-Feb 2020):</strong> Laid bricks with a 5-person team from DMart in Kharghar; <strong>we built 4 huts in 2 days.</strong></li>
-            <li><strong>MUN:</strong> HFS MUN 2024 (3-4 Aug), Indian Crisis Committee, as Chimanbhai Patel.</li>
-            <li><strong>Review cards:</strong> Sold Google review cards to 5 gyms and 3 cafés; <strong>made a profit.</strong></li>
-            <li><strong>Video and GFX editing:</strong> Photoshop and After Effects; <strong>paid short-form clipping.</strong></li>
-          </ul>
-          <h4>Right Now</h4>
-          <ul>
-            <li>Learning web development to build websites for local businesses.</li>
-            <li>Learning how the stock market works, ahead of opening my demat account.</li>
-          </ul>
-          <h4>Projects</h4>
-          <ul>
-            <li><strong>Resume website:</strong> Made with HTML, CSS &amp; JavaScript, hosted on GitHub Pages.</li>
-          </ul>
-          <h4>Education</h4>
-          <ul>
-            <li>BSc Finance, NMIMS Bengaluru, Jul 2026 - present</li>
-            <li>BBA, Digital Business &amp; Entrepreneurship, IIM Bangalore, Aug 2026 - present</li>
-            <li>Class 12, ISC (Commerce with Maths), Hiranandani Foundation School, Powai, 2026: 85.2%</li>
-            <li>Class 10, ICSE (Science), Hiranandani Foundation School, Powai, 2024: 89.4%</li>
-            <li>Certificates: <a href="https://portal.bloombergforeducation.com/certificates/1JG1cVTaVncCDWKcCM5b7ojW">Bloomberg Market Concepts (verify)</a>; Website Development, IIMBx (in progress)</li>
-            <li>Award: CISCE Certificate of Merit, top 0.1% in Physical Education, ICSE 2024</li>
-          </ul>
-          <div class="sheet-cols">
-            <div>
-              <h4>Skills</h4>
-              <ul>
-                <li>Research and modelling (Python, Monte Carlo)</li>
-                <li>Graphic design and video editing</li>
-                <li>Sales (review cards)</li>
-                <li>Debate (HFS MUN 2024)</li>
-                <li>Markets (Bloomberg Market Concepts)</li>
-                <li>HTML, CSS &amp; JavaScript (this website)</li>
-              </ul>
-            </div>
-            <div>
-              <h4>Off Track</h4>
-              <ul>
-                <li>Gym and powerlifting</li>
-                <li>Ran the 10K, Thrill Zone Mumbai Half Marathon, Dec 2016</li>
-              </ul>
-              <h4>Tools &amp; Languages</h4>
-              <ul>
-                <li>Excel, Word, PowerPoint, Photoshop, After Effects, Python (Google Colab)</li>
-                <li>English, Hindi (fluent); Marathi (basic)</li>
-              </ul>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <!-- contact form. su = subject, body = message, it opens gmail with both filled in -->
-      <section id="contact" class="shade">
-        <h2>Get in<br /><span class="outline-text">Touch</span></h2>
-        <div class="contact-grid">
-          <!-- the form reads like a note: the blanks are the inputs -->
-          <form class="contact-form note-form" action="https://mail.google.com/mail/" method="get" target="_blank">
-            <input type="hidden" name="view" value="cm" />
-            <input type="hidden" name="fs" value="1" />
-            <input type="hidden" name="to" value="aadinagar1@gmail.com" />
-            <p>
-              Hi Aadi, I'd like to talk about
-              <select id="su" name="su" aria-label="topic">
-                <option>starting something together</option>
-                <option>a website for my business</option>
-                <option>your research</option>
-                <option>something else</option>
-              </select>.
-            </p>
-            <label for="body">Here's the short version:</label>
-            <textarea id="body" name="body" rows="4" placeholder="A few lines is enough." required></textarea>
-            <button type="submit" class="btn" data-text="Open in Gmail"><span>Open in Gmail</span></button>
-          </form>
-
-          <div class="direct">
-            <p class="text">Email is the quickest way to reach me.</p>
-            <p class="mini">or directly</p>
-            <a href="mailto:aadinagar1@gmail.com" class="big-link">aadinagar1@gmail.com</a>
-            <a href="https://www.linkedin.com/in/aadi-nagar-8253911b7/" target="_blank" class="big-link">LinkedIn</a>
-          </div>
-        </div>
-      </section>
+      </div>
     </main>
 
-    <!-- footer, with my name across the whole width -->
     <footer>
-      <p class="footer-name">Aadi Nagar</p>
+      <p class="footer-name"><span class="fill">Aadi Nagar</span></p>
       <div class="footer-row">
-        <p>Aadi Nagar, Bengaluru. Last updated 17 November 2026.</p>
-        <p><a href="#hero">top</a></p>
+        <p>Aadi Nagar, Bengaluru. Floor plan last revised 17 November 2026.</p>
+        <p>The dark and neon look is borrowed from landonorris.com.</p>
+        <p><a href="#hero" data-text="lobby">Back to the lobby</a></p>
       </div>
     </footer>
   </body>

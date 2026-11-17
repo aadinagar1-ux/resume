@@ -1,97 +1,85 @@
-/* Aadi Nagar - resume website */
-/* my colours and fonts, all in one place so I only change them here */
+/* Aadi Nagar - resume website
+   the site is the floor plan of a headquarters I haven't built yet, and every part is a room.
+   order of this file: settings, base, things that stay on screen, the rooms one by one,
+   then the floor plan and its camera, smaller screens, and print */
+
+/* SETTINGS
+   colours, fonts and sizes sit here so I only ever change them in one place */
 :root {
-  --black: #0e0f0c; /* almost black, slightly green */
-  --dark: #171915; /* alternate section background */
-  --white: #f1f2ec; /* off-white text */
-  --grey: #b4b8ad; /* small labels */
-  --edge: #2e3229; /* thin dividers */
-  --lime: #d2ff3a; /* neon lime: links, buttons, highlights */
-  --heading-font: "Anton", "Arial Narrow", Impact, sans-serif;
-  --text-font: "Inter", Arial, sans-serif;
+  --black: #0e0f0c;
+  --white: #f2f2ec;
+  --lime: #d2ff3a;
+  --ink: #0e0f0c; /* text that sits on lime */
+  --grey: #8f9186;
+  --edge: #2b2d25;
+  --dark: #181a13;
+
+  --title: "Anton", "Arial Narrow", Impact, sans-serif;
+  --text: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --hand: "Instrument Serif", Georgia, serif;
+
+  --pad: clamp(20px, 4vw, 64px);
+  --nav: 64px;
+  --tab: 54px;
+
+  /* only two speed curves on the whole page: one for things arriving, one for wipes */
+  --out: cubic-bezier(0.16, 1, 0.3, 1);
+  --inout: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* reset */
+/* the light parts of the page. I don't restyle anything inside them,
+   the colours just swap places and everything follows */
+.light {
+  --black: #f2f2ec;
+  --white: #0e0f0c;
+  --grey: #62645a;
+  --edge: #cdcdc3;
+  --dark: #e4e4db;
+  background-color: var(--black);
+  color: var(--white);
+}
+
+/* contact is flooded lime, so here lime and black swap too */
+.flood {
+  --black: #d2ff3a;
+  --white: #0e0f0c;
+  --lime: #0e0f0c;
+  --ink: #d2ff3a;
+  --grey: #495816;
+  --edge: rgba(14, 15, 12, 0.3);
+  background-color: var(--black);
+  color: var(--white);
+}
+
+/* BASE */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* BASE PAGE */
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  background-color: #0e0f0c;
+  scroll-padding-top: var(--nav);
 }
 
 body {
   background-color: var(--black);
   color: var(--white);
-  font-family: var(--text-font);
+  font-family: var(--text);
   font-size: 17px;
-  line-height: 1.6;
-  overflow-x: hidden;
-  /* small lime dot instead of the normal arrow */
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='5' fill='%23d2ff3a' stroke='%230e0f0c' stroke-width='2'/%3E%3C/svg%3E") 10 10, auto;
+  line-height: 1.55;
+  overflow-x: clip;
+  /* small lime dot instead of the arrow */
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='5' fill='%23d2ff3a' stroke='%230e0f0c' stroke-width='1.5'/%3E%3C/svg%3E") 7 7, auto;
 }
 
-/* bigger lime ring over anything you can click */
 a,
 button,
-select,
-label {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='14' fill='none' stroke='%23d2ff3a' stroke-width='2'/%3E%3Ccircle cx='18' cy='18' r='3' fill='%23d2ff3a'/%3E%3C/svg%3E") 18 18, pointer;
-}
-
-/* LOADING SCREEN
-   a lime panel with my name covers the page for a moment, then slides up */
-body::after {
-  content: "AADI NAGAR";
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-  background-color: var(--lime);
-  color: #0e0f0c;
-  font-family: var(--heading-font);
-  font-size: 12vw;
-  letter-spacing: 2px;
-  pointer-events: none;
-  animation: curtain 0.8s cubic-bezier(0.7, 0, 0.2, 1) 0.45s both;
-}
-
-@keyframes curtain {
-  to {
-    transform: translateY(-100%);
-  }
-}
-
-/* headings */
-h1,
-h2 {
-  font-family: var(--heading-font);
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 0.92;
-}
-
-h1 {
-  font-size: 11.5rem;
-  margin: 1.2rem 0;
-}
-
-h2 {
-  font-size: 6rem;
-  margin-bottom: 1rem;
-}
-
-a {
-  color: var(--lime);
+label,
+select {
+  color: inherit;
+  cursor: inherit;
 }
 
 img {
@@ -100,1275 +88,626 @@ img {
 }
 
 strong {
-  color: var(--white);
-}
-
-/* outlined text */
-.outline span,
-.outline-text {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--white);
-  transition: color 0.4s;
-}
-
-h1:hover .outline span {
-  color: var(--lime);
-  -webkit-text-stroke-color: var(--lime);
-}
-
-/* NAV */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 2rem;
-  background-color: rgba(14, 15, 12, 0.75);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--edge);
-}
-
-/* lime line under the nav that fills up as you scroll down the page */
-@supports (animation-timeline: scroll()) {
-  .navbar::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    width: 100%;
-    height: 2px;
-    background-color: var(--lime);
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: fill-bar linear both;
-    animation-timeline: scroll();
-  }
-}
-
-@keyframes fill-bar {
-  to {
-    transform: scaleX(1);
-  }
-}
-
-.brand {
-  font-family: var(--heading-font);
-  font-size: 1.4rem;
-  letter-spacing: 1px;
-  color: var(--white);
-  text-decoration: none;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-/* > so it only picks the links directly inside .nav-links */
-.nav-links > .nav-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--grey);
-  text-decoration: none;
-}
-
-/* underline that grows on hover */
-.nav-links > .nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 8px;
-  width: 100%;
-  height: 2px;
-  background-color: var(--lime);
-  transform: scaleX(0);
-  transition: transform 0.3s;
-}
-
-.nav-links > .nav-link:hover {
-  color: var(--white);
-}
-
-.nav-links > .nav-link:hover::after {
-  transform: scaleX(1);
-}
-
-/* BUTTONS */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  min-height: 48px;
-  padding: 0 1.5rem;
-  border: 2px solid var(--lime);
-  border-radius: 999px;
-  background-color: var(--lime);
-  background-image: linear-gradient(var(--black), var(--black));
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  color: var(--black);
-  font-family: var(--text-font);
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-size 0.35s, color 0.35s, transform 0.3s;
-}
-
-.btn:hover {
-  background-size: 100% 100%;
-  color: var(--lime);
-}
-
-/* on hover the text rolls up and a copy (from data-text) comes up from below */
-.btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn span {
-  display: inline-block;
-  transition: transform 0.35s;
-}
-
-.btn::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(100%);
-  transition: transform 0.35s;
-}
-
-.btn:hover span {
-  transform: translateY(-160%);
-}
-
-.btn:hover::after {
-  transform: translateY(0);
-}
-
-.btn:active {
-  opacity: 0.85;
-}
-
-/* buttons with two classes */
-.btn.btn-line {
-  background-color: transparent;
-  background-image: linear-gradient(var(--lime), var(--lime));
-  color: var(--lime);
-}
-
-.btn.btn-line:hover {
-  color: var(--black);
-}
-
-.btn.btn-sm {
-  min-height: 44px;
-  padding: 0 1.1rem;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-/* SECTIONS */
-section {
-  position: relative;
-  padding: 6rem 2rem;
-}
-
-.shade {
-  background-color: var(--dark);
-}
-
-/* light sections (about, right now, education, off track).
-   I just swap the colour variables here so everything inside turns light
-   without having to rewrite every rule. lando's site does light + dark sections too */
-.light {
-  --black: #f1f2ec;
-  --white: #0e0f0c;
-  --dark: #e4e6dc;
-  --grey: #575c51;
-  --edge: #cbcec2;
-  background-color: var(--black);
-  color: var(--white);
-}
-
-.light th {
-  border-bottom-color: var(--white);
-}
-
-/* lime stripes don't show up on a light card, so the bar gets a black background */
-.light .in-progress {
-  background-color: #0e0f0c;
-}
-
-.mini {
-  color: var(--grey);
-  font-size: 0.9rem;
   font-weight: 600;
-  text-transform: lowercase;
-  letter-spacing: 0.5px;
 }
 
-.text,
-.intro,
-.sub-line {
-  max-width: 62ch;
-}
-
-.section-note {
-  color: var(--grey);
-  margin-bottom: 3rem;
-}
-
-/* TOP OF THE PAGE */
-#hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3rem;
-  min-height: 92vh;
-  padding: 4rem 2rem 6rem;
-  background-image: radial-gradient(circle, #2b2f26 1.2px, transparent 1.6px);
-  background-size: 22px 22px;
-}
-
-/* name slides up when the page loads */
-.line {
-  display: block;
-  /* only cut off the top and bottom (for the rise-up), never the sides */
-  clip-path: inset(0 -100vw);
-}
-
-.line .word {
-  display: inline-block;
-}
-
-/* each letter rises on its own, a little after the one before (--i is set in the html) */
-.line .ch {
-  display: inline-block;
-  animation: rise-up 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: calc(0.8s + var(--i) * 0.06s);
-}
-
-@keyframes rise-up {
-  from {
-    transform: translateY(105%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
-#hero .mini,
-#hero .intro,
-#hero .sub-line,
-#hero .actions {
-  animation: fade-up 0.8s ease 0.9s both;
-}
-
-#hero .intro {
-  animation-delay: 1.15s;
-  font-size: 1.45rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-#hero .sub-line {
-  animation-delay: 1.3s;
-  color: var(--grey);
-}
-
-#hero .actions {
-  animation-delay: 1.45s;
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* highlighter on "own a few" */
-.highlight {
-  padding: 0 0.2rem;
-  background-image: linear-gradient(var(--lime), var(--lime));
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  animation: highlight 0.8s ease 1.9s forwards;
-}
-
-@keyframes highlight {
-  to {
-    background-size: 100% 100%;
-    color: var(--black);
-  }
-}
-
-/* photo is black and white until you hover. lime block sits behind it */
-.hero-photo {
-  position: relative;
-  flex-shrink: 0;
-  width: 34%;
-  max-width: 420px;
-}
-
-.hero-photo::before {
-  content: "";
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  width: 100%;
-  height: 100%;
+::selection {
   background-color: var(--lime);
-  transition: top 0.4s, left 0.4s;
-  animation: fade-up 0.6s ease 1.9s both;
+  color: var(--ink);
 }
 
-.hero-photo img {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  filter: grayscale(100%) contrast(1.1);
-  transition: filter 0.5s;
-  animation: wipe-up 1.1s cubic-bezier(0.7, 0, 0.2, 1) 0.9s both;
+:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 4px;
 }
 
-/* photo gets uncovered from the bottom up when the page loads */
-@keyframes wipe-up {
-  from {
-    clip-path: inset(100% 0 0 0);
-  }
-
-  to {
-    clip-path: inset(0 0 0 0);
-  }
+h1,
+h2,
+h3 {
+  font-family: var(--title);
+  font-weight: 400;
+  line-height: 0.9;
+  text-transform: uppercase;
 }
 
-.hero-photo:hover img {
-  filter: none;
+h2 {
+  font-size: clamp(4.5rem, 15vw, 15rem);
 }
 
-.hero-photo:hover::before {
-  top: -16px;
-  left: -16px;
-}
-
-/* ABOUT */
-#about .text {
-  position: relative;
-  max-width: 900px;
-  margin-bottom: 1.4rem;
-  font-size: 1.45rem;
-}
-
-/* drop cap */
-#about p.text:first-of-type::first-letter {
-  float: left;
-  margin: 0.45rem 0.9rem 0 0;
-  font-family: var(--heading-font);
-  font-size: 4.6rem;
-  line-height: 0.8;
-  padding: 0.35rem 0.85rem 0.2rem;
-  background-color: var(--lime);
-  color: #0e0f0c;
-}
-
-/* CARDS */
-.card {
-  padding: 1.8rem;
-  border: 1px solid var(--edge);
-  border-radius: 14px;
-  background-color: var(--dark);
-}
-
-.card h3 {
-  margin-bottom: 0.5rem;
-}
-
-/* on track: heading on the left stays put, cards on the right */
-.track-layout {
-  display: grid;
-  grid-template-columns: 1fr 1.7fr;
-  grid-template-areas: "head cards";
-  gap: 3rem;
-  align-items: start;
-}
-
-.track-head {
-  grid-area: head;
-  position: sticky;
-  top: 110px;
-}
-
-/* sticky cards, each one stops a bit lower so they stack */
-.stack {
-  grid-area: cards;
-  max-width: 900px;
-  list-style: none;
-}
-
-.stack-card {
-  position: sticky;
-  top: calc(90px + var(--i) * 18px);
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  min-height: 220px;
-  margin-bottom: 2rem;
-  font-size: 1.15rem;
-  transition: border-color 0.3s;
-}
-
-.stack-card:nth-of-type(1) {
-  --i: 0;
-}
-
-.stack-card:nth-of-type(2) {
-  --i: 1;
-}
-
-.stack-card:nth-of-type(3) {
-  --i: 2;
-}
-
-.stack-card:nth-of-type(4) {
-  --i: 3;
-}
-
-.stack-card:nth-of-type(5) {
-  --i: 4;
-}
-
-/* each card shows the year it happened */
-.card-no {
-  flex-shrink: 0;
-  font-family: var(--heading-font);
-  font-size: 3.6rem;
+h3 {
+  font-size: 1.9rem;
   line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--lime);
-  transition: color 0.3s;
 }
 
-.stack-card:hover {
-  border-color: var(--lime);
-}
-
-.stack-card:hover .card-no {
-  color: var(--lime);
-}
-
-/* lime bar grows up the left edge of the card on hover */
-.stack-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background-color: var(--lime);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.4s;
-}
-
-.stack-card:hover::before {
-  transform: scaleY(1);
-}
-
-cite {
-  display: block;
-  margin-top: 0.6rem;
-  padding-left: 0.9rem;
-  border-left: 2px solid var(--lime);
-  font-size: 0.95rem;
-  color: var(--grey);
-}
-
-/* moving stripes = still learning */
-.in-progress {
-  height: 8px;
-  margin-top: 1.4rem;
-  border-radius: 999px;
-  background-image: repeating-linear-gradient(-45deg, var(--lime) 0 8px, transparent 8px 16px);
-  background-size: 22.6px 22.6px;
-  border: 1px solid var(--edge);
-  animation: stripes 1s linear infinite;
-}
-
-@keyframes stripes {
-  to {
-    background-position: 22.6px 0;
-  }
-}
-
-/* project card, lime line on the left */
-.project {
-  max-width: 800px;
-  border-left: 4px solid var(--lime);
-}
-
-.tag {
-  display: inline-block;
-  margin: 1rem 0.4rem 0 0;
-  padding: 0.2rem 0.7rem;
-  border: 1px solid var(--edge);
-  border-radius: 999px;
-  font-size: 0.8rem;
-  color: var(--grey);
-}
-
-/* TABLES */
-.edu-table,
-.skills-table {
-  width: 100%;
-  max-width: 900px;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 1rem;
-  text-align: left;
-  vertical-align: middle;
-  border-bottom: 1px solid var(--edge);
-}
-
-th {
-  color: var(--grey);
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: lowercase;
-  border-bottom-color: var(--lime);
-}
-
-.when {
-  font-family: var(--heading-font);
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  color: var(--white);
-  vertical-align: top;
-}
-
-.result {
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.year {
-  margin-left: 0.4rem;
-  font-size: 0.8rem;
-  color: var(--grey);
-}
-
-/* skills table: bold first column, every other row shaded, lime edge on hover */
-.skills-table td:first-child {
-  font-weight: 600;
-}
-
-.skills-table tbody tr:nth-of-type(odd) {
-  background-color: var(--dark);
-}
-
-.skills-table tbody tr {
-  transition: box-shadow 0.2s;
-}
-
-.skills-table tbody tr:hover {
-  box-shadow: inset 4px 0 0 var(--lime);
-}
-
-.sub-heading {
-  margin: 3.5rem 0 1.5rem;
-  font-size: 1.2rem;
-}
-
-/* certificates. double border = done, dashed = in progress */
-.stamps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-}
-
-.stamp {
-  display: inline-block;
-  padding: 0.8rem 1.2rem;
-  border: 4px double var(--lime);
-  border-radius: 6px;
-  font-family: var(--heading-font);
-  font-size: 1.4rem;
-  line-height: 1.1;
-  text-transform: uppercase;
-  color: var(--lime);
-  transition: background-color 0.3s;
-}
-
-.stamp small {
-  display: block;
-  margin-top: 0.3rem;
-  font-family: var(--text-font);
-  font-size: 0.75rem;
-  text-transform: lowercase;
-  letter-spacing: 1px;
-}
-
-.stamp-pending {
-  border-style: dashed;
-  border-width: 2px;
-  color: var(--grey);
-  border-color: var(--grey);
-}
-
-.stamp:hover {
-  background-color: rgba(210, 255, 58, 0.08);
-}
-
-.verify {
-  margin-top: 1.5rem;
-  font-size: 0.95rem;
-}
-
-.verify a {
-  color: var(--lime);
-  text-underline-offset: 4px;
-}
-
-.sheet a {
-  color: inherit;
-}
-
-/* 3D flip card: the stamp is the front, the real certificate is the back */
-.stamps {
-  align-items: center;
-}
-
-.flip {
-  display: inline-block;
-  width: 340px;
-  max-width: 100%;
-  height: 240px;
-  perspective: 1000px;
-  text-decoration: none;
-}
-
-.flip-inner {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.flip:hover .flip-inner {
-  transform: rotateY(180deg);
-}
-
-.flip-front,
-.flip-back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-
-.flip-front {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 1.8rem;
-}
-
-.flip-back {
-  object-fit: cover;
-  background-color: #ffffff;
-  border: 2px solid var(--lime);
-  border-radius: 6px;
-  transform: rotateY(180deg);
-}
-
-/* OFF TRACK */
-.story {
-  max-width: 900px;
-  padding: 2.5rem 0;
-  font-size: 1.15rem;
-}
-
-.story h3 {
-  margin-bottom: 0.6rem;
-}
-
-/* clear the float so the next story starts below the photo */
-.story::after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
-/* photos in a thin frame, black and white until you hover (same as the top photo) */
-.frame {
-  width: 280px;
-  padding: 10px;
-  border: 1px solid var(--edge);
-  background-color: var(--black);
-  transition: border-color 0.3s;
-}
-
-.frame img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  object-position: center 60%;
-  filter: grayscale(100%);
-  transition: filter 0.4s;
-}
-
-.frame figcaption {
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--grey);
-}
-
-.float-left {
-  float: left;
-  margin: 0 2.5rem 1rem 0;
-}
-
-.float-right {
-  float: right;
-  margin: 0 0 1rem 2.5rem;
-}
-
-.frame:hover {
-  border-color: var(--lime);
-}
-
-.frame:hover img {
-  filter: grayscale(0%);
-}
-
-/* PAPER RESUME */
-.sheet {
-  position: relative;
-  max-width: 820px;
-  margin-top: 2rem;
-  padding: 3rem;
-  background-color: #ffffff;
-  color: #111111;
-  font-size: 15px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.sheet::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 44px;
-  height: 44px;
-  background-image: linear-gradient(225deg, var(--black) 50%, #dcdcd4 50%);
-}
-
-.sheet h3 {
-  font-size: 2.6rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: -1px;
-}
-
-.mark {
-  background-color: var(--lime);
-  padding: 0 0.3rem;
-}
-
-.sheet-lead {
-  margin: 1rem 0 0.5rem;
-  font-size: 1.1em;
-  font-weight: 600;
-}
-
-.sheet h4 {
-  margin: 1.25rem 0 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 3px solid #111111;
-  text-transform: uppercase;
-  font-size: 1rem;
-  font-weight: 900;
-}
-
-.sheet ul {
-  padding-left: 1.2rem;
-}
-
-.sheet strong {
-  color: #111111;
-}
-
-.sheet-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-/* CONTACT */
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 4rem;
-  align-items: start;
-}
-
-.contact-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.contact-form label {
-  margin: 1.2rem 0 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: lowercase;
-  color: var(--grey);
-}
-
-/* form fields don't inherit the page font on their own, so inherit it */
-select,
-textarea {
-  min-height: 48px;
-  padding: 0.8rem 1rem;
-  font: inherit;
-  color: inherit;
-  background-color: var(--black);
-  border: 1px solid var(--edge);
-  border-radius: 10px;
-  transition: border-color 0.3s;
-}
-
-select:hover,
-textarea:hover {
-  border-color: var(--grey);
-}
-
-textarea {
-  resize: vertical;
-}
-
-.contact-form .btn {
-  align-self: flex-start;
-  margin-top: 1.5rem;
-}
-
-.direct .text {
+/* small side notes, written in the serif so they read like something added in the margin */
+.note {
+  font-family: var(--hand);
+  font-style: italic;
   font-size: 1.25rem;
-  margin-bottom: 2rem;
-}
-
-.big-link {
-  display: block;
-  width: fit-content;
-  margin-top: 0.6rem;
-  font-family: var(--heading-font);
-  font-size: 2.4rem;
-  text-transform: uppercase;
-  text-decoration: none;
-  background-image: linear-gradient(var(--lime), var(--lime));
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 3px;
-  transition: background-size 0.4s;
-}
-
-.big-link:hover {
-  background-size: 100% 3px;
-}
-
-/* FOOTER */
-footer {
-  padding: 3rem 2rem 2rem;
-  border-top: 1px solid var(--edge);
+  line-height: 1.25;
   color: var(--grey);
-  font-size: 0.9rem;
-  overflow: hidden;
 }
 
-/* huge outlined name, fills in lime on hover */
-.footer-name {
-  font-family: var(--heading-font);
-  font-size: 16.5vw;
-  line-height: 0.85;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--edge);
-  transition: color 0.5s, -webkit-text-stroke-color 0.5s;
-}
-
-.footer-name:hover {
-  color: var(--lime);
-  -webkit-text-stroke-color: var(--lime);
-}
-
-.footer-row {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-/* SCROLL ANIMATION
-   section headings slide in from the left as they come on screen */
-@supports (animation-timeline: view()) {
-  main h2 {
-    animation: rise-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 60%;
-  }.edu-table,
-.skills-table,
-.story {
-    animation: slide-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 70%;
-  }
-}
-
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@keyframes slide-in {
-  from {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* NUMBERS
-   @property lets the browser animate a whole number, and counter() prints it */
-@property --num {
+/* LOADING SCREEN
+   a number counts to 100 while a line fills, the line stands up,
+   and the two halves of the screen slide apart from it. no javascript */
+@property --load {
   syntax: "<integer>";
   initial-value: 0;
   inherits: false;
 }
 
-.count {
-  --num: var(--to);
-  counter-reset: n var(--num);
-  display: block;
-  font-family: var(--heading-font);
-  font-size: 7rem;
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  animation: gone 0.01s 2.9s forwards;
+}
+
+.loader::before,
+.loader::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.2%;
+  background-color: var(--black);
+  animation: part 1s var(--inout) 1.85s forwards;
+}
+
+.loader::before {
+  left: 0;
+  --away: -101%;
+}
+
+.loader::after {
+  right: 0;
+  --away: 101%;
+}
+
+.loader-count {
+  position: absolute;
+  left: var(--pad);
+  bottom: 2vh;
+  z-index: 1;
+  font-family: var(--title);
+  font-size: clamp(5rem, 16vw, 15rem);
   line-height: 1;
-  color: var(--lime);
-  animation: count-up 2s ease-out 0.3s both;
+  counter-reset: n var(--load);
+  animation: load 1.5s var(--inout) forwards, fade 0.25s 1.6s forwards;
 }
 
-.count::before {
-  content: attr(data-prefix) counter(n);
+.loader-count::after {
+  content: counter(n);
 }
 
-.count::after {
-  content: attr(data-suffix);
-}
-
-@keyframes count-up {
-  from {
-    --num: 0;
-  }
-
-  to {
-    --num: var(--to);
-  }
-}
-
-/* LIME BAND */
-.band {
-  overflow: hidden;
-  padding: 1.6rem 0;
+.loader-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 180px;
+  height: 2px;
+  margin: -1px 0 0 -90px;
   background-color: var(--lime);
-  color: #0e0f0c;
+  animation: line 2.4s var(--inout) forwards;
 }
 
-.band-text {
-  font-family: var(--heading-font);
-  font-size: 6.5rem;
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.band .hollow {
-  color: transparent;
-  -webkit-text-stroke: 2px #0e0f0c;
-}
-
-/* SCROLL EFFECTS (only in browsers that support scroll-linked animation) */
-@supports (animation-timeline: view()) {
-  /* numbers count up while they scroll into view */
-  .count {
-    animation: count-up linear both;
-    animation-timeline: view();
-    animation-range: entry 10% cover 45%;
-  }
-
-  /* band words slide left as you scroll down */
-  .band-text {
-    animation: band-move linear both;
-    animation-timeline: view();
-  }
-
-  /* about text darkens line by line, like you're reading it */
-  #about .text {
-    color: transparent;
-    background-image: linear-gradient(to bottom, var(--white) 50%, #b3b7aa 50%);
-    background-size: 100% 200%;
-    background-position: 0 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation: read-fill linear both;
-    animation-timeline: view();
-    animation-range: entry 20% cover 55%;
-  }
-}
-
-@keyframes band-move {
-  from {
-    transform: translateX(0);
-  }
-
+@keyframes load {
   to {
-    transform: translateX(-40%);
+    --load: 100;
   }
 }
 
-@keyframes read-fill {
+@keyframes line {
+  0% {
+    transform: scaleX(0);
+  }
+
+  60% {
+    transform: scaleX(1);
+  }
+
+  /* squeezed thin and stretched tall, so it turns into the gap the page opens from */
+  76%,
+  88% {
+    transform: scale(0.012, 700);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.012, 700);
+    opacity: 0;
+  }
+}
+
+@keyframes part {
   to {
-    background-position: 0 0;
+    transform: translateX(var(--away));
   }
 }
 
-/* SIDEWAYS SECTION (off track)
-   normally the panels just sit one under the other (phones, older browsers) */
-.big-word {
-  font-family: var(--heading-font);
-  font-size: 11rem;
-  text-transform: uppercase;
-  line-height: 0.8;
-  color: transparent;
-  -webkit-text-stroke: 3px var(--lime);
-  margin-bottom: 1rem;
-}
-
-.panel-gym .big-word {
-  -webkit-text-stroke-color: var(--white);
-  transition: color 0.4s;
-}
-
-.panel-gym:hover .big-word {
-  color: var(--lime);
-  -webkit-text-stroke-color: var(--lime);
-}
-
-@supports (animation-timeline: view()) {
-  @media (min-width: 701px) {
-    /* the section is 3 screens tall. while you scroll through it,
-       .ride-pin stays stuck to the screen and the track moves left */
-    .ride {
-      height: 300vh;
-      padding: 0;
-      view-timeline-name: --ride;
-      view-timeline-inset: 0;
-    }
-
-    .ride-pin {
-      position: sticky;
-      top: 0;
-      display: flex;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .ride-track {
-      display: flex;
-      align-items: center;
-      gap: 5rem;
-      width: max-content;
-      padding: 0 4rem 0 2rem;
-      animation: ride linear both;
-      animation-timeline: --ride;
-      animation-range: contain 0% contain 100%;
-    }
-
-    .panel {
-      flex-shrink: 0;
-      width: 55vw;
-      max-width: none;
-      font-size: 1.35rem;
-    }
-
-    .ride .frame {
-      width: 360px;
-    }
-
-    .panel-title {
-      width: 30vw;
-    }
-
-    .panel-gym {
-      width: 40vw;
-    }
-
-    /* these already move sideways, so no slide-in for them */
-    .ride .story,
-    .ride h2 {
-      animation: none;
-    }
-  }
-}
-
-@keyframes ride {
+@keyframes fade {
   to {
-    transform: translateX(calc(-100% + 100vw));
+    opacity: 0;
   }
 }
 
-/* EXTRA TOUCHES */
-/* trailing cursor ring (script.js moves it). hidden until the script runs */
+@keyframes gone {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* THINGS THAT STAY ON SCREEN */
+
+/* ring that trails the mouse. script.js moves it, so it stays hidden until the script runs.
+   difference makes it white on the dark parts and black on the light ones */
 .cursor {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 90;
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
-  border: 2px solid var(--lime);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 1px solid #ffffff;
   border-radius: 50%;
-  pointer-events: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0e0f0c;
   opacity: 0;
-  transition: width 0.25s, height 0.25s, margin 0.25s, background-color 0.25s, opacity 0.3s;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  transition: width 0.35s var(--out), height 0.35s var(--out), margin 0.35s var(--out), background-color 0.35s;
 }
 
 .has-cursor .cursor {
   opacity: 1;
 }
 
+/* bigger over anything you can click */
 .cursor.is-big {
   width: 70px;
   height: 70px;
   margin: -35px 0 0 -35px;
-  background-color: rgba(210, 255, 58, 0.15);
 }
 
-/* nav links roll their text like the buttons */
-.nav-links > .nav-link {
-  overflow: hidden;
+/* some things give the ring a word, like "verify" on the bloomberg card */
+.cursor.has-word {
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  border-color: #d2ff3a;
+  background-color: #d2ff3a;
+  mix-blend-mode: normal;
 }
 
-.nav-link span {
-  display: inline-block;
-  transition: transform 0.35s;
+.cursor.has-word::after {
+  content: attr(data-word);
 }
 
-.nav-link::before {
-  content: attr(data-text);
+/* bottom left: a small map of the building. the dot is where you are,
+   and script.js writes the room's name next to it */
+.hud {
+  position: fixed;
+  left: var(--pad);
+  bottom: 18px;
+  z-index: 40;
+  display: none; /* only shown when the camera is running, further down */
+  align-items: flex-end;
+  gap: 12px;
+  color: #ffffff;
+  font-size: 0.8rem;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  transition: opacity 0.4s;
+}
+
+.hud.is-on {
+  opacity: 1;
+}
+
+/* 4 by 4, drawn with two striped gradients */
+.map {
+  position: relative;
+  width: 65px;
+  height: 41px;
+  border: 1px solid #ffffff;
+  background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px);
+  background-size: 16px 10px;
+  background-position: -1px -1px;
+  opacity: 0.9;
+}
+
+.map-dot {
+  position: absolute;
+  top: 12.5%;
+  left: 12.5%;
+  width: 9px;
+  height: 9px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+/* lime panel that covers the page for a moment when you jump to a section.
+   script.js writes the section's name on it. the slanted edges are two triangles */
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background-color: #d2ff3a;
+  color: #0e0f0c;
+  font-family: var(--title);
+  font-size: 17vw;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateY(130%);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.wipe::before,
+.wipe::after {
+  content: "";
   position: absolute;
   left: 0;
-  top: 50%;
-  color: var(--lime);
+  right: 0;
+  height: 14vw;
+  background-color: inherit;
+}
+
+.wipe::before {
+  bottom: calc(100% - 1px);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+
+.wipe::after {
+  top: calc(100% - 1px);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.wipe-in {
+  visibility: visible;
+  animation: wipe-in 0.6s var(--inout) forwards;
+}
+
+.wipe-out {
+  visibility: visible;
+  animation: wipe-out 0.7s var(--inout) forwards;
+}
+
+@keyframes wipe-in {
+  from {
+    transform: translateY(130%);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes wipe-out {
+  from {
+    transform: none;
+  }
+
+  to {
+    transform: translateY(-130%);
+  }
+}
+
+/* NAV
+   sticky, with no bar behind it. the name and the links each sit on their own dark chip,
+   so they stay readable when a light part of the page scrolls underneath */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--nav);
+  padding: 0 var(--pad);
+  color: #f2f2ec;
+  pointer-events: none;
+}
+
+.brand,
+.nav-links {
+  background-color: rgba(14, 15, 12, 0.84);
+  backdrop-filter: blur(10px);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  pointer-events: auto;
+}
+
+.brand {
+  margin-left: -14px;
+  padding: 9px 14px 7px;
+  font-family: var(--title);
+  font-size: 1.35rem;
+  line-height: 1.2;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(1rem, 2.4vw, 2.2rem);
+  margin-right: -18px;
+  padding: 8px 18px;
+}
+
+/* > so it only picks the links directly inside .nav-links */
+.nav-links > .nav-link {
+  position: relative;
+  overflow: hidden;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+/* on hover the word rolls up and a copy in the serif (from data-text) rolls in after it */
+.nav-link span {
+  display: block;
+  transition: transform 0.45s var(--out);
+}
+
+.nav-link::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  font-family: var(--hand);
+  font-style: italic;
+  font-size: 1.12em;
+  transition: transform 0.45s var(--out);
+}
+
+.nav-link:hover span,
+.nav-link:hover::after {
+  transform: translateY(-100%);
+}
+
+/* BUTTONS
+   lime, with two corners cut off. the text rolls the same way the nav links do */
+.btn {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.85rem 1.5rem;
+  border: 0;
+  background-color: var(--lime);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.btn span {
+  display: block;
+  transition: transform 0.5s var(--out);
+}
+
+.btn::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
   transform: translateY(100%);
-  transition: transform 0.35s;
+  transition: transform 0.5s var(--out);
 }
 
-.nav-link:hover span {
-  transform: translateY(-160%);
+.btn:hover span {
+  transform: translateY(-220%);
 }
 
-.nav-link:hover::before {
-  transform: translateY(-50%);
+.btn:hover::after {
+  transform: none;
 }
 
-/* bottom of the hero: clock and a scroll hint with a line that keeps dropping */
+/* second kind of button: no fill, just a line under it */
+.btn.btn-line {
+  padding: 0.3rem 0;
+  background-color: transparent;
+  color: inherit;
+  font-weight: 500;
+  clip-path: none;
+  box-shadow: inset 0 -1px 0 currentColor;
+}
+
+/* ROOM 1, THE LOBBY
+   my first name on the left, surname on the right, photo in the middle */
 #hero {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: calc(var(--nav) + 14px) var(--pad) 0;
+  border: 0;
+  overflow: clip;
 }
 
-.local-time {
-  position: absolute;
-  top: 1.5rem;
-  right: 2rem;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+.hero-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.hero-what {
+  max-width: 28ch;
+}
+
+.hero-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.hero-clock {
   color: var(--grey);
+  font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* the photo is black and white on its own. when gl.js runs, a canvas of dots covers it
+   and the photo only shows through the round window, in colour */
+.hero-photo {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  z-index: 0;
+  width: min(34vw, 58vh);
+  aspect-ratio: 4 / 5;
+  translate: -50% -50%;
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.1);
+}
+
+.has-gl .hero-photo img {
+  filter: none;
+}
+
+/* the mask cuts a round hole in the canvas. gl.js keeps --lx, --ly and --lens up to date */
+.hero-gl {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: radial-gradient(circle at var(--lx, 50%) var(--ly, 40%), transparent calc(var(--lens, 0px) - 1px), #000000 var(--lens, 0px));
+  mask-image: radial-gradient(circle at var(--lx, 50%) var(--ly, 40%), transparent calc(var(--lens, 0px) - 1px), #000000 var(--lens, 0px));
+}
+
+/* lime rim round the window */
+#hero.has-gl::after {
+  content: "";
+  position: absolute;
+  top: var(--ly);
+  left: var(--lx);
+  z-index: 2;
+  width: calc(var(--lens) * 2);
+  height: calc(var(--lens) * 2);
+  border: min(1px, var(--lens)) solid var(--lime);
+  border-radius: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.hero-note {
+  display: none;
+  position: absolute;
+  top: 27%;
+  left: calc(50% + min(17vw, 29vh) + 44px);
+  z-index: 3;
+  width: 15ch;
+}
+
+.has-gl .hero-note {
+  display: block;
+}
+
+/* short line joining the note to the photo */
+.hero-note::before {
+  content: "";
+  position: absolute;
+  top: 0.65em;
+  right: calc(100% + 10px);
+  width: 22px;
+  height: 1px;
+  background-color: var(--grey);
+}
+
+/* --px and --py come from script.js (-0.5 to 0.5), so the name leans away from the mouse */
+h1 {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  font-size: clamp(4rem, 17.4vw, 21rem);
+  line-height: 1;
+  margin-bottom: -0.045em;
+  translate: calc(var(--px, 0) * -26px) calc(var(--py, 0) * -14px);
+  pointer-events: none;
+}
+
+/* clips the letters below the line only, so they can rise into it. the sides stay open */
+.line {
+  display: block;
+  white-space: nowrap;
+  clip-path: inset(-1em -100vw 0);
+}
+
+/* each letter rises a little after the one before it (--i is set in the html) */
+.ch {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: rise 1.1s var(--out) forwards;
+  animation-delay: calc(2s + var(--i) * 0.055s);
+}
+
+@keyframes rise {
+  to {
+    transform: none;
+  }
 }
 
 .scroll-hint {
   position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  padding-bottom: 3.2rem;
-  font-size: 0.75rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  text-decoration: none;
+  top: 44%;
+  right: var(--pad);
+  z-index: 3;
+  padding-bottom: 76px;
   color: var(--grey);
-  transform: translateX(-50%);
+  font-size: 0.85rem;
+  text-decoration: none;
+  writing-mode: vertical-rl;
 }
 
+/* a line that keeps dropping under the word */
 .scroll-hint::after {
   content: "";
   position: absolute;
-  left: 50%;
   bottom: 0;
+  left: 50%;
   width: 1px;
-  height: 2.6rem;
+  height: 64px;
   background-color: var(--lime);
   transform-origin: top;
-  animation: drop 1.8s ease-in-out infinite;
+  animation: drop 2s var(--inout) infinite;
 }
 
 @keyframes drop {
   0% {
     transform: scaleY(0);
-    transform-origin: top;
   }
 
   50% {
@@ -1386,333 +725,171 @@ footer {
   }
 }
 
-/* loading screen: a percentage counts up in the corner while the lime panel is down */
-@property --load {
-  syntax: "<integer>";
-  initial-value: 0;
-  inherits: false;
+/* THE BUILDING
+   every part of the page is a room. on a phone, or in a browser without scroll-linked
+   animation, the rooms just come one after another down the page.
+   the floor plan and the camera are further down, under THE FLOOR PLAN */
+.plan {
+  margin-top: calc(var(--nav) * -1);
 }
 
-body::before {
-  counter-reset: load var(--load);
-  content: counter(load) "%";
-  position: fixed;
-  right: 2rem;
-  bottom: 1.5rem;
-  z-index: 101;
-  font-family: var(--heading-font);
-  font-size: 3rem;
-  color: #0e0f0c;
-  pointer-events: none;
-  animation: load-count 0.45s linear both, count-away 0.8s cubic-bezier(0.7, 0, 0.2, 1) 0.45s both;
-}
-
-@keyframes count-away {
-  to {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
-}
-
-@keyframes load-count {
-  from {
-    --load: 0;
-  }
-
-  to {
-    --load: 100;
-  }
-}
-
-/* two bands crossing like an X */
-.bands {
+.room {
   position: relative;
-  height: 340px;
-  overflow: hidden;
-  background-color: var(--black);
+  padding: 14vh var(--pad) 12vh;
+  border-top: 1px solid var(--edge);
 }
 
-.bands .band {
-  position: absolute;
-  left: -5%;
-  width: 110%;
-  top: 50%;
+/* the plate at the top of each room: its number, its name, and one line about it */
+.plate {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.2rem;
+  margin-bottom: 5vh;
 }
 
-.band-a {
-  transform: translateY(-50%) rotate(-4deg);
-  z-index: 2;
-}
-
-.band-b {
-  transform: translateY(-50%) rotate(4deg);
-  background-color: #0e0f0c;
+.plate-no {
+  padding-bottom: 0.45em;
   color: var(--lime);
-  border-top: 2px solid var(--lime);
-  border-bottom: 2px solid var(--lime);
-}
-
-.band-b .hollow {
-  -webkit-text-stroke-color: var(--lime);
-}
-
-/* big number on each right now panel */
-.panel-no {
-  font-family: var(--heading-font);
-  font-size: 4rem;
+  font-family: var(--title);
+  font-size: clamp(1.3rem, 1.9vw, 2rem);
   line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--grey);
-  margin-bottom: 1rem;
-  transition: color 0.3s, -webkit-text-stroke-color 0.3s;
 }
 
-.card:hover .panel-no {
+.plate h2 {
+  font-size: clamp(3rem, 6.6vw, 7.2rem);
+  line-height: 0.95;
+  white-space: nowrap;
+}
+
+.plate .note {
+  max-width: 26ch;
+  margin-left: auto;
+  padding-bottom: 0.5rem;
+  text-align: right;
+}
+
+/* words on the left, the thing itself on the right */
+.room-body {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  grid-template-areas: "words thing";
+  align-items: center;
+  gap: 5vw;
+}
+
+.room-text,
+.entry-text {
+  grid-area: words;
+  max-width: 33rem;
+  font-size: 1.08rem;
+}
+
+.room-text p + p,
+.room-text .btn {
+  margin-top: 1.1rem;
+}
+
+.room-body > :last-child {
+  grid-area: thing;
+}
+
+/* ROOMS 3 TO 7, THE WORK */
+cite {
+  display: block;
+  margin-top: 0.9rem;
+  color: var(--grey);
+  font-size: 0.95rem;
+}
+
+/* one line from the acceptance email */
+.mail {
+  margin-top: 1.3rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--lime);
+  font-family: var(--hand);
+  font-style: italic;
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+
+.mail span {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--grey);
+  font-family: var(--text);
+  font-style: normal;
+  font-size: 0.8rem;
+}
+
+/* research: script.js drops the dots on the canvas, the axis under it is a small svg */
+.sim {
+  justify-self: end;
+  width: 100%;
+  max-width: 640px;
+}
+
+.sim canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sim-axis {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.sim-axis .axis {
+  stroke: var(--edge);
+  stroke-width: 2;
+}
+
+.sim-axis .range {
+  stroke: var(--lime);
+  stroke-width: 3;
+}
+
+.sim-axis text {
+  fill: var(--grey);
+  font-size: 11px;
+}
+
+.sim-axis .val {
+  fill: var(--white);
+  font-family: var(--title);
+  font-size: 16px;
+}
+
+.sim-axis .mid {
+  fill: var(--lime);
+  font-size: 24px;
+}
+
+.sim figcaption {
+  margin-top: 0.8rem;
+  color: var(--grey);
+  font-size: 0.9rem;
+}
+
+.again {
+  margin-left: 0.3rem;
+  border: 0;
+  border-bottom: 1px solid var(--lime);
+  background: none;
+  color: var(--white);
+  font: inherit;
+}
+
+.again:hover {
   color: var(--lime);
-  -webkit-text-stroke-color: var(--lime);
 }
 
-/* phones / older browsers: sideways sections just stack */
-.ride-track > * + * {
-  margin-top: 1.5rem;
-}
-
-.ride .card {
-  max-width: 700px;
-}
-
-@supports (animation-timeline: view()) {
-  @media (min-width: 701px) {
-    .ride-track > * + * {
-      margin-top: 0;
-    }
-
-    /* right now runs the other way: the row is reversed and slides right */
-    .ride-reverse .ride-track {
-      flex-direction: row-reverse;
-      animation-name: ride-back;
-    }
-
-    .ride .card.panel {
-      width: 34vw;
-      max-width: none;
-      min-height: 52vh;
-      font-size: 1.15rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-
-    .ride-reverse .panel-title {
-      width: 26vw;
-    }
-
-    /* the hero splits apart as you scroll away from it */
-    #hero {
-      view-timeline-name: --hero;
-      view-timeline-inset: 0;
-    }
-
-    #hero .line:first-child .word,
-    #hero .line:last-child .word,
-    .hero-photo {
-      animation-timeline: --hero;
-      animation-range: exit 0% exit 100%;
-      animation-fill-mode: both;
-      animation-timing-function: linear;
-    }
-
-    #hero .line:first-child .word {
-      animation-name: split-left;
-    }
-
-    #hero .line:last-child .word {
-      animation-name: split-right;
-    }
-
-    .hero-photo {
-      animation-name: photo-away;
-    }
-
-    /* crossed bands slide in opposite directions */
-    .band-a .band-text {
-      animation: band-move linear both;
-      animation-timeline: view();
-    }
-
-    .band-b .band-text {
-      animation: band-move-back linear both;
-      animation-timeline: view();
-    }
-
-    /* on track cards tip up from flat as they come in */
-    .stack {
-      perspective: 1200px;
-    }
-
-    .stack-card {
-      animation: tip-up linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 100%;
-    }
-
-    /* table rows flip down into place one by one as you scroll */
-    .edu-table tbody tr,
-    .skills-table tbody tr {
-      animation: flip-row linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 100%;
-    }
-
-    /* certificates turn over like cards */
-    .flip .stamp {
-      animation: none;
-    }
-
-    .flip,
-    .stamp {
-      animation: turn-over linear both;
-      animation-timeline: view();
-      animation-range: entry 10% cover 40%;
-    }
-
-    /* the paper resume gets put down on the desk */
-    .sheet {
-      animation: put-down linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 35%;
-    }
-
-    /* contact opens up from a rounded box to the full screen */
-    #contact,
-    #numbers {
-      animation: open-up linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 35%;
-    }
-
-    /* off track photos drift inside their frames */
-    .ride .frame img {
-      animation: drift linear both;
-      animation-timeline: --ride;
-    }
-  }
-}
-
-@keyframes split-left {
-  to {
-    transform: translateX(-35vw);
-    opacity: 0.2;
-  }
-}
-
-@keyframes split-right {
-  to {
-    transform: translateX(35vw);
-    opacity: 0.2;
-  }
-}
-
-@keyframes photo-away {
-  to {
-    transform: scale(0.8) rotate(-6deg);
-    opacity: 0.3;
-  }
-}
-
-@keyframes band-move-back {
-  from {
-    transform: translateX(-40%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes ride-back {
-  from {
-    transform: translateX(calc(-100% + 100vw));
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes tip-up {
-  from {
-    transform: rotateX(35deg) translateY(80px) scale(0.92);
-    opacity: 0;
-  }
-
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-@keyframes flip-row {
-  from {
-    transform: rotateX(-90deg);
-    opacity: 0;
-  }
-
-  to {
-    transform: rotateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes turn-over {
-  from {
-    transform: perspective(600px) rotateY(180deg);
-    opacity: 0;
-  }
-
-  to {
-    transform: perspective(600px) rotateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes put-down {
-  from {
-    transform: translateY(120px) rotate(-7deg) scale(0.9);
-  }
-
-  to {
-    transform: none;
-  }
-}
-
-@keyframes open-up {
-  from {
-    clip-path: inset(6% 5% round 40px);
-  }
-
-  to {
-    clip-path: inset(0 0 round 0);
-  }
-}
-
-@keyframes drift {
-  from {
-    object-position: center 20%;
-    transform: scale(1.15);
-  }
-
-  to {
-    object-position: center 80%;
-    transform: scale(1);
-  }
-}
-
-/* PHOTOS, CHART, TRACKER */
-/* village photo cut into bricks. each span shows its own piece of the photo */
+/* habitat: the photo is cut into 24 bricks. every span shows its own piece of the same picture */
 .bricks-wrap {
-  margin-top: 1.4rem;
-  max-width: 560px;
+  justify-self: end;
+  width: 100%;
+  max-width: 640px;
 }
 
 .bricks {
@@ -1727,660 +904,1844 @@ body::before {
   background-image: url("village-3.jpg");
   background-size: 600% 400%;
   background-position: calc(var(--c) * 20%) calc(var(--r) * 33.333%);
-  border-radius: 2px;
 }
 
-.bricks-wrap figcaption {
-  margin-top: 0.6rem;
-  font-size: 0.85rem;
+.bricks-wrap .note {
+  margin-top: 0.7rem;
+}
+
+/* mun: my badge, pinned up a little crooked. it swings from the pin when you point at it */
+.badge {
+  position: relative;
+  justify-self: center;
+  width: min(300px, 70%);
+  rotate: 4deg;
+  transform-origin: 50% 0;
+  transition: rotate 1.4s cubic-bezier(0.3, 2.4, 0.5, 1);
+}
+
+.badge:hover {
+  rotate: -3deg;
+}
+
+.badge img {
+  border-radius: 6px;
+}
+
+.badge::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background-color: var(--lime);
+}
+
+/* review cards: eight cards, one for each business, held like a hand of cards.
+   each card turns by its own --n. the three cafes are the lime ones */
+.fan {
+  position: relative;
+  justify-self: center;
+  width: 150px;
+  height: 230px;
+  margin-top: 50px;
+  list-style: none;
+}
+
+.fan li {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 1px solid #0e0f0c;
+  border-radius: 12px;
+  background-color: #f2f2ec;
+  color: #0e0f0c;
+  font-family: var(--title);
+  font-size: 1.5rem;
+  line-height: 1;
+  text-transform: uppercase;
+  rotate: calc((var(--n) - 3.5) * 9deg);
+  transform-origin: 50% 135%;
+  transition: rotate 0.7s var(--out);
+}
+
+.fan li:nth-of-type(n + 6) {
+  background-color: #d2ff3a;
+}
+
+.fan li::after {
+  content: "\2605\2605\2605\2605\2605";
+  font-family: var(--text);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+}
+
+.fan:hover li {
+  rotate: calc((var(--n) - 3.5) * 12.5deg);
+}
+
+/* editing: drawn like the timeline in an editing app. four years across the top,
+   one bar for each thing, and --from is how far along the bar starts */
+.timeline {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 640px;
+  padding-top: 2rem;
+}
+
+.years {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--edge);
+  color: var(--grey);
+  font-family: var(--title);
+}
+
+.layer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 46px;
+  margin: 0 3% 8px var(--from);
+  padding: 0 14px;
+  border-left: 3px solid var(--lime);
+  background-color: var(--dark);
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* paid work only started in october 2026, so its bar is short and the label sits beside it */
+.layer.paid {
+  padding: 0;
+  border: 0;
+  background-color: var(--lime);
+}
+
+.layer.paid span {
+  position: absolute;
+  right: calc(100% + 12px);
+}
+
+/* the playhead, standing at today */
+.timeline::after {
+  content: "";
+  position: absolute;
+  top: 1.7rem;
+  bottom: -6px;
+  left: 97%;
+  width: 2px;
+  background-color: var(--lime);
+}
+
+.timeline::before {
+  content: "now";
+  position: absolute;
+  top: 0;
+  left: 97%;
+  translate: -50% 0;
+  font-family: var(--hand);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--lime);
+}
+
+/* ROOMS 8 AND 9, STILL BEING BUILT */
+/* workshop and trading desk: a strip of hazard tape, because both are still being built */
+.tape {
+  justify-self: stretch;
+  padding: 1rem 0;
+  background: repeating-linear-gradient(-45deg, var(--lime) 0 26px, var(--black) 26px 52px);
+  rotate: -4deg;
+  text-align: center;
+}
+
+.tape span {
+  padding: 0.1em 0.6em;
+  background-color: var(--black);
+  font-family: var(--title);
+  font-size: clamp(1.6rem, 3.4vw, 3.4rem);
+  text-transform: uppercase;
+}
+
+/* two steps, and this really is an order. the finished one gets a tick in a lime circle */
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
+  margin-top: 1.2rem;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.1rem;
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px solid var(--grey);
+  border-radius: 50%;
+  font-family: var(--title);
+}
+
+.steps .done::before {
+  content: "\2713";
+  border-color: var(--lime);
+  background-color: var(--lime);
+  color: var(--ink);
+  font-family: var(--text);
+}
+
+/* ROOM 10, THE GYM */
+/* gym: three things side by side */
+.gym-row {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: none;
+  gap: 4vw;
+}
+
+.gym-row > :last-child {
+  grid-area: auto;
+}
+
+.off {
+  font-size: 1.08rem;
+}
+
+.off h3 {
+  margin-bottom: 0.7rem;
+}
+
+/* the photos are floated so the words wrap round them.
+   this clears the float so the next one starts below the photo */
+.off::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.frame {
+  width: min(46%, 300px);
+  margin-bottom: 1rem;
+}
+
+.float-left {
+  float: left;
+  margin-right: 1.6rem;
+}
+
+.float-right {
+  float: right;
+  margin-left: 1.6rem;
+}
+
+/* black and white until you point at them */
+.frame img {
+  width: 100%;
+  filter: grayscale(1);
+  transition: filter 0.6s;
+}
+
+.frame:hover img {
+  filter: none;
+}
+
+.frame .note {
+  margin-top: 0.4rem;
+  font-size: 1.05rem;
+}
+
+/* outlined instead of filled */
+.big-word {
+  color: transparent;
+  font-family: var(--title);
+  font-size: clamp(8rem, 26vw, 22rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  -webkit-text-stroke: 2px var(--white);
+}
+
+/* ROOMS 2 AND 11 TO 13: DIRECTORY, RECORDS, VAULT, PRINT ROOM */
+/* the directory: every room name is a link that takes you there */
+.dir-table td {
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+  font-size: 0.95rem;
+}
+
+.dir-table td:first-child {
+  font-family: var(--title);
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dir-table a {
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.dir-table a:hover {
+  color: var(--lime);
+}
+
+/* every other row a shade lighter, and a lime edge on the row you point at */
+.dir-table td:first-child,
+.dir-table th:first-child {
+  padding-left: 0.9rem;
+  transition: box-shadow 0.3s;
+}
+
+.dir-table tbody tr:nth-of-type(even) {
+  background-color: var(--dark);
+}
+
+.dir-table tbody tr:hover td:first-child {
+  box-shadow: inset 3px 0 0 var(--lime);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 0.5rem 0.9rem 0.5rem 0;
+  border-bottom: 1px solid var(--edge);
+  color: var(--grey);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+td {
+  padding: 0.85rem 0.9rem 0.85rem 0;
+  border-bottom: 1px solid var(--edge);
+  vertical-align: top;
+}
+
+.when {
+  color: var(--lime);
+  font-family: var(--title);
+  font-size: 1.5rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.result {
+  padding-right: 0;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+th:last-child {
+  padding-right: 0;
+}
+
+.edu-table tr:first-child th:last-child {
+  text-align: right;
+}
+
+.year {
+  margin-left: 0.3rem;
   color: var(--grey);
 }
 
-/* portrait certificate: show the whole page instead of cropping it */
-.flip-back.tall {
+.kit {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem 1.6rem;
+  margin-top: 2.2rem;
+}
+
+.kit dt {
+  font-family: var(--title);
+  font-size: 1.15rem;
+  text-transform: uppercase;
+}
+
+/* certificates: a card with the name on the front and the real certificate on the back.
+   preserve-3d keeps both sides in 3D and backface-visibility hides whichever side faces away */
+.certs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 28px;
+}
+
+.flip {
+  display: block;
+  width: 340px;
+  max-width: 100%;
+  height: 240px;
+  perspective: 1000px;
+  text-decoration: none;
+}
+
+/* the cisce certificate is a tall page, so its card is tall too */
+.flip-tall {
+  width: 240px;
+  height: 348px;
+}
+
+.flip-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.9s var(--out);
+}
+
+.flip:hover .flip-inner,
+.flip:focus-visible .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-front {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border-top: 4px solid var(--lime);
+  background-color: var(--dark);
+  font-family: var(--title);
+  font-size: 2rem;
+  line-height: 1.08;
+  text-transform: uppercase;
+}
+
+.flip-front small {
+  color: var(--grey);
+  font-family: var(--hand);
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.flip-back {
+  background-color: #ffffff;
+  object-fit: cover;
+  transform: rotateY(180deg);
+}
+
+.flip-tall .flip-back {
   object-fit: contain;
 }
 
-/* MUN badge photo, tilted a little, straightens on hover */
-.badge-photo {
-  float: right;
-  width: 150px;
-  margin: 0 0 1rem 1.5rem;
-  border: 2px solid var(--lime);
-  border-radius: 6px;
-  transform: rotate(4deg);
-  transition: transform 0.4s;
+.verify {
+  margin-top: 1.4rem;
 }
 
-.badge-photo:hover {
-  position: relative;
-  z-index: 2;
-  transform: rotate(0deg) scale(1.6);
+.verify a {
+  text-decoration-color: var(--lime);
+  text-underline-offset: 4px;
 }
 
-/* research chart */
-.chart {
-  max-width: 560px;
-  margin-top: 1.2rem;
-}
-
-.chart svg {
-  display: block;
-  width: 100%;
-  overflow: visible;
-}
-
-.chart .axis {
-  stroke: var(--edge);
-  stroke-width: 2;
-}
-
-.chart .range {
-  stroke: var(--lime);
-  stroke-width: 14;
-  stroke-linecap: round;
-}
-
-.chart .median {
-  fill: #0e0f0c;
-  stroke: var(--lime);
-  stroke-width: 4;
-}
-
-.chart text {
-  fill: var(--grey);
-  font-family: var(--text-font);
-  font-size: 13px;
-}
-
-.chart .val {
-  fill: var(--white);
-  font-family: var(--heading-font);
-  font-size: 22px;
-}
-
-.chart .val.big {
-  fill: var(--lime);
-  font-size: 34px;
-}
-
-.chart figcaption {
-  font-size: 0.85rem;
+.pending {
+  margin-top: 0.5rem;
   color: var(--grey);
 }
 
-/* section tracker on the right edge */
-.tracker {
-  position: fixed;
-  top: 50%;
-  right: 1.2rem;
-  z-index: 30;
+/* the paper resume. this is the only part that prints */
+.sheet {
+  position: relative;
+  max-width: 820px;
+  margin: 14vh auto 0;
+  padding: 3rem;
+  background-color: #ffffff;
+  color: #111111;
+  font-size: 15px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+}
+
+/* folded corner */
+.sheet::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  background-image: linear-gradient(225deg, var(--black) 50%, #dcdcd4 50%);
+}
+
+.sheet h3 {
+  font-family: var(--text);
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.mark {
+  padding: 0 0.3rem;
+  background-color: #d2ff3a;
+}
+
+.sheet-lead {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.sheet h4 {
+  margin: 1.25rem 0 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 3px solid #111111;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.sheet ul {
+  padding-left: 1.2rem;
+}
+
+.sheet-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* OFFICE, CORRIDOR AND THE VACANT ROOM */
+.office-body {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  transform: translateY(-50%);
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.tracker {
-  transition: opacity 0.4s;
+/* vault: the two cards in a row, the links under them */
+.vault-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0;
 }
 
-.tracker:not(:has(.is-here)) {
-  opacity: 0;
+.about-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 48px;
+  max-width: 62rem;
 }
 
-.tracker a {
-  position: relative;
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background-color: var(--grey);
-  opacity: 0.5;
-  transition: height 0.3s, background-color 0.3s, opacity 0.3s;
+/* drop cap, on the first paragraph only */
+.about-cols .text:first-of-type::first-letter {
+  float: left;
+  padding: 0.07em 0.12em 0 0;
+  font-family: var(--title);
+  font-size: 4.3rem;
+  line-height: 0.8;
 }
 
-.tracker a::before {
-  content: attr(data-label);
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  white-space: nowrap;
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--lime);
-  opacity: 0;
-  transform: translate(8px, -50%);
-  transition: opacity 0.3s, transform 0.3s;
+.numbers-line {
+  max-width: 27em;
+  margin-top: 6vh;
+  font-size: clamp(1.4rem, 2.7vw, 3rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
 }
 
-.tracker a:hover::before {
-  opacity: 1;
-  transform: translate(0, -50%);
+/* the numbers are empty spans. css prints the number from --to,
+   and @property lets it count up because the browser then knows --num is a whole number */
+@property --num {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
 }
 
-.tracker a.is-here {
-  height: 28px;
+.count {
+  --num: var(--to);
+  counter-reset: n var(--num);
+  display: inline-block;
+  padding: 0.02em 0.16em 0;
   background-color: var(--lime);
-  opacity: 1;
+  color: var(--ink);
+  font-family: var(--title);
+  font-size: 1.15em;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
-
-
-/* top of the page follows the mouse (script.js sets --px and --py from -0.5 to 0.5).
-   "translate" is used instead of "transform" so it doesn't clash with the load and scroll animations */
-.hero-photo img {
-  transition: filter 0.5s;
+.count::before {
+  content: attr(data-prefix) counter(n);
 }
 
-.hero-photo::before {
-  translate: calc(var(--px, 0) * -40px) calc(var(--py, 0) * -30px);
+.count::after {
+  content: attr(data-suffix);
 }
 
-#hero .line:first-child .word {
-  translate: calc(var(--px, 0) * 30px) calc(var(--py, 0) * 12px);
+/* the corridor is one sentence and nothing else */
+.lead {
+  max-width: 16em;
+  font-size: clamp(2rem, 6vw, 6.6rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
 }
 
-#hero .line:last-child .word {
-  translate: calc(var(--px, 0) * 55px) calc(var(--py, 0) * 20px);
+#corridor .note {
+  margin-top: 4vh;
 }
 
-.intro,
-.sub-line {
-  translate: calc(var(--px, 0) * 14px) 0;
+/* the vacant room is the only lime one. its form sits beside the direct links */
+.contact-grid {
+  grid-template-columns: 7fr 5fr;
+  grid-template-areas: "form direct";
+  align-items: start;
+}
+
+.contact-grid > :last-child {
+  grid-area: direct;
+}
+
+#vacant .plate .note {
+  max-width: 34ch;
+  color: var(--white);
+}
+
+/* the form reads like a note and the blanks are the inputs.
+   form fields don't take the page font on their own, so font: inherit */
+.note-form {
+  grid-area: form;
+  font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.note-form select,
+.note-form textarea {
+  border: 0;
+  border-bottom: 2px solid var(--white);
+  border-radius: 0;
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.note-form select {
+  max-width: 100%;
+  padding: 0 0.15em;
+}
+
+.note-form label {
+  display: block;
+  margin-top: 1.4rem;
+}
+
+.note-form textarea {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0 1.8rem;
+  padding: 0.4rem 0;
+  font-size: 0.8em;
+  resize: vertical;
+}
+
+.note-form textarea::placeholder {
+  color: var(--grey);
+}
+
+.note-form select:focus,
+.note-form textarea:focus {
+  outline: none;
+  background-color: rgba(14, 15, 12, 0.08);
+}
+
+.direct {
+  grid-area: direct;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-top: 0.4rem;
+}
+
+.direct p {
+  margin-bottom: 0.6rem;
+}
+
+.big-link {
+  padding-bottom: 4px;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 3px;
+  font-family: var(--title);
+  font-size: clamp(1.6rem, 2.6vw, 2.7rem);
+  line-height: 1.1;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: background-size 0.5s var(--out);
+}
+
+.big-link:hover {
+  background-size: 100% 3px;
+}
+
+/* FOOTER */
+footer {
+  position: relative;
+  z-index: 60;
+  padding: 10vh var(--pad) 26px;
+  background-color: var(--black);
+  overflow: hidden;
+}
+
+.footer-name {
+  margin: 0 -2vw;
+  color: var(--lime);
+  font-family: var(--title);
+  font-size: 21.5vw;
+  line-height: 0.86;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.6rem 2rem;
+  margin-top: 5vh;
+  color: var(--grey);
+  font-size: 0.9rem;
+}
+
+/* THE FLOOR PLAN
+   on a big screen the rooms are laid out on a 4 by 4 plan, each one exactly a screen in size.
+   .plan is very tall, .stage stays stuck to the screen while you scroll through it, .world slides
+   so the right room is in view, and .cam zooms and turns. animation-timeline ties those two
+   animations to the scroll position instead of to time. not every browser has it yet, so all of
+   this sits inside @supports, and without it the rooms just stack as they do on a phone.
+
+   --x and --y are a room's place on the plan. --at is how far through the scroll the camera
+   reaches it, which the things inside the room use to start moving at the right moment */
+#hero {
+  --x: 0;
+  --y: 0;
+  --at: 0.00%;
+}
+
+#directory {
+  --x: 1;
+  --y: 0;
+  --at: 9.24%;
+}
+
+#lab {
+  --x: 2;
+  --y: 0;
+  --at: 15.13%;
+}
+
+#site {
+  --x: 3;
+  --y: 0;
+  --at: 21.01%;
+}
+
+#hall {
+  --x: 3;
+  --y: 1;
+  --at: 26.89%;
+}
+
+#sales {
+  --x: 3;
+  --y: 2;
+  --at: 32.77%;
+}
+
+#studio {
+  --x: 3;
+  --y: 3;
+  --at: 38.66%;
+}
+
+#workshop {
+  --x: 2;
+  --y: 3;
+  --at: 44.54%;
+}
+
+#desk {
+  --x: 1;
+  --y: 3;
+  --at: 50.42%;
+}
+
+#gym {
+  --x: 0;
+  --y: 3;
+  --at: 56.30%;
+}
+
+#records {
+  --x: 0;
+  --y: 2;
+  --at: 62.18%;
+}
+
+#vault {
+  --x: 0;
+  --y: 1;
+  --at: 68.07%;
+}
+
+#print {
+  --x: 1;
+  --y: 1;
+  --at: 73.95%;
+}
+
+#office {
+  --x: 2;
+  --y: 1;
+  --at: 79.83%;
+}
+
+#corridor {
+  --x: 2;
+  --y: 2;
+  --at: 85.71%;
+}
+
+#vacant {
+  --x: 1;
+  --y: 2;
+  --at: 91.60%;
 }
 
 @supports (animation-timeline: view()) {
-  @media (min-width: 701px) {
+  @media (min-width: 1000px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+    /* no scrollbar here, the map in the corner does that job. it also keeps 100vw exact */
+    html {
+      scrollbar-width: none;
+    }
+
+    /* lets the map in the corner use the plan's timeline, even though it sits outside .plan */
+    body {
+      timeline-scope: --plan;
+    }
+
+    .plan {
+      height: 2130vh;
+      view-timeline-name: --plan;
+      view-timeline-inset: 0;
+    }
+
+    .stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .cam {
+      position: absolute;
+      inset: 0;
+      animation: camera linear both;
+      animation-timeline: --plan;
+      animation-range: contain 0% contain 100%;
+    }
+
+    /* graph paper behind everything, like a drawing sheet */
+    .world {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 400vw;
+      height: 400vh;
+      background-image: linear-gradient(rgba(210, 255, 58, 0.05) 2px, transparent 2px), linear-gradient(90deg, rgba(210, 255, 58, 0.05) 2px, transparent 2px);
+      background-size: 5vw 5vw;
+      animation: travel linear both;
+      animation-timeline: --plan;
+      animation-range: contain 0% contain 100%;
+    }
+
+    /* the inset shadow is the room's walls */
+    .room {
+      position: absolute;
+      top: calc(var(--y) * 100vh);
+      left: calc(var(--x) * 100vw);
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      padding: calc(var(--nav) + 3vh) var(--pad) 11vh;
+      border: 0;
+      box-shadow: inset 0 0 0 3px rgba(210, 255, 58, 0.55);
+      /* nothing may spill into the room next door, apart from the few pixels the doors need */
+      overflow: clip;
+      overflow-clip-margin: 5px;
+    }
+
+    /* the door: a gap in the wall on the side the camera leaves through */
+    .room[data-exit]::before {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      background-color: #0e0f0c;
+    }
+
+    .room[data-exit="right"]::before,
+    .room[data-exit="left"]::before {
+      top: 42%;
+      width: 8px;
+      height: 16%;
+    }
+
+    .room[data-exit="right"]::before {
+      right: -4px;
+    }
+
+    .room[data-exit="left"]::before {
+      left: -4px;
+    }
+
+    .room[data-exit="down"]::before,
+    .room[data-exit="up"]::before {
+      left: 44%;
+      width: 12%;
+      height: 8px;
+    }
+
+    .room[data-exit="down"]::before {
+      bottom: -4px;
+    }
+
+    .room[data-exit="up"]::before {
+      top: -4px;
+    }
+
+    /* the gym is drawn upside down, so the camera has to turn right over to visit it */
+    .flipped {
+      rotate: 180deg;
+    }
+
+    .plate {
+      margin-bottom: 3vh;
+    }
+
+    .room-body {
+      flex: 1;
+      min-height: 0;
+    }
+
+    #hero {
+      min-height: 0;
+      padding: calc(var(--nav) + 14px) var(--pad) 0;
+    }
+
+    .numbers-line {
+      margin-top: 4vh;
+      font-size: clamp(1.3rem, 2.3vw, 2.6rem);
+    }
+
+    /* the resume comes out of the printer: smaller, and cut off by the bottom wall */
+    #print {
+      overflow: hidden;
+    }
+
+    #print .room-body {
+      align-items: start;
+    }
+
+    #print .sheet {
+      margin: 0 auto;
+      zoom: 0.62;
+      animation: feed linear both;
+      animation-timeline: --plan;
+      animation-range: contain calc(var(--at) - 2%) contain calc(var(--at) + 1%);
+    }
+
+    #corridor {
+      justify-content: center;
+    }
+
+    #vault .flip-tall {
+      width: 214px;
+      height: 310px;
+    }
+
+    #vacant .plate h2 {
+      font-size: clamp(4rem, 11vw, 12rem);
+    }
+
+    #vacant .note-form {
+      font-size: clamp(1.2rem, 1.9vw, 1.8rem);
+    }
+
+    #vacant .note-form textarea {
+      margin-bottom: 1.2rem;
+    }
+
+    /* on shorter laptop screens the longer rooms need slightly smaller text to fit */
+    @media (max-height: 780px) {
+      .room-text,
+      .entry-text,
+      .off {
+        font-size: 0.97rem;
+      }
+
+      .mail {
+        margin-top: 0.9rem;
+        font-size: 1.2rem;
+      }
+
+      .about-cols .text:first-of-type::first-letter {
+        font-size: 3.6rem;
+      }
+    }
+
+    /* the dot on the corner map follows the same route as the camera */
+    .hud {
+      display: flex;
+    }
+
+    .map-dot {
+      animation: map-dot linear both;
+      animation-timeline: --plan;
+      animation-range: contain 0% contain 100%;
+    }
+
+    /* THINGS INSIDE THE ROOMS
+       each of these starts a little before the camera arrives (--at) and finishes just after */
+    .bricks span,
+    .badge,
+    .fan li,
+    .layer,
+    .timeline::before,
+    .timeline::after,
+    .count,
+    .tape,
+    .fill {
+      animation-timeline: --plan;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-range: contain calc(var(--at) - 2.2%) contain calc(var(--at) + 0.8%);
+    }
+
     /* bricks get laid from the bottom row up. --o is each brick's place in the order */
     .bricks span {
-      animation: lay-brick linear both;
-      animation-timeline: view();
-      animation-range: entry calc(var(--o) * 1%) entry calc(var(--o) * 1% + 30%);
+      animation-name: lay-brick;
+      animation-range: contain calc(var(--at) - 2.4% + var(--o) * 0.03%) contain calc(var(--at) - 1.2% + var(--o) * 0.03%);
     }
 
-    /* the chart draws itself */
-    .chart .range {
-      stroke-dasharray: 300;
-      animation: draw-line linear both;
-      animation-timeline: view();
-      animation-range: entry 30% cover 45%;
+    .badge {
+      animation-name: swing;
     }
 
-    .chart .median,
-    .chart .val {
-      animation: pop-in linear both;
-      animation-timeline: view();
-      animation-range: cover 35% cover 50%;
+    /* the hand of cards starts closed. this turns each card back by its own angle, then lets go */
+    .fan li {
+      animation-name: fan-open;
     }
+
+    /* the playhead runs across and the bars appear behind it */
+    .layer {
+      animation-name: wipe-right;
+    }
+
+    .timeline::before,
+    .timeline::after {
+      animation-name: play;
+    }
+
+    .count {
+      animation-name: count-up;
+    }
+
+    .tape {
+      animation-name: unroll;
+    }
+
+    /* text that fills in. the colour is a gradient twice as wide as the text,
+       half solid and half faint, clipped to the letters and slid across */
+    .fill {
+      --on: var(--white);
+      --off: color-mix(in srgb, var(--white) 16%, transparent);
+      background-image: linear-gradient(90deg, var(--on) 50%, var(--off) 50%);
+      background-size: 200% 100%;
+      background-position: 100% 0;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation-name: fill;
+    }
+
+    /* the name in the footer fills as it scrolls in, on its own timeline */
+    .footer-name {
+      view-timeline-name: --foot;
+    }
+
+    .footer-name .fill {
+      --on: var(--lime);
+      --off: var(--dark);
+      animation-timeline: --foot;
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+/* THE ROUTE
+   lobby, pull back to see the whole building, then room by room in a spiral that ends in the middle.
+   travel moves the plan, camera zooms out a little and leans on every move, and turns right over for the gym */
+@keyframes travel {
+  0.00% {
+    translate: 0vw 0vh;
+  }
+
+  1.89% {
+    translate: 0vw 0vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  4.83% {
+    translate: -150vw -150vh;
+  }
+
+  6.30% {
+    translate: -150vw -150vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  9.24% {
+    translate: -100vw 0vh;
+  }
+
+  11.76% {
+    translate: -100vw 0vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  15.13% {
+    translate: -200vw 0vh;
+  }
+
+  17.65% {
+    translate: -200vw 0vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  21.01% {
+    translate: -300vw 0vh;
+  }
+
+  23.53% {
+    translate: -300vw 0vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  26.89% {
+    translate: -300vw -100vh;
+  }
+
+  29.41% {
+    translate: -300vw -100vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  32.77% {
+    translate: -300vw -200vh;
+  }
+
+  35.29% {
+    translate: -300vw -200vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  38.66% {
+    translate: -300vw -300vh;
+  }
+
+  41.18% {
+    translate: -300vw -300vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  44.54% {
+    translate: -200vw -300vh;
+  }
+
+  47.06% {
+    translate: -200vw -300vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  50.42% {
+    translate: -100vw -300vh;
+  }
+
+  52.94% {
+    translate: -100vw -300vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  56.30% {
+    translate: 0vw -300vh;
+  }
+
+  58.82% {
+    translate: 0vw -300vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  62.18% {
+    translate: 0vw -200vh;
+  }
+
+  64.71% {
+    translate: 0vw -200vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  68.07% {
+    translate: 0vw -100vh;
+  }
+
+  70.59% {
+    translate: 0vw -100vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  73.95% {
+    translate: -100vw -100vh;
+  }
+
+  76.47% {
+    translate: -100vw -100vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  79.83% {
+    translate: -200vw -100vh;
+  }
+
+  82.35% {
+    translate: -200vw -100vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  85.71% {
+    translate: -200vw -200vh;
+  }
+
+  88.24% {
+    translate: -200vw -200vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  91.60% {
+    translate: -100vw -200vh;
+  }
+
+  95.38% {
+    translate: -100vw -200vh;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  98.74%, 100.00% {
+    translate: -150vw -150vh;
+  }
+}
+
+@keyframes camera {
+  0.00% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  1.89% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  4.83% {
+    scale: 0.25;
+    rotate: 0deg;
+  }
+
+  6.30% {
+    scale: 0.25;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  9.24% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  11.76% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  13.45% {
+    scale: 0.8;
+    rotate: 3deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  15.13% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  17.65% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  19.33% {
+    scale: 0.8;
+    rotate: 3deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  21.01% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  23.53% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  25.21% {
+    scale: 0.8;
+    rotate: 3deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  26.89% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  29.41% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  31.09% {
+    scale: 0.8;
+    rotate: 3deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  32.77% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  35.29% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  36.97% {
+    scale: 0.8;
+    rotate: 3deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  38.66% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  41.18% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  42.86% {
+    scale: 0.8;
+    rotate: -3deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  44.54% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  47.06% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  48.74% {
+    scale: 0.8;
+    rotate: -3deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  50.42% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  52.94% {
+    scale: 1;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  54.62% {
+    scale: 0.8;
+    rotate: 90deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  56.30% {
+    scale: 1;
+    rotate: 180deg;
+  }
+
+  58.82% {
+    scale: 1;
+    rotate: 180deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  60.50% {
+    scale: 0.8;
+    rotate: 270deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  62.18% {
+    scale: 1;
+    rotate: 360deg;
+  }
+
+  64.71% {
+    scale: 1;
+    rotate: 360deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  66.39% {
+    scale: 0.8;
+    rotate: 357deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  68.07% {
+    scale: 1;
+    rotate: 360deg;
+  }
+
+  70.59% {
+    scale: 1;
+    rotate: 360deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  72.27% {
+    scale: 0.8;
+    rotate: 363deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  73.95% {
+    scale: 1;
+    rotate: 360deg;
+  }
+
+  76.47% {
+    scale: 1;
+    rotate: 360deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  78.15% {
+    scale: 0.8;
+    rotate: 363deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  79.83% {
+    scale: 1;
+    rotate: 360deg;
+  }
+
+  82.35% {
+    scale: 1;
+    rotate: 360deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  84.03% {
+    scale: 0.8;
+    rotate: 363deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  85.71% {
+    scale: 1;
+    rotate: 360deg;
+  }
+
+  88.24% {
+    scale: 1;
+    rotate: 360deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  89.92% {
+    scale: 0.8;
+    rotate: 357deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  91.60% {
+    scale: 1;
+    rotate: 360deg;
+  }
+
+  95.38% {
+    scale: 1;
+    rotate: 360deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  98.74%, 100.00% {
+    scale: 0.25;
+    rotate: 360deg;
+  }
+}
+
+@keyframes map-dot {
+  0.00%, 1.89% {
+    left: 12.5%;
+    top: 12.5%;
+  }
+
+  9.24%, 11.76% {
+    left: 37.5%;
+    top: 12.5%;
+  }
+
+  15.13%, 17.65% {
+    left: 62.5%;
+    top: 12.5%;
+  }
+
+  21.01%, 23.53% {
+    left: 87.5%;
+    top: 12.5%;
+  }
+
+  26.89%, 29.41% {
+    left: 87.5%;
+    top: 37.5%;
+  }
+
+  32.77%, 35.29% {
+    left: 87.5%;
+    top: 62.5%;
+  }
+
+  38.66%, 41.18% {
+    left: 87.5%;
+    top: 87.5%;
+  }
+
+  44.54%, 47.06% {
+    left: 62.5%;
+    top: 87.5%;
+  }
+
+  50.42%, 52.94% {
+    left: 37.5%;
+    top: 87.5%;
+  }
+
+  56.30%, 58.82% {
+    left: 12.5%;
+    top: 87.5%;
+  }
+
+  62.18%, 64.71% {
+    left: 12.5%;
+    top: 62.5%;
+  }
+
+  68.07%, 70.59% {
+    left: 12.5%;
+    top: 37.5%;
+  }
+
+  73.95%, 76.47% {
+    left: 37.5%;
+    top: 37.5%;
+  }
+
+  79.83%, 82.35% {
+    left: 62.5%;
+    top: 37.5%;
+  }
+
+  85.71%, 88.24% {
+    left: 62.5%;
+    top: 62.5%;
+  }
+
+  91.60%, 95.38% {
+    left: 37.5%;
+    top: 62.5%;
   }
 }
 
 @keyframes lay-brick {
   from {
     opacity: 0;
-    transform: translateY(-60px) rotate(-8deg);
+    transform: translateY(-70px) rotate(-8deg);
+  }
+}
+
+@keyframes swing {
+  0% {
+    transform: rotate(24deg);
   }
 
-  to {
-    opacity: 1;
+  35% {
+    transform: rotate(-13deg);
+  }
+
+  62% {
+    transform: rotate(7deg);
+  }
+
+  84% {
+    transform: rotate(-3deg);
+  }
+
+  100% {
     transform: none;
   }
 }
 
-@keyframes draw-line {
+@keyframes fan-open {
   from {
-    stroke-dashoffset: 300;
-  }
-
-  to {
-    stroke-dashoffset: 0;
+    transform: rotate(calc((var(--n) - 3.5) * -9deg));
   }
 }
 
-@keyframes pop-in {
+@keyframes wipe-right {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    clip-path: inset(0 100% 0 -200px);
   }
 
   to {
-    opacity: 1;
+    clip-path: inset(0 0 0 -200px);
+  }
+}
+
+@keyframes play {
+  from {
+    left: 0;
+  }
+}
+
+@keyframes count-up {
+  from {
+    --num: 0;
+  }
+}
+
+@keyframes unroll {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes fill {
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes feed {
+  from {
+    translate: 0 70vh;
+  }
+}
+
+/* people who have asked their computer for less motion get no loading screen and no rising letters */
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    display: none;
+  }
+
+  .ch {
     transform: none;
-  }
-}
-
-/* PHOTO WALL: three columns sliding past each other */
-.frames {
-  padding: 0 2rem;
-  overflow: hidden;
-  background-color: var(--black);
-}
-
-.frames-wall {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  height: 130vh;
-}
-
-.frames-col {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.tile {
-  position: relative;
-  flex-shrink: 0;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.tile img {
-  display: block;
-  width: 100%;
-  height: 42vh;
-  object-fit: cover;
-  filter: grayscale(100%);
-  transition: filter 0.5s, scale 0.6s;
-}
-
-.tile:hover img {
-  filter: grayscale(0%);
-  scale: 1.06;
-}
-
-.tile figcaption {
-  position: absolute;
-  left: 1rem;
-  bottom: 0.8rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  background-color: rgba(14, 15, 12, 0.75);
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--lime);
-}
-
-.tile-word {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 22vh;
-  background-color: var(--lime);
-  color: #0e0f0c;
-  font-family: var(--heading-font);
-  font-size: 5rem;
-  text-transform: uppercase;
-}
-
-.tile-word.hollow {
-  background-color: transparent;
-  border: 2px solid var(--edge);
-  color: transparent;
-  -webkit-text-stroke: 2px var(--white);
-}
-
-@supports (animation-timeline: view()) {
-  @media (min-width: 701px) {
-    .col-up {
-      animation: col-up linear both;
-      animation-timeline: view();
-    }
-
-    .col-down {
-      animation: col-down linear both;
-      animation-timeline: view();
-    }
-  }
-}
-
-@keyframes col-up {
-  from {
-    transform: translateY(10%);
+    animation: none;
   }
 
-  to {
-    transform: translateY(-30%);
-  }
-}
-
-@keyframes col-down {
-  from {
-    transform: translateY(-35%);
-  }
-
-  to {
-    transform: translateY(5%);
-  }
-}
-
-/* SMALLER DETAILS */
-
-/* the sentence with the numbers in it, at the end of about */
-#about .numbers-line {
-  margin-top: 4rem;
-}
-
-.light .numbers-line {
-  color: var(--grey);
-}
-
-.light .numbers-line .count {
-  padding: 0.05em 0.15em;
-  border-radius: 6px;
-  background-color: var(--lime);
-  color: #0e0f0c;
-}
-
-/* on paper: the formal bits sit above the sheet */
-.paper-extras {
-  margin-bottom: 5rem;
-}
-
-.paper-extras > .sub-heading:first-child {
-  margin-top: 2rem;
-}
-
-.numbers-line {
-  max-width: 1150px;
-  font-size: 2.6rem;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--grey);
-}
-
-.numbers-line .count {
-  display: inline-block;
-  min-width: 0.6em;
-  font-size: 1.5em;
-  line-height: 1;
-  text-align: center;
-  color: var(--lime);
-}
-
-/* a line from the acceptance email */
-.mail {
-  margin-top: 1rem;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--edge);
-  border-radius: 6px;
-  background-color: #0e0f0c;
-  font-family: "Courier New", monospace;
-  font-size: 0.95rem;
-  color: var(--white);
-}
-
-.mail span {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-size: 0.75rem;
-  color: var(--grey);
-}
-
-/* status word on each right now panel */
-.panel-no {
-  font-size: 3.2rem;
-  text-transform: uppercase;
-}
-
-/* photo wall data tiles: big figure, small line under it */
-.tile-word {
-  flex-direction: column;
-  font-size: 4.2rem;
-  line-height: 1;
-}
-
-.tile-word small {
-  margin-top: 0.6rem;
-  font-family: var(--text-font);
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  -webkit-text-stroke: 0;
-  color: inherit;
-}
-
-.tile-word.hollow small {
-  color: var(--grey);
-}
-
-/* contact form written like a note */
-.note-form p {
-  font-size: 1.5rem;
-  line-height: 1.6;
-}
-
-.note-form select {
-  display: inline-block;
-  width: auto;
-  padding: 0.1rem 0.4rem;
-  border: none;
-  border-bottom: 2px solid var(--lime);
-  border-radius: 0;
-  background-color: transparent;
-  color: var(--lime);
-  font-size: 1.5rem;
-}
-
-.note-form label {
-  display: block;
-  margin-top: 1.5rem;
-}
-
-.note-form select {
-  min-height: 0;
-}
-
-.note-form option {
-  background-color: #0e0f0c;
-  color: #f1f2ec;
-}
-
-/* webgl photo: the canvas sits exactly over the photo, and the photo hides behind it */
-.hero-gl {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-}
-
-.hero-photo.has-gl img {
-  visibility: hidden;
-}
-
-/* section-to-section wipe */
-.wipe {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-  background-color: var(--lime);
-  color: #0e0f0c;
-  font-family: var(--heading-font);
-  font-size: 10vw;
-  text-transform: uppercase;
-  pointer-events: none;
-  transform: translateY(100%);
-}
-
-.wipe-in {
-  animation: wipe-in 0.55s cubic-bezier(0.7, 0, 0.2, 1) both;
-}
-
-.wipe-out {
-  animation: wipe-out 0.6s cubic-bezier(0.7, 0, 0.2, 1) 0.1s both;
-}
-
-@keyframes wipe-in {
-  from {
-    transform: translateY(100%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes wipe-out {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(-100%);
+  .scroll-hint::after {
+    animation: none;
   }
 }
 
 /* SMALLER LAPTOPS AND TABLETS */
 @media (max-width: 1100px) {
-  h1 {
-    font-size: 8.5rem;
-  }
-
-  .big-link {
-    font-size: 1.8rem;
-  }
-
-  .numbers-line {
-    font-size: 2.1rem;
-  }
-
-  .tile-word {
-    font-size: 3.2rem;
+  .has-gl .hero-note {
+    display: none;
   }
 }
 
-/* PHONES */
+/* PHONES
+   one column, one room after another. no camera */
 @media (max-width: 700px) {
-  .navbar {
-    flex-wrap: wrap;
-    padding: 0.5rem 1rem;
+  body {
+    font-size: 16px;
   }
 
-  .nav-links {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 0 1rem;
-    font-size: 0.9rem;
-  }
-
-  .nav-links > .nav-link,
-  .btn {
-    white-space: nowrap;
-  }
-
-  h1 {
-    font-size: 4.5rem;
-  }
-
-  .count {
-    font-size: 4.5rem;
-  }
-
-  .band-text {
-    font-size: 3.5rem;
-  }
-
-  .bands {
-    height: 220px;
-  }
-
-  .local-time {
+  .cursor,
+  .hud,
+  .scroll-hint,
+  .nav-link:not(.keep) {
     display: none;
   }
 
-  .tracker {
-    display: none;
-  }
-
-  .frames-wall {
-    grid-template-columns: 1fr 1fr;
-    height: auto;
-  }
-
-  .frames-col:nth-child(3) {
-    display: none;
-  }
-
-  .tile-word {
-    font-size: 2.2rem;
-  }
-
-  .numbers-line {
-    font-size: 1.6rem;
-  }
-
-  .note-form p,
-  .note-form select {
-    font-size: 1.15rem;
-  }
-
-  h2 {
-    font-size: 3rem;
-  }
-
-  .big-link {
-    font-size: 1.6rem;
-  }
-
-  section {
-    padding: 4rem 1rem;
+  .room {
+    padding: 11vh var(--pad) 9vh;
   }
 
   #hero {
-    flex-direction: column-reverse;
+    justify-content: flex-start;
+    gap: 5vh;
+    padding-top: calc(var(--nav) + 14px);
+    padding-bottom: 3vh;
+  }
+
+  .hero-top {
+    flex-direction: column;
+  }
+
+  .hero-side {
     align-items: flex-start;
-    gap: 3rem;
-    padding: 2.5rem 1rem 4rem;
   }
 
   .hero-photo {
-    width: 70%;
-  }
-
-  .track-layout {
-    grid-template-columns: 1fr;
-    grid-template-areas: "head" "cards";
-    gap: 0;
-  }
-
-  .track-head {
     position: static;
+    width: 74%;
+    margin: 0 auto;
+    translate: none;
   }
 
-  .stack-card {
-    flex-direction: column;
-    gap: 0.5rem;
-    min-height: 0;
+  h1 {
+    margin-top: -12vw;
+    font-size: 20.5vw;
   }
 
-  .card-no {
-    font-size: 3rem;
+  .plate {
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
   }
 
-  th,
-  td {
-    padding: 0.7rem 0.4rem;
-    font-size: 0.85rem;
-  }
-
-  .result {
+  .plate h2 {
     white-space: normal;
   }
 
-  /* the education table was going off the screen on my phone, smaller text fixed it */
+  .plate .note {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .room-body,
+  .gym-row,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: "words" "thing";
+    gap: 2.2rem;
+  }
+
+  .contact-grid {
+    grid-template-areas: "form" "direct";
+  }
+
+  .gym-row {
+    grid-template-areas: none;
+  }
+
+  .fan {
+    margin: 30px auto 70px;
+    scale: 0.8;
+  }
+
+  .layer {
+    font-size: 0.8rem;
+  }
+
+  /* the tables were wider than my phone, so smaller text and the year on its own line */
+  table {
+    font-size: 0.8rem;
+  }
+
+  td,
+  th {
+    padding-right: 0.5rem;
+  }
+
   .when {
-    font-size: 1rem;
+    font-size: 1.05rem;
+  }
+
+  .dir-table td:first-child {
+    font-size: 0.9rem;
+    white-space: normal;
   }
 
   .year {
@@ -2388,63 +2749,116 @@ body::before {
     margin-left: 0;
   }
 
-  .float-left,
-  .float-right {
-    float: none;
-    width: 85%;
-    margin: 0 auto 2rem;
+  .result {
+    white-space: normal;
+  }
+
+  .kit {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .kit dd {
+    margin-bottom: 0.8rem;
+  }
+
+  .vault-body {
+    align-items: stretch;
+  }
+
+  .flip,
+  .flip-tall {
+    width: 100%;
+  }
+
+  .flip-tall {
+    height: 440px;
   }
 
   .sheet {
-    padding: 1.5rem;
+    padding: 1.4rem;
+    font-size: 13px;
+  }
+
+  .sheet h3 {
+    font-size: 2rem;
   }
 
   .sheet-cols,
-  .contact-grid {
+  .about-cols {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 
-  footer {
+  .about-cols {
+    gap: 1rem;
+  }
+
+  .numbers-line {
+    font-size: 1.4rem;
+  }
+
+  .lead {
+    font-size: 2.2rem;
+  }
+
+  .footer-row {
     flex-direction: column;
-    padding: 2rem 1rem;
   }
 }
 
-/* PRINT - only the resume part prints */
+/* PRINT
+   only the paper resume prints, on one A4 page. this is where resume.pdf comes from.
+   everything the floor plan does is switched off first, so the sheet is just a normal block */
 @media print {
   @page {
     size: A4;
     margin: 12mm;
   }
 
+  html,
   body {
     background: #ffffff;
     color: #000000;
-  }body::before,
-body::after,
-.paper-extras,
-.cursor,
-.wipe,
-.tracker,
-.hero-gl,
-.frames,
-.bands,
-.local-time,
-.scroll-hint,
-.band,
-#numbers,
-.navbar,
-#hero,
-footer,
-main > section:not(#resume),
-#resume > h2,
-#resume > p {
+  }
+
+  .loader,
+  .wipe,
+  .cursor,
+  .hud,
+  .navbar,
+  footer,
+  .room:not(#print),
+  #print .plate,
+  #print .room-text,
+  .sheet::after {
     display: none;
   }
 
-  #resume {
+  .plan,
+  .stage,
+  .cam,
+  .world,
+  #print,
+  #print .room-body {
+    position: static;
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0;
     padding: 0;
-    background: #ffffff;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    overflow: visible;
+    translate: none;
+    scale: none;
+    rotate: none;
+    animation: none;
+  }
+
+  #print::before {
+    display: none;
   }
 
   .sheet {
@@ -2452,18 +2866,14 @@ main > section:not(#resume),
     margin: 0;
     padding: 0;
     box-shadow: none;
-    animation: none;
-    transform: none;
     color: #000000;
     font-size: 10.5pt;
+    zoom: 1;
+    translate: none;
+    animation: none;
   }
 
-  .sheet::after {
-    display: none;
-  }
-
-  /* the resume kept spilling onto a 2nd page after I added bloomberg,
-     so smaller font + less space between sections */
+  /* it kept spilling onto a second page, so the gaps between the parts are tighter here */
   .sheet h4 {
     margin: 0.9rem 0 0.35rem;
     padding-top: 0.35rem;
