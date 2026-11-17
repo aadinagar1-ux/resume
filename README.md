@@ -20,4 +20,5 @@ Built with HTML, CSS and a small amount of JavaScript. No frameworks.
 ## Contact
 
 aadinagar1@gmail.com
+
 https://www.linkedin.com/in/aadi-nagar-8253911b7/
