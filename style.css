@@ -1,7 +1,7 @@
 /* Aadi Nagar - resume website
-   the site is the floor plan of a headquarters I haven't built yet, and every part is a room.
+   the site is the headquarters I haven't built yet: 4 floors, and every part of the page is a room.
    order of this file: settings, base, things that stay on screen, the rooms one by one,
-   motion off, smaller screens, and print. the floor plan and its camera are in plan.css */
+   motion off, smaller screens, and print. the sideways floors and the lift are in plan.css */
 
 /* SETTINGS
    colours, fonts and sizes sit here so I only ever change them in one place */
@@ -290,15 +290,15 @@ h3 {
   content: attr(data-word);
 }
 
-/* bottom left: a small map of the building. the dot is where you are,
-   and script.js writes the room's name next to it */
+/* bottom left: the display you'd see in a lift. the floor, then the room.
+   script.js keeps both up to date */
 .hud {
   position: fixed;
   left: var(--pad);
   bottom: 18px;
   z-index: 40;
-  display: none; /* plan.css shows it when the camera is running */
-  align-items: flex-end;
+  display: none; /* plan.css shows it when the floors are sliding */
+  align-items: center;
   gap: 12px;
   color: #ffffff;
   font-size: 0.8rem;
@@ -313,27 +313,14 @@ h3 {
   opacity: 1;
 }
 
-/* 4 by 4, drawn with two striped gradients */
-.map {
-  position: relative;
-  width: 65px;
-  height: 41px;
+.hud-floor {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
   border: 1px solid #ffffff;
-  background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px);
-  background-size: 16px 10px;
-  background-position: -1px -1px;
-  opacity: 0.9;
-}
-
-.map-dot {
-  position: absolute;
-  top: 12.5%;
-  left: 12.5%;
-  width: 9px;
-  height: 9px;
-  margin: -5px 0 0 -5px;
-  border-radius: 50%;
-  background-color: #ffffff;
+  font-family: var(--title);
+  font-size: 1rem;
 }
 
 /* lime panel that covers the page for a moment when you jump to a section.
@@ -542,7 +529,7 @@ h3 {
   box-shadow: inset 0 -1px 0 currentColor;
 }
 
-/* ROOM 1, THE LOBBY
+/* G01, THE LOBBY
    my first name on the left, surname on the right, photo in the middle */
 #hero {
   position: relative;
@@ -586,16 +573,19 @@ h3 {
   gap: 1.5rem;
 }
 
-/* the photo is black and white on its own. when gl.js runs, a canvas of dots covers it
-   and the photo only shows through the round window, in colour */
+/* the photo is black and white until you point at it. it opens like a pair of doors after
+   the loading screen, and leans towards the mouse (--px and --py come from script.js) */
 .hero-photo {
   position: absolute;
   top: 46%;
   left: 50%;
-  z-index: 0;
+  z-index: 1;
   width: min(34vw, 58vh);
   aspect-ratio: 4 / 5;
   translate: -50% -50%;
+  transform: perspective(1000px) rotateY(calc(var(--px, 0) * 10deg)) rotateX(calc(var(--py, 0) * -8deg));
+  clip-path: inset(0 50%);
+  animation: open-photo 1.3s var(--out) 2.1s forwards;
 }
 
 .hero-photo img {
@@ -603,63 +593,48 @@ h3 {
   height: 100%;
   object-fit: cover;
   filter: grayscale(1) contrast(1.1);
+  scale: 1.18;
+  animation: settle 1.8s var(--out) 2.1s forwards;
+  transition: filter 0.6s;
 }
 
-.has-gl .hero-photo img {
+.hero-photo:hover img {
   filter: none;
 }
 
-/* the mask cuts a round hole in the canvas. gl.js keeps --lx, --ly and --lens up to date */
+/* a thin lime frame a little behind the photo, so it reads as something standing in the room */
+.hero-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid var(--lime);
+  translate: 18px 18px;
+}
+
+@keyframes open-photo {
+  to {
+    clip-path: inset(0 -40px -40px 0);
+  }
+}
+
+@keyframes settle {
+  to {
+    scale: 1;
+  }
+}
+
+/* the building in dots that gl.js draws behind everything in the lobby */
 .hero-gl {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   width: 100%;
   height: 100%;
-  -webkit-mask-image: radial-gradient(circle at var(--lx, 50%) var(--ly, 40%), transparent calc(var(--lens, 0px) - 1px), #000000 var(--lens, 0px));
-  mask-image: radial-gradient(circle at var(--lx, 50%) var(--ly, 40%), transparent calc(var(--lens, 0px) - 1px), #000000 var(--lens, 0px));
-}
-
-/* lime rim round the window */
-#hero.has-gl::after {
-  content: "";
-  position: absolute;
-  top: var(--ly);
-  left: var(--lx);
-  z-index: 2;
-  width: calc(var(--lens) * 2);
-  height: calc(var(--lens) * 2);
-  border: min(1px, var(--lens)) solid var(--lime);
-  border-radius: 50%;
-  translate: -50% -50%;
   pointer-events: none;
 }
 
-.hero-note {
-  display: none;
-  position: absolute;
-  top: 27%;
-  left: calc(50% + min(17vw, 29vh) + 44px);
-  z-index: 3;
-  width: 15ch;
-}
-
-.has-gl .hero-note {
-  display: block;
-}
-
-/* short line joining the note to the photo */
-.hero-note::before {
-  content: "";
-  position: absolute;
-  top: 0.65em;
-  right: calc(100% + 10px);
-  width: 22px;
-  height: 1px;
-  background-color: var(--grey);
-}
-
-/* --px and --py come from script.js (-0.5 to 0.5), so the name leans away from the mouse */
+/* the name leans the other way to the photo */
 h1 {
   position: relative;
   z-index: 2;
@@ -739,10 +714,41 @@ h1 {
 }
 
 /* THE BUILDING
-   every part of the page is a room. here they just come one after another down the page,
-   which is what a phone gets. the floor plan and the camera are in plan.css */
-.plan {
+   every part of the page is a room, and the rooms are on 4 floors. here they just come one after
+   another down the page, which is what a phone gets. the sliding and the lift are in plan.css */
+.building {
   margin-top: calc(var(--nav) * -1);
+}
+
+/* when the floors are stacked, the lift sign is just a heading between them */
+.lift-sign {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+  padding: 9vh var(--pad) 3vh;
+  border-top: 1px solid var(--lime);
+}
+
+.floor:first-child .lift-sign {
+  display: none;
+}
+
+.lift-no {
+  color: var(--lime);
+  font-family: var(--title);
+  font-size: 3.4rem;
+  line-height: 0.9;
+}
+
+.lift-name {
+  font-family: var(--title);
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}
+
+.doors {
+  display: none;
 }
 
 .room {
@@ -805,7 +811,7 @@ h1 {
   grid-area: thing;
 }
 
-/* ROOMS 3 TO 7, THE WORK */
+/* FIRST FLOOR, THE WORK */
 cite {
   display: block;
   margin-top: 0.9rem;
@@ -1066,7 +1072,7 @@ cite {
   color: var(--lime);
 }
 
-/* ROOMS 8 AND 9, STILL BEING BUILT */
+/* SECOND FLOOR: WHAT'S STILL BEING BUILT, AND THE GYM */
 /* workshop and trading desk: a strip of hazard tape, because both are still being built */
 .tape {
   justify-self: stretch;
@@ -1121,7 +1127,6 @@ cite {
   font-family: var(--text);
 }
 
-/* ROOM 10, THE GYM */
 /* gym: three things side by side */
 .gym-row {
   grid-template-columns: repeat(3, 1fr);
@@ -1190,7 +1195,7 @@ cite {
   -webkit-text-stroke: 2px var(--white);
 }
 
-/* ROOMS 2 AND 11 TO 13: DIRECTORY, RECORDS, VAULT, PRINT ROOM */
+/* DIRECTORY, RECORDS ROOM, VAULT AND PRINT ROOM */
 /* the directory: every room name is a link that takes you there */
 .dir-table td {
   padding-top: 0.55rem;
@@ -1514,17 +1519,14 @@ th:last-child {
   content: attr(data-suffix);
 }
 
-/* the corridor is one sentence and nothing else */
+/* the sentence at the top of the directory */
 .lead {
   max-width: 16em;
-  font-size: clamp(2rem, 6vw, 6.6rem);
+  margin-bottom: 1.6rem;
+  font-size: clamp(1.7rem, 2.9vw, 3.2rem);
   font-weight: 500;
-  line-height: 1.04;
-  letter-spacing: -0.035em;
-}
-
-#corridor .note {
-  margin-top: 4vh;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
 }
 
 /* the vacant room is the only lime one. its form sits beside the direct links */
@@ -1663,19 +1665,22 @@ footer {
   animation: none;
 }
 
-.still .scroll-hint::after {
+.still .scroll-hint::after,
+.still .hero-photo,
+.still .hero-photo img {
   animation: none;
 }
 
-/* SMALLER LAPTOPS AND TABLETS */
-@media (max-width: 1100px) {
-  .has-gl .hero-note {
-    display: none;
-  }
+.still .hero-photo {
+  clip-path: none;
+}
+
+.still .hero-photo img {
+  scale: 1;
 }
 
 /* PHONES
-   one column, one room after another. no camera */
+   one column, one room after another */
 @media (max-width: 700px) {
   body {
     font-size: 16px;
@@ -1712,6 +1717,7 @@ footer {
     width: 74%;
     margin: 0 auto;
     translate: none;
+    transform: none;
   }
 
   h1 {
@@ -1844,7 +1850,7 @@ footer {
 
 /* PRINT
    only the paper resume prints, on one A4 page. this is where resume.pdf comes from.
-   everything the floor plan does is switched off first, so the sheet is just a normal block */
+   everything plan.css does is switched off first, so the sheet is just a normal block */
 @media print {
   @page {
     size: A4;
@@ -1863,6 +1869,7 @@ footer {
   .hud,
   .navbar,
   footer,
+  .lift,
   .room:not(#print),
   #print .plate,
   #print .room-text,
@@ -1870,10 +1877,10 @@ footer {
     display: none;
   }
 
-  .plan,
-  .stage,
-  .cam,
-  .world,
+  .building,
+  .floor,
+  .floor-pin,
+  .floor-track,
   #print,
   #print .room-body {
     position: static;

@@ -1,216 +1,238 @@
-/* Aadi Nagar - resume website, the floor plan
-   this file is only the camera version of the page. style.css has everything else.
-   the motion button in the menu switches this whole file off.
+/* Aadi Nagar - resume website, the floors and the lift
+   style.css has everything else. this file only adds the movement, and the motion button
+   in the menu switches the whole file off.
 
-   on a big screen the rooms are laid out on a 4 by 4 plan, each one exactly a screen in size.
-   .plan is very tall, .stage stays stuck to the screen while you scroll through it, .world slides
-   so the right room is in view, and .cam zooms and turns. animation-timeline ties those two
-   animations to the scroll position instead of to time. not every browser has it yet, so all of
-   this sits inside @supports, and without it the rooms just stack as they do on a phone.
+   each floor is a tall section. while you scroll through it, .floor-pin stays stuck to the screen
+   and the row of rooms inside slides sideways, stopping at each room. every floor goes the
+   opposite way to the one before. between floors, lift doors close over the last room, the next
+   floor comes up with its doors shut, and they open on its first room.
 
-   --x and --y are a room's place on the plan. --at is how far through the scroll the camera
-   reaches it, which the things inside the room use to start moving at the right moment */
-#hero {
-  --x: 0;
-  --y: 0;
-  --at: 0.00%;
-}
+   animation-timeline ties ordinary @keyframes animations to the scroll position instead of to
+   time, which is what makes all of this follow the scroll. not every browser has it yet, so it
+   all sits inside @supports, and without it the rooms simply stack.
 
-#directory {
-  --x: 1;
-  --y: 0;
-  --at: 9.24%;
-}
-
-#lab {
-  --x: 2;
-  --y: 0;
-  --at: 15.13%;
-}
-
-#site {
-  --x: 3;
-  --y: 0;
-  --at: 21.01%;
-}
-
-#hall {
-  --x: 3;
-  --y: 1;
-  --at: 26.89%;
-}
-
-#sales {
-  --x: 3;
-  --y: 2;
-  --at: 32.77%;
-}
-
-#studio {
-  --x: 3;
-  --y: 3;
-  --at: 38.66%;
-}
-
-#workshop {
-  --x: 2;
-  --y: 3;
-  --at: 44.54%;
-}
-
-#desk {
-  --x: 1;
-  --y: 3;
-  --at: 50.42%;
-}
-
-#gym {
-  --x: 0;
-  --y: 3;
-  --at: 56.30%;
-}
-
-#records {
-  --x: 0;
-  --y: 2;
-  --at: 62.18%;
-}
-
-#vault {
-  --x: 0;
-  --y: 1;
-  --at: 68.07%;
-}
-
-#print {
-  --x: 1;
-  --y: 1;
-  --at: 73.95%;
-}
-
-#office {
-  --x: 2;
-  --y: 1;
-  --at: 79.83%;
-}
-
-#corridor {
-  --x: 2;
-  --y: 2;
-  --at: 85.71%;
-}
-
-#vacant {
-  --x: 1;
-  --y: 2;
-  --at: 91.60%;
-}
+   the numbers on each room come from the route below:
+   --s to --e is while the room is arriving, --h to --x is while it leaves,
+   and --a is where a link to the room should stop */
 
 @supports (animation-timeline: view()) {
   @media (min-width: 1000px) and (min-height: 600px) {
-    /* no scrollbar here, the map in the corner does that job. it also keeps 100vw exact */
+    /* no scrollbar, the lift display in the corner does that job. it also keeps 100vw exact */
     html {
       scrollbar-width: none;
     }
 
-    /* lets the map in the corner use the plan's timeline, even though it sits outside .plan */
-    body {
-      timeline-scope: --plan;
+    .hud {
+      display: flex;
     }
 
-    .plan {
-      height: 2130vh;
-      view-timeline-name: --plan;
+    /* THE FLOORS */
+    .floor {
+      --dir: 1;
+      view-timeline-name: --floor;
       view-timeline-inset: 0;
     }
 
-    .stage {
+    .floor-reverse {
+      --dir: -1;
+    }
+
+    #floor-g {
+      height: 350.0vh;
+    }
+
+    #floor-1 {
+      height: 845.0vh;
+    }
+
+    #floor-2 {
+      height: 555.0vh;
+    }
+
+    #floor-3 {
+      height: 840.0vh;
+    }
+
+    /* graph paper on the wall behind the rooms, and a lime edge for the floor itself,
+       which you see go past between floors */
+    .floor-pin {
       position: sticky;
       top: 0;
       height: 100vh;
       overflow: hidden;
+      border-top: 2px solid var(--lime);
+      background-image: linear-gradient(rgba(210, 255, 58, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(210, 255, 58, 0.05) 1px, transparent 1px);
+      background-size: 4vw 4vw;
+      animation-timeline: --floor;
+      animation-range: contain 0% contain 100%;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
     }
 
-    .cam {
+    #floor-g .floor-pin {
+      border-top: 0;
+    }
+
+    .floor-track {
+      display: flex;
+      width: calc(var(--n) * 100vw);
+      height: 100%;
+      animation-timeline: --floor;
+      animation-range: contain 0% contain 100%;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+    }
+
+    .floor-reverse .floor-track {
+      flex-direction: row-reverse;
+    }
+
+    #floor-g .floor-pin {
+      animation-name: paper-g;
+    }
+
+    #floor-g .floor-track {
+      animation-name: ride-g;
+    }
+
+    #floor-g .door {
+      animation-name: doors-g;
+    }
+
+    #floor-1 .floor-pin {
+      animation-name: paper-1;
+    }
+
+    #floor-1 .floor-track {
+      animation-name: ride-1;
+    }
+
+    #floor-1 .door {
+      animation-name: doors-1;
+    }
+
+    #floor-2 .floor-pin {
+      animation-name: paper-2;
+    }
+
+    #floor-2 .floor-track {
+      animation-name: ride-2;
+    }
+
+    #floor-2 .door {
+      animation-name: doors-2;
+    }
+
+    #floor-3 .floor-pin {
+      animation-name: paper-3;
+    }
+
+    #floor-3 .floor-track {
+      animation-name: ride-3;
+    }
+
+    #floor-3 .door {
+      animation-name: doors-3;
+    }
+
+    /* THE LIFT
+       two doors with the floor painted across them. each door is half the screen wide but holds
+       a full-width copy of the sign, lined up with the screen, so the sign splits down the middle */
+    .lift {
       position: absolute;
       inset: 0;
-      animation: camera linear both;
-      animation-timeline: --plan;
-      animation-range: contain 0% contain 100%;
+      z-index: 30;
+      pointer-events: none;
     }
 
-    /* graph paper behind everything, like a drawing sheet */
-    .world {
+    .lift-sign {
+      display: none;
+    }
+
+    .doors {
+      display: block;
+    }
+
+    .door {
+      --d: -1;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 50%;
+      overflow: hidden;
+      background-color: #14160f;
+      background-image: repeating-linear-gradient(90deg, rgba(242, 242, 236, 0.025) 0 1px, transparent 1px 7px);
+      animation-timeline: --floor;
+      animation-range: contain 0% contain 100%;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+    }
+
+    /* the lime line where the doors meet */
+    .door-l {
+      box-shadow: inset -2px 0 0 var(--lime);
+    }
+
+    .door-r {
+      --d: 1;
+      left: auto;
+      right: 0;
+    }
+
+    .door-face {
       position: absolute;
       top: 0;
       left: 0;
-      width: 400vw;
-      height: 400vh;
-      background-image: linear-gradient(rgba(210, 255, 58, 0.05) 2px, transparent 2px), linear-gradient(90deg, rgba(210, 255, 58, 0.05) 2px, transparent 2px);
-      background-size: 5vw 5vw;
-      animation: travel linear both;
-      animation-timeline: --plan;
-      animation-range: contain 0% contain 100%;
-    }
-
-    /* the inset shadow is the room's walls */
-    .room {
-      position: absolute;
-      top: calc(var(--y) * 100vh);
-      left: calc(var(--x) * 100vw);
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2vh;
       width: 100vw;
+      height: 100%;
+      text-align: center;
+    }
+
+    .door-r .door-face {
+      left: auto;
+      right: 0;
+    }
+
+    .door-name {
+      font-family: var(--title);
+      font-size: 1.6rem;
+      text-transform: uppercase;
+    }
+
+    /* the floor number, outlined, as tall as the doors allow */
+    .door-no {
+      color: transparent;
+      font-family: var(--title);
+      font-size: 52vh;
+      line-height: 0.9;
+      -webkit-text-stroke: 2px var(--lime);
+    }
+
+    .door-rooms {
+      max-width: 40ch;
+      color: var(--grey);
+      font-family: var(--hand);
+      font-style: italic;
+      font-size: 1.3rem;
+    }
+
+    /* THE ROOMS
+       every room is exactly one screen */
+    .room {
+      position: relative;
+      flex: 0 0 100vw;
+      display: flex;
+      flex-direction: column;
       height: 100vh;
       padding: calc(var(--nav) + 3vh) var(--pad) 11vh;
       border: 0;
-      box-shadow: inset 0 0 0 3px rgba(210, 255, 58, 0.55);
-      /* nothing may spill into the room next door, apart from the few pixels the doors need */
       overflow: clip;
-      overflow-clip-margin: 5px;
-    }
-
-    /* the door: a gap in the wall on the side the camera leaves through */
-    .room[data-exit]::before {
-      content: "";
-      position: absolute;
-      z-index: 2;
-      background-color: #0e0f0c;
-    }
-
-    .room[data-exit="right"]::before,
-    .room[data-exit="left"]::before {
-      top: 42%;
-      width: 8px;
-      height: 16%;
-    }
-
-    .room[data-exit="right"]::before {
-      right: -4px;
-    }
-
-    .room[data-exit="left"]::before {
-      left: -4px;
-    }
-
-    .room[data-exit="down"]::before,
-    .room[data-exit="up"]::before {
-      left: 44%;
-      width: 12%;
-      height: 8px;
-    }
-
-    .room[data-exit="down"]::before {
-      bottom: -4px;
-    }
-
-    .room[data-exit="up"]::before {
-      top: -4px;
-    }
-
-    /* the gym is drawn upside down, so the camera has to turn right over to visit it */
-    .flipped {
-      rotate: 180deg;
     }
 
     .plate {
@@ -227,12 +249,6 @@
       padding: calc(var(--nav) + 14px) var(--pad) 0;
     }
 
-    .numbers-line {
-      margin-top: 4vh;
-      font-size: clamp(1.3rem, 2.3vw, 2.6rem);
-    }
-
-    /* the resume comes out of the printer: smaller, and cut off by the bottom wall */
     #print {
       overflow: hidden;
     }
@@ -244,18 +260,6 @@
     #print .sheet {
       margin: 0 auto;
       zoom: 0.62;
-      animation: feed linear both;
-      animation-timeline: --plan;
-      animation-range: contain calc(var(--at) - 2%) contain calc(var(--at) + 1%);
-    }
-
-    #corridor {
-      justify-content: center;
-    }
-
-    #vault .flip-tall {
-      width: 214px;
-      height: 310px;
     }
 
     #vacant .plate h2 {
@@ -268,6 +272,16 @@
 
     #vacant .note-form textarea {
       margin-bottom: 1.2rem;
+    }
+
+    #vault .flip-tall {
+      width: 214px;
+      height: 310px;
+    }
+
+    .numbers-line {
+      margin-top: 4vh;
+      font-size: clamp(1.3rem, 2.3vw, 2.6rem);
     }
 
     /* on shorter laptop screens the longer rooms need slightly smaller text to fit */
@@ -283,24 +297,24 @@
         font-size: 1.2rem;
       }
 
+      .lead {
+        font-size: 2.2rem;
+      }
+
       .about-cols .text:first-of-type::first-letter {
         font-size: 3.6rem;
       }
     }
 
-    /* the dot on the corner map follows the same route as the camera */
-    .hud {
-      display: flex;
-    }
-
-    .map-dot {
-      animation: map-dot linear both;
-      animation-timeline: --plan;
-      animation-range: contain 0% contain 100%;
-    }
-
-    /* THINGS INSIDE THE ROOMS
-       each of these starts a little before the camera arrives (--at) and finishes just after */
+    /* ARRIVING AND LEAVING
+       everything below runs on the floor's timeline, between each room's own --s and --e */
+    .room:not(#hero) .plate,
+    .room:not(#hero)::after,
+    .room-text,
+    .entry-text,
+    .room-body > :last-child,
+    .room-body.gym-row > *,
+    .office-body > *,
     .bricks span,
     .badge,
     .fan li,
@@ -309,17 +323,67 @@
     .timeline::after,
     .count,
     .tape,
-    .fill {
-      animation-timeline: --plan;
+    .fill,
+    .sim-axis .range,
+    .dir-table tbody tr,
+    .edu-table tbody tr,
+    .certs .flip,
+    .big-word,
+    #print .sheet,
+    #vacant::before {
+      animation-timeline: --floor;
       animation-timing-function: linear;
       animation-fill-mode: both;
-      animation-range: contain calc(var(--at) - 2.2%) contain calc(var(--at) + 0.8%);
+      animation-range: contain var(--s) contain var(--e);
+    }
+
+    /* the walls of each room draw themselves in, starting from the corner nearest the way you came */
+    .room:not(#hero)::after {
+      content: "";
+      position: absolute;
+      inset: calc(var(--nav) - 6px) 1.4vw 2.4vh;
+      border: 1px solid rgba(210, 255, 58, 0.3);
+      pointer-events: none;
+      animation-name: walls;
+    }
+
+    .floor-reverse .room:not(#hero)::after {
+      animation-name: walls-back;
+    }
+
+    /* the room's name rises out of a slot, and the rest of the plate slides in after it */
+    .room:not(#hero) .plate {
+      clip-path: inset(-0.3em -10vw 0 -10vw);
+      animation-name: plate-in;
+    }
+
+    .room:not(#hero) .plate h2 {
+      animation: rise-in linear both;
+      animation-timeline: --floor;
+      animation-range: contain var(--s) contain var(--e);
+    }
+
+    /* words and things come in at different speeds, so the room has depth as it slides past.
+       --dir is 1 or -1 depending on which way the floor runs */
+    .room-text,
+    .entry-text,
+    .office-body > * {
+      animation-name: words-in, words-out;
+      animation-range: contain var(--s) contain var(--e), contain var(--h) contain var(--x);
+      animation-fill-mode: both, forwards;
+    }
+
+    .room-body > :last-child,
+    .room-body.gym-row > * {
+      animation-name: thing-in, thing-out;
+      animation-range: contain var(--s) contain var(--e), contain var(--h) contain var(--x);
+      animation-fill-mode: both, forwards;
     }
 
     /* bricks get laid from the bottom row up. --o is each brick's place in the order */
     .bricks span {
       animation-name: lay-brick;
-      animation-range: contain calc(var(--at) - 2.4% + var(--o) * 0.03%) contain calc(var(--at) - 1.2% + var(--o) * 0.03%);
+      animation-range: contain calc(var(--s) + var(--o) * 0.05%) contain calc(var(--e) + var(--o) * 0.05%);
     }
 
     .badge {
@@ -349,6 +413,11 @@
       animation-name: unroll;
     }
 
+    .sim-axis .range {
+      stroke-dasharray: 322;
+      animation-name: draw-line;
+    }
+
     /* text that fills in. the colour is a gradient twice as wide as the text,
        half solid and half faint, clipped to the letters and slid across */
     .fill {
@@ -361,545 +430,599 @@
       background-clip: text;
       color: transparent;
       animation-name: fill;
+      animation-range: contain var(--s) contain calc(var(--e) + 3%);
     }
 
-    /* the name in the footer fills as it scrolls in, on its own timeline */
-    .footer-name {
-      view-timeline-name: --foot;
+    /* table rows come in one after another. :nth-child gives each row its own delay */
+    .dir-table tbody tr,
+    .edu-table tbody tr {
+      animation-name: row-in;
     }
 
-    .footer-name .fill {
-      --on: var(--lime);
-      --off: var(--dark);
-      animation-timeline: --foot;
-      animation-range: entry 0% entry 100%;
+    .dir-table tbody tr:nth-child(2),
+    .edu-table tbody tr:nth-child(2) {
+      animation-range: contain calc(var(--s) + 0.4%) contain calc(var(--e) + 0.4%);
+    }
+
+    .dir-table tbody tr:nth-child(3),
+    .edu-table tbody tr:nth-child(3) {
+      animation-range: contain calc(var(--s) + 0.8%) contain calc(var(--e) + 0.8%);
+    }
+
+    .dir-table tbody tr:nth-child(4),
+    .edu-table tbody tr:nth-child(4) {
+      animation-range: contain calc(var(--s) + 1.2%) contain calc(var(--e) + 1.2%);
+    }
+
+    .dir-table tbody tr:nth-child(5) {
+      animation-range: contain calc(var(--s) + 1.6%) contain calc(var(--e) + 1.6%);
+    }
+
+    .dir-table tbody tr:nth-child(6) {
+      animation-range: contain calc(var(--s) + 2%) contain calc(var(--e) + 2%);
+    }
+
+    .dir-table tbody tr:nth-child(7) {
+      animation-range: contain calc(var(--s) + 2.4%) contain calc(var(--e) + 2.4%);
+    }
+
+    /* the two certificates swing round to face you, like cards being dealt face down and turned */
+    .certs {
+      perspective: 1400px;
+    }
+
+    .certs .flip {
+      animation-name: deal;
+    }
+
+    .certs .flip:nth-child(2) {
+      animation-range: contain calc(var(--s) + 1%) contain calc(var(--e) + 1%);
+    }
+
+    /* LIFT gets lifted off the floor */
+    .big-word {
+      transform-origin: bottom;
+      animation-name: lift-word;
+    }
+
+    /* the resume comes out of the printer, cut off by the bottom of the room */
+    #print .sheet {
+      animation-name: feed;
+    }
+
+    /* the empty room floods with lime from the floor up */
+    #vacant {
+      isolation: isolate;
+      background-color: transparent;
+    }
+
+    #vacant::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-color: #d2ff3a;
+      transform-origin: bottom;
+      animation-name: flood-up;
     }
   }
+}
+
+/* WHERE EACH ROOM IS ON THE ROUTE */
+#hero {
+  --s: 6.00%;
+  --e: 2.00%;
+  --h: 18.00%;
+  --x: 46.00%;
+  --a: 9.00%;
+}
+
+#directory {
+  --s: 30.00%;
+  --e: 60.00%;
+  --h: 300.00%;
+  --x: 340.00%;
+  --a: 67.00%;
+}
+
+#lab {
+  --s: 2.01%;
+  --e: 8.72%;
+  --h: 14.09%;
+  --x: 23.49%;
+  --a: 11.07%;
+}
+
+#site {
+  --s: 18.12%;
+  --e: 28.19%;
+  --h: 33.56%;
+  --x: 42.95%;
+  --a: 30.54%;
+}
+
+#hall {
+  --s: 37.58%;
+  --e: 47.65%;
+  --h: 53.02%;
+  --x: 62.42%;
+  --a: 50.00%;
+}
+
+#sales {
+  --s: 57.05%;
+  --e: 67.11%;
+  --h: 72.48%;
+  --x: 81.88%;
+  --a: 69.46%;
+}
+
+#studio {
+  --s: 76.51%;
+  --e: 86.58%;
+  --h: 167.11%;
+  --x: 180.54%;
+  --a: 88.93%;
+}
+
+#workshop {
+  --s: 3.30%;
+  --e: 14.29%;
+  --h: 23.08%;
+  --x: 38.46%;
+  --a: 18.13%;
+}
+
+#desk {
+  --s: 29.67%;
+  --e: 46.15%;
+  --h: 54.95%;
+  --x: 70.33%;
+  --a: 50.00%;
+}
+
+#gym {
+  --s: 61.54%;
+  --e: 78.02%;
+  --h: 209.89%;
+  --x: 231.87%;
+  --a: 81.87%;
+}
+
+#office {
+  --s: 2.03%;
+  --e: 8.78%;
+  --h: 14.19%;
+  --x: 23.65%;
+  --a: 11.15%;
+}
+
+#records {
+  --s: 18.24%;
+  --e: 28.38%;
+  --h: 33.78%;
+  --x: 43.24%;
+  --a: 30.74%;
+}
+
+#vault {
+  --s: 37.84%;
+  --e: 47.97%;
+  --h: 53.38%;
+  --x: 62.84%;
+  --a: 50.34%;
+}
+
+#print {
+  --s: 57.43%;
+  --e: 67.57%;
+  --h: 72.97%;
+  --x: 82.43%;
+  --a: 69.93%;
+}
+
+#vacant {
+  --s: 77.03%;
+  --e: 87.16%;
+  --h: 167.57%;
+  --x: 181.08%;
+  --a: 93.24%;
 }
 
 /* THE ROUTE
-   lobby, pull back to see the whole building, then room by room in a spiral that ends in the middle.
-   travel moves the plan, camera zooms out a little and leans on every move, and turns right over for the gym */
-@keyframes travel {
+   ride moves the row of rooms, paper moves the graph paper behind it at a third of the speed,
+   and doors opens and closes the lift. the percentages are worked out from how long each stop
+   and each move is (in screens of scrolling), so every floor takes about the same time per room */
+@keyframes ride-g {
   0.00% {
-    translate: 0vw 0vh;
+    translate: 0vw 0;
   }
 
-  1.89% {
-    translate: 0vw 0vh;
+  18.00% {
+    translate: 0vw 0;
     animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
   }
 
-  4.83% {
-    translate: -150vw -150vh;
-  }
-
-  6.30% {
-    translate: -150vw -150vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  9.24% {
-    translate: -100vw 0vh;
-  }
-
-  11.76% {
-    translate: -100vw 0vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  15.13% {
-    translate: -200vw 0vh;
-  }
-
-  17.65% {
-    translate: -200vw 0vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  21.01% {
-    translate: -300vw 0vh;
-  }
-
-  23.53% {
-    translate: -300vw 0vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  26.89% {
-    translate: -300vw -100vh;
-  }
-
-  29.41% {
-    translate: -300vw -100vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  32.77% {
-    translate: -300vw -200vh;
-  }
-
-  35.29% {
-    translate: -300vw -200vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  38.66% {
-    translate: -300vw -300vh;
-  }
-
-  41.18% {
-    translate: -300vw -300vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  44.54% {
-    translate: -200vw -300vh;
-  }
-
-  47.06% {
-    translate: -200vw -300vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  50.42% {
-    translate: -100vw -300vh;
-  }
-
-  52.94% {
-    translate: -100vw -300vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  56.30% {
-    translate: 0vw -300vh;
-  }
-
-  58.82% {
-    translate: 0vw -300vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  62.18% {
-    translate: 0vw -200vh;
-  }
-
-  64.71% {
-    translate: 0vw -200vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  68.07% {
-    translate: 0vw -100vh;
-  }
-
-  70.59% {
-    translate: 0vw -100vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  73.95% {
-    translate: -100vw -100vh;
-  }
-
-  76.47% {
-    translate: -100vw -100vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  79.83% {
-    translate: -200vw -100vh;
-  }
-
-  82.35% {
-    translate: -200vw -100vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  85.71% {
-    translate: -200vw -200vh;
-  }
-
-  88.24% {
-    translate: -200vw -200vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  91.60% {
-    translate: -100vw -200vh;
-  }
-
-  95.38% {
-    translate: -100vw -200vh;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  98.74%, 100.00% {
-    translate: -150vw -150vh;
+  58.00%, 76.00%, 100.00% {
+    translate: -100vw 0;
   }
 }
 
-@keyframes camera {
+@keyframes paper-g {
   0.00% {
-    scale: 1;
-    rotate: 0deg;
+    background-position: 0.0vw 0;
   }
 
-  1.89% {
-    scale: 1;
-    rotate: 0deg;
+  18.00% {
+    background-position: 0.0vw 0;
     animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
   }
 
-  4.83% {
-    scale: 0.25;
-    rotate: 0deg;
-  }
-
-  6.30% {
-    scale: 0.25;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  9.24% {
-    scale: 1;
-    rotate: 0deg;
-  }
-
-  11.76% {
-    scale: 1;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  13.45% {
-    scale: 0.8;
-    rotate: 3deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  15.13% {
-    scale: 1;
-    rotate: 0deg;
-  }
-
-  17.65% {
-    scale: 1;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  19.33% {
-    scale: 0.8;
-    rotate: 3deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  21.01% {
-    scale: 1;
-    rotate: 0deg;
-  }
-
-  23.53% {
-    scale: 1;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  25.21% {
-    scale: 0.8;
-    rotate: 3deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  26.89% {
-    scale: 1;
-    rotate: 0deg;
-  }
-
-  29.41% {
-    scale: 1;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  31.09% {
-    scale: 0.8;
-    rotate: 3deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  32.77% {
-    scale: 1;
-    rotate: 0deg;
-  }
-
-  35.29% {
-    scale: 1;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  36.97% {
-    scale: 0.8;
-    rotate: 3deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  38.66% {
-    scale: 1;
-    rotate: 0deg;
-  }
-
-  41.18% {
-    scale: 1;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  42.86% {
-    scale: 0.8;
-    rotate: -3deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  44.54% {
-    scale: 1;
-    rotate: 0deg;
-  }
-
-  47.06% {
-    scale: 1;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  48.74% {
-    scale: 0.8;
-    rotate: -3deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  50.42% {
-    scale: 1;
-    rotate: 0deg;
-  }
-
-  52.94% {
-    scale: 1;
-    rotate: 0deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  54.62% {
-    scale: 0.8;
-    rotate: 90deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  56.30% {
-    scale: 1;
-    rotate: 180deg;
-  }
-
-  58.82% {
-    scale: 1;
-    rotate: 180deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  60.50% {
-    scale: 0.8;
-    rotate: 270deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  62.18% {
-    scale: 1;
-    rotate: 360deg;
-  }
-
-  64.71% {
-    scale: 1;
-    rotate: 360deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  66.39% {
-    scale: 0.8;
-    rotate: 357deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  68.07% {
-    scale: 1;
-    rotate: 360deg;
-  }
-
-  70.59% {
-    scale: 1;
-    rotate: 360deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  72.27% {
-    scale: 0.8;
-    rotate: 363deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  73.95% {
-    scale: 1;
-    rotate: 360deg;
-  }
-
-  76.47% {
-    scale: 1;
-    rotate: 360deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  78.15% {
-    scale: 0.8;
-    rotate: 363deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  79.83% {
-    scale: 1;
-    rotate: 360deg;
-  }
-
-  82.35% {
-    scale: 1;
-    rotate: 360deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  84.03% {
-    scale: 0.8;
-    rotate: 363deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  85.71% {
-    scale: 1;
-    rotate: 360deg;
-  }
-
-  88.24% {
-    scale: 1;
-    rotate: 360deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  89.92% {
-    scale: 0.8;
-    rotate: 357deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  91.60% {
-    scale: 1;
-    rotate: 360deg;
-  }
-
-  95.38% {
-    scale: 1;
-    rotate: 360deg;
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  98.74%, 100.00% {
-    scale: 0.25;
-    rotate: 360deg;
+  58.00%, 76.00%, 100.00% {
+    background-position: -33.33vw 0;
   }
 }
 
-@keyframes map-dot {
-  0.00%, 1.89% {
-    left: 12.5%;
-    top: 12.5%;
+@keyframes doors-g {
+  0.00% {
+    translate: calc(var(--d) * 101%) 0;
   }
 
-  9.24%, 11.76% {
-    left: 37.5%;
-    top: 12.5%;
+  76.00% {
+    translate: calc(var(--d) * 101%) 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
   }
 
-  15.13%, 17.65% {
-    left: 62.5%;
-    top: 12.5%;
-  }
-
-  21.01%, 23.53% {
-    left: 87.5%;
-    top: 12.5%;
-  }
-
-  26.89%, 29.41% {
-    left: 87.5%;
-    top: 37.5%;
-  }
-
-  32.77%, 35.29% {
-    left: 87.5%;
-    top: 62.5%;
-  }
-
-  38.66%, 41.18% {
-    left: 87.5%;
-    top: 87.5%;
-  }
-
-  44.54%, 47.06% {
-    left: 62.5%;
-    top: 87.5%;
-  }
-
-  50.42%, 52.94% {
-    left: 37.5%;
-    top: 87.5%;
-  }
-
-  56.30%, 58.82% {
-    left: 12.5%;
-    top: 87.5%;
-  }
-
-  62.18%, 64.71% {
-    left: 12.5%;
-    top: 62.5%;
-  }
-
-  68.07%, 70.59% {
-    left: 12.5%;
-    top: 37.5%;
-  }
-
-  73.95%, 76.47% {
-    left: 37.5%;
-    top: 37.5%;
-  }
-
-  79.83%, 82.35% {
-    left: 62.5%;
-    top: 37.5%;
-  }
-
-  85.71%, 88.24% {
-    left: 62.5%;
-    top: 62.5%;
-  }
-
-  91.60%, 95.38% {
-    left: 37.5%;
-    top: 62.5%;
+  96.40%, 100.00% {
+    translate: 0 0;
   }
 }
 
-/* WHAT THE THINGS INSIDE THE ROOMS DO */
+@keyframes ride-1 {
+  0.00%, 8.05% {
+    translate: -400vw 0;
+  }
+
+  14.09% {
+    translate: -400vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  27.52% {
+    translate: -300vw 0;
+  }
+
+  33.56% {
+    translate: -300vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  46.98% {
+    translate: -200vw 0;
+  }
+
+  53.02% {
+    translate: -200vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  66.44% {
+    translate: -100vw 0;
+  }
+
+  72.48% {
+    translate: -100vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  85.91%, 91.95%, 100.00% {
+    translate: 0vw 0;
+  }
+}
+
+@keyframes paper-1 {
+  0.00%, 8.05% {
+    background-position: -133.33vw 0;
+  }
+
+  14.09% {
+    background-position: -133.33vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  27.52% {
+    background-position: -100.0vw 0;
+  }
+
+  33.56% {
+    background-position: -100.0vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  46.98% {
+    background-position: -66.67vw 0;
+  }
+
+  53.02% {
+    background-position: -66.67vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  66.44% {
+    background-position: -33.33vw 0;
+  }
+
+  72.48% {
+    background-position: -33.33vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  85.91%, 91.95%, 100.00% {
+    background-position: 0.0vw 0;
+  }
+}
+
+@keyframes doors-1 {
+  0.00% {
+    translate: 0 0;
+  }
+
+  1.21% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  8.05% {
+    translate: calc(var(--d) * 101%) 0;
+  }
+
+  91.95% {
+    translate: calc(var(--d) * 101%) 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  98.79%, 100.00% {
+    translate: 0 0;
+  }
+}
+
+@keyframes ride-2 {
+  0.00%, 13.19% {
+    translate: 0vw 0;
+  }
+
+  23.08% {
+    translate: 0vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  45.05% {
+    translate: -100vw 0;
+  }
+
+  54.95% {
+    translate: -100vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  76.92%, 86.81%, 100.00% {
+    translate: -200vw 0;
+  }
+}
+
+@keyframes paper-2 {
+  0.00%, 13.19% {
+    background-position: 0.0vw 0;
+  }
+
+  23.08% {
+    background-position: 0.0vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  45.05% {
+    background-position: -33.33vw 0;
+  }
+
+  54.95% {
+    background-position: -33.33vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  76.92%, 86.81%, 100.00% {
+    background-position: -66.67vw 0;
+  }
+}
+
+@keyframes doors-2 {
+  0.00% {
+    translate: 0 0;
+  }
+
+  1.98% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  13.19% {
+    translate: calc(var(--d) * 101%) 0;
+  }
+
+  86.81% {
+    translate: calc(var(--d) * 101%) 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  98.02%, 100.00% {
+    translate: 0 0;
+  }
+}
+
+@keyframes ride-3 {
+  0.00%, 8.11% {
+    translate: -400vw 0;
+  }
+
+  14.19% {
+    translate: -400vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  27.70% {
+    translate: -300vw 0;
+  }
+
+  33.78% {
+    translate: -300vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  47.30% {
+    translate: -200vw 0;
+  }
+
+  53.38% {
+    translate: -200vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  66.89% {
+    translate: -100vw 0;
+  }
+
+  72.97% {
+    translate: -100vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  86.49%, 100.00% {
+    translate: 0vw 0;
+  }
+}
+
+@keyframes paper-3 {
+  0.00%, 8.11% {
+    background-position: -133.33vw 0;
+  }
+
+  14.19% {
+    background-position: -133.33vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  27.70% {
+    background-position: -100.0vw 0;
+  }
+
+  33.78% {
+    background-position: -100.0vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  47.30% {
+    background-position: -66.67vw 0;
+  }
+
+  53.38% {
+    background-position: -66.67vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  66.89% {
+    background-position: -33.33vw 0;
+  }
+
+  72.97% {
+    background-position: -33.33vw 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  86.49%, 100.00% {
+    background-position: 0.0vw 0;
+  }
+}
+
+@keyframes doors-3 {
+  0.00% {
+    translate: 0 0;
+  }
+
+  1.22% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  8.11%, 100.00% {
+    translate: calc(var(--d) * 101%) 0;
+  }
+}
+
+/* WHAT THE ROOMS DO */
+@keyframes walls {
+  from {
+    clip-path: inset(0 100% 100% 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes walls-back {
+  from {
+    clip-path: inset(0 0 100% 100%);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes plate-in {
+  from {
+    translate: calc(var(--dir) * 6vw) 0;
+  }
+}
+
+@keyframes rise-in {
+  0%,
+  30% {
+    transform: translateY(110%);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes words-in {
+  from {
+    opacity: 0;
+    translate: calc(var(--dir) * 12vw) 0;
+  }
+}
+
+@keyframes words-out {
+  to {
+    opacity: 0;
+    translate: calc(var(--dir) * -8vw) 0;
+  }
+}
+
+@keyframes thing-in {
+  from {
+    translate: calc(var(--dir) * 26vw) 0;
+    rotate: calc(var(--dir) * 4deg);
+  }
+}
+
+@keyframes thing-out {
+  to {
+    translate: calc(var(--dir) * -18vw) 0;
+    rotate: calc(var(--dir) * -3deg);
+  }
+}
+
 @keyframes lay-brick {
   from {
     opacity: 0;
@@ -967,14 +1090,49 @@
   }
 }
 
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 322;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @keyframes fill {
   to {
     background-position: 0 0;
   }
 }
 
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir) * 60px));
+  }
+}
+
+@keyframes deal {
+  from {
+    transform: rotateY(-110deg) translateX(-60px);
+  }
+}
+
+@keyframes lift-word {
+  from {
+    transform: scaleY(0.12);
+  }
+}
+
 @keyframes feed {
   from {
     translate: 0 70vh;
+  }
+}
+
+@keyframes flood-up {
+  from {
+    transform: scaleY(0);
   }
 }

@@ -15,7 +15,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <!-- plan.css is the floor plan and the camera. it is a separate file so the motion button can switch it off -->
+    <!-- plan.css makes the floors slide sideways and runs the lift. it is a separate file so the motion button can switch it off -->
     <link rel="stylesheet" href="plan.css" id="plan-css" />
     <script>
       // if motion was switched off last time, drop the floor plan before the page shows
@@ -26,7 +26,7 @@
         }
       } catch (e) {}
     </script>
-    <!-- script.js: scrolling, cursor, clock, the map in the corner and the small simulation. gl.js: the photo made of dots -->
+    <!-- script.js: scrolling, cursor, clock, the lift display and the small simulation. gl.js: the building drawn in dots behind my photo -->
     <script src="script.js" defer></script>
     <script src="gl.js" defer></script>
   </head>
@@ -41,8 +41,8 @@
     <!-- ring that trails the mouse -->
     <div class="cursor"></div>
 
-    <!-- bottom corner: a small map of the building with a dot for where you are, and the room's name -->
-    <p class="hud" aria-hidden="true"><span class="map"><span class="map-dot"></span></span><span id="where">lobby</span></p>
+    <!-- bottom corner: works like the display in a lift. the floor you're on, and the room -->
+    <p class="hud" aria-hidden="true"><span class="hud-floor" id="floor-no">G</span><span id="where">lobby</span></p>
 
     <nav class="navbar">
       <a href="#hero" class="brand" data-text="lobby">Aadi Nagar</a>
@@ -56,15 +56,36 @@
       </div>
     </nav>
 
-    <!-- the whole site is one floor plan. on a big screen .stage stays pinned while you scroll,
-         .cam turns and zooms, and .world slides, so it feels like a camera flying from room to room.
-         on a phone the rooms simply come one after another -->
-    <main class="plan">
-      <div class="stage">
-        <div class="cam">
-          <div class="world">
-            <!-- room 1, the lobby: my name either side of my photo -->
-            <header class="room" id="hero" data-exit="right">
+    <!-- the building: 4 floors. on a big screen each floor stays pinned while you scroll, its rooms slide
+         sideways (every floor goes the opposite way to the one before), and lift doors close and open between
+         floors. on a phone, or with motion off, the rooms simply come one after another -->
+    <main class="building">
+      <!-- ground floor: lobby, directory -->
+      <section class="floor" id="floor-g" style="--n: 2">
+        <div class="floor-pin">
+          <!-- the lift: the sign shows as a heading when the floors are stacked -->
+          <div class="lift">
+            <p class="lift-sign"><span class="lift-no">G</span> <span class="lift-name">Ground floor</span> <span class="note">Lobby, Directory</span></p>
+            <div class="doors" aria-hidden="true">
+              <span class="door door-l">
+                <span class="door-face">
+                  <span class="door-name">Ground floor</span>
+                  <span class="door-no">G</span>
+                  <span class="door-rooms">Lobby, Directory</span>
+                </span>
+              </span>
+              <span class="door door-r">
+                <span class="door-face">
+                  <span class="door-name">Ground floor</span>
+                  <span class="door-no">G</span>
+                  <span class="door-rooms">Lobby, Directory</span>
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="floor-track">
+
+            <header class="room" id="hero" style="--r: 0">
               <div class="hero-top">
                 <p class="hero-what">
                   Finance student, first year. BSc Finance at NMIMS Bengaluru and the BBA in Digital
@@ -79,11 +100,10 @@
                 </div>
               </div>
 
-              <!-- gl.js redraws this photo as dots and opens a round window to the real one -->
+              <!-- black and white until you point at it. gl.js draws the building in dots behind it -->
               <figure class="hero-photo">
                 <img src="photo.jpg" alt="Aadi Nagar in a black blazer and white shirt" />
               </figure>
-              <p class="note hero-note">Every dot is a pixel from my photo. Move the mouse and the real one shows through.</p>
 
               <h1>
                 <span class="line first"><span class="ch" style="--i: 0">A</span><span class="ch" style="--i: 1">a</span><span class="ch" style="--i: 2">d</span><span class="ch" style="--i: 3">i</span></span>
@@ -92,22 +112,18 @@
               <a href="#directory" class="scroll-hint" data-text="directory">scroll</a>
             </header>
 
-            <!-- room 2: what this place is, and the directory -->
-            <section class="room" id="directory" data-exit="right">
+            <section class="room" id="directory" style="--r: 1">
               <header class="plate">
-                <p class="plate-no">02</p>
+                <p class="plate-no">G02</p>
                 <h2 data-decode>Directory</h2>
                 <p class="note">What this place is, and where everything is.</p>
               </header>
               <div class="room-body">
                 <div class="room-text">
+                  <p class="lead"><span class="fill">I study finance because it's the language of business, and I plan to own a few.</span></p>
                   <p>
-                    This is the floor plan of a company that doesn't exist yet. I plan to own a few
-                    businesses, so I've drawn the headquarters first.
-                  </p>
-                  <p>
-                    Every room is something I've actually done. Two are still being built, and the
-                    one in the middle is empty.
+                    So this is the headquarters, drawn before it exists. Every room is something
+                    I've actually done. Two are still being built, and the last one is empty.
                   </p>
                 </div>
                 <!-- works like the board next to a lift: the room, what happened in it, what I took from it -->
@@ -120,22 +136,49 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td><a href="#lab" data-text="research lab">03 Research lab</a></td><td>Monte Carlo study, ICMAI-MAC 2026</td><td>Research &amp; modelling</td></tr>
-                    <tr><td><a href="#site" data-text="build site">04 Build site</a></td><td>4 huts, Habitat for Humanity India</td><td>Working in a team of 5</td></tr>
-                    <tr><td><a href="#hall" data-text="debate hall">05 Debate hall</a></td><td>HFS MUN 2024</td><td>Debate &amp; public speaking</td></tr>
-                    <tr><td><a href="#sales" data-text="sales floor">06 Sales floor</a></td><td>Review cards for 5 gyms and 3 cafés</td><td>Sales</td></tr>
-                    <tr><td><a href="#studio" data-text="studio">07 Studio</a></td><td>Photoshop, After Effects, paid clips</td><td>Design &amp; video editing</td></tr>
-                    <tr><td><a href="#workshop" data-text="workshop">08 Workshop</a></td><td>This website</td><td>HTML, CSS &amp; JavaScript</td></tr>
-                    <tr><td><a href="#desk" data-text="trading desk">09 Trading desk</a></td><td>Bloomberg Market Concepts</td><td>Markets &amp; finance basics</td></tr>
+                    <tr><td><a href="#lab" data-text="research lab">101 Research lab</a></td><td>Monte Carlo study, ICMAI-MAC 2026</td><td>Research &amp; modelling</td></tr>
+                    <tr><td><a href="#site" data-text="build site">102 Build site</a></td><td>4 huts, Habitat for Humanity India</td><td>Working in a team of 5</td></tr>
+                    <tr><td><a href="#hall" data-text="debate hall">103 Debate hall</a></td><td>HFS MUN 2024</td><td>Debate &amp; public speaking</td></tr>
+                    <tr><td><a href="#sales" data-text="sales floor">104 Sales floor</a></td><td>Review cards for 5 gyms and 3 cafés</td><td>Sales</td></tr>
+                    <tr><td><a href="#studio" data-text="studio">105 Studio</a></td><td>Photoshop, After Effects, paid clips</td><td>Design &amp; video editing</td></tr>
+                    <tr><td><a href="#workshop" data-text="workshop">201 Workshop</a></td><td>This website</td><td>HTML, CSS &amp; JavaScript</td></tr>
+                    <tr><td><a href="#desk" data-text="trading desk">202 Trading desk</a></td><td>Bloomberg Market Concepts</td><td>Markets &amp; finance basics</td></tr>
                   </tbody>
                 </table>
               </div>
             </section>
+          </div>
+        </div>
+      </section>
 
-            <!-- rooms 3 to 7: the work. script.js drops 400 dots onto the axis in the lab, one for each made-up run -->
-            <section class="room" id="lab" data-exit="right">
+      <!-- first floor: research lab, build site, debate hall, sales floor, studio -->
+      <section class="floor floor-reverse" id="floor-1" style="--n: 5">
+        <div class="floor-pin">
+          <!-- the lift: the sign shows as a heading when the floors are stacked -->
+          <div class="lift">
+            <p class="lift-sign"><span class="lift-no">1</span> <span class="lift-name">First floor</span> <span class="note">Research lab, Build site, Debate hall, Sales floor, Studio</span></p>
+            <div class="doors" aria-hidden="true">
+              <span class="door door-l">
+                <span class="door-face">
+                  <span class="door-name">First floor</span>
+                  <span class="door-no">1</span>
+                  <span class="door-rooms">Research lab, Build site, Debate hall, Sales floor, Studio</span>
+                </span>
+              </span>
+              <span class="door door-r">
+                <span class="door-face">
+                  <span class="door-name">First floor</span>
+                  <span class="door-no">1</span>
+                  <span class="door-rooms">Research lab, Build site, Debate hall, Sales floor, Studio</span>
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="floor-track">
+
+            <section class="room" id="lab" style="--r: 0">
               <header class="plate">
-                <p class="plate-no">03</p>
+                <p class="plate-no">101</p>
                 <h2 data-decode>Research lab</h2>
                 <p class="note">2026. Oral presentation at NIT Goa, 10-11 December.</p>
               </header>
@@ -179,9 +222,9 @@
               </div>
             </section>
 
-            <section class="room" id="site" data-exit="down">
+            <section class="room" id="site" style="--r: 1">
               <header class="plate">
-                <p class="plate-no">04</p>
+                <p class="plate-no">102</p>
                 <h2 data-decode>Build site</h2>
                 <p class="note">2020. Habitat for Humanity India, Kharghar.</p>
               </header>
@@ -227,9 +270,9 @@
               </div>
             </section>
 
-            <section class="room" id="hall" data-exit="down">
+            <section class="room" id="hall" style="--r: 2">
               <header class="plate">
-                <p class="plate-no">05</p>
+                <p class="plate-no">103</p>
                 <h2 data-decode>Debate hall</h2>
                 <p class="note">2024. Indian Crisis Committee, HFS MUN.</p>
               </header>
@@ -248,9 +291,9 @@
               </div>
             </section>
 
-            <section class="room" id="sales" data-exit="down">
+            <section class="room" id="sales" style="--r: 3">
               <header class="plate">
-                <p class="plate-no">06</p>
+                <p class="plate-no">104</p>
                 <h2 data-decode>Sales floor</h2>
                 <p class="note">2026. 5 gyms and 3 cafés, July to August.</p>
               </header>
@@ -275,9 +318,9 @@
               </div>
             </section>
 
-            <section class="room" id="studio" data-exit="left">
+            <section class="room" id="studio" style="--r: 4">
               <header class="plate">
-                <p class="plate-no">07</p>
+                <p class="plate-no">105</p>
                 <h2 data-decode>Studio</h2>
                 <p class="note">Since 2023. Paid work since October 2026.</p>
               </header>
@@ -298,11 +341,38 @@
                 </figure>
               </div>
             </section>
+          </div>
+        </div>
+      </section>
 
-            <!-- rooms 8 and 9: what I'm still learning, so they're taped off -->
-            <section class="room" id="workshop" data-exit="left">
+      <!-- second floor: workshop, trading desk, gym -->
+      <section class="floor" id="floor-2" style="--n: 3">
+        <div class="floor-pin">
+          <!-- the lift: the sign shows as a heading when the floors are stacked -->
+          <div class="lift">
+            <p class="lift-sign"><span class="lift-no">2</span> <span class="lift-name">Second floor</span> <span class="note">Workshop, Trading desk, Gym</span></p>
+            <div class="doors" aria-hidden="true">
+              <span class="door door-l">
+                <span class="door-face">
+                  <span class="door-name">Second floor</span>
+                  <span class="door-no">2</span>
+                  <span class="door-rooms">Workshop, Trading desk, Gym</span>
+                </span>
+              </span>
+              <span class="door door-r">
+                <span class="door-face">
+                  <span class="door-name">Second floor</span>
+                  <span class="door-no">2</span>
+                  <span class="door-rooms">Workshop, Trading desk, Gym</span>
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="floor-track">
+
+            <section class="room" id="workshop" style="--r: 0">
               <header class="plate">
-                <p class="plate-no">08</p>
+                <p class="plate-no">201</p>
                 <h2 data-decode>Workshop</h2>
                 <p class="note">Right now. Still being built.</p>
               </header>
@@ -313,15 +383,15 @@
                     the first one I've built and put online. Mostly for the connections, the money is
                     a bonus.
                   </p>
-                  <p class="note">It's about 50% CSS, 33% HTML and 17% JavaScript. No frameworks.</p>
+                  <p class="note">About half of it is CSS, a third HTML and 15% JavaScript. No frameworks.</p>
                 </div>
                 <p class="tape"><span>under construction</span></p>
               </div>
             </section>
 
-            <section class="room" id="desk" data-exit="left">
+            <section class="room" id="desk" style="--r: 1">
               <header class="plate">
-                <p class="plate-no">09</p>
+                <p class="plate-no">202</p>
                 <h2 data-decode>Trading desk</h2>
                 <p class="note">Right now. Still being built.</p>
               </header>
@@ -340,12 +410,11 @@
               </div>
             </section>
 
-            <!-- room 10: outside work and study. it is drawn upside down on the plan, so the camera turns right over to visit it -->
-            <section class="room flipped" id="gym" data-exit="up">
+            <section class="room" id="gym" style="--r: 2">
               <header class="plate">
-                <p class="plate-no">10</p>
+                <p class="plate-no">203</p>
                 <h2 data-decode>Gym</h2>
-                <p class="note">Off the clock. The only room that is upside down.</p>
+                <p class="note">Off the clock.</p>
               </header>
               <div class="room-body gym-row">
                 <article class="off">
@@ -377,11 +446,69 @@
                 </article>
               </div>
             </section>
+          </div>
+        </div>
+      </section>
 
-            <!-- rooms 11 to 13: the formal side. education, certificates and the one-page resume -->
-            <section class="room" id="records" data-exit="up">
+      <!-- third floor: office, records room, vault, print room, vacant -->
+      <section class="floor floor-reverse" id="floor-3" style="--n: 5">
+        <div class="floor-pin">
+          <!-- the lift: the sign shows as a heading when the floors are stacked -->
+          <div class="lift">
+            <p class="lift-sign"><span class="lift-no">3</span> <span class="lift-name">Third floor</span> <span class="note">Office, Records room, Vault, Print room, Vacant</span></p>
+            <div class="doors" aria-hidden="true">
+              <span class="door door-l">
+                <span class="door-face">
+                  <span class="door-name">Third floor</span>
+                  <span class="door-no">3</span>
+                  <span class="door-rooms">Office, Records room, Vault, Print room, Vacant</span>
+                </span>
+              </span>
+              <span class="door door-r">
+                <span class="door-face">
+                  <span class="door-name">Third floor</span>
+                  <span class="door-no">3</span>
+                  <span class="door-rooms">Office, Records room, Vault, Print room, Vacant</span>
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="floor-track">
+
+            <section class="room" id="office" style="--r: 0">
               <header class="plate">
-                <p class="plate-no">11</p>
+                <p class="plate-no">301</p>
+                <h2 data-decode>Office</h2>
+                <p class="note">Who is building this.</p>
+              </header>
+              <div class="room-body office-body">
+                <div class="about-cols">
+                  <p class="text">
+                    Finance is mostly a tool for me. Understanding money properly seemed like the right
+                    place to start, so I'm doing my BSc Finance at NMIMS Bengaluru along with the BBA in
+                    Digital Business &amp; Entrepreneurship from IIM Bangalore. What I'm looking for next
+                    is ambitious people from different backgrounds to start the first one with.
+                  </p>
+                  <p class="text">
+                    Outside class I keep trying small things, like selling, editing and research, because
+                    I learn fastest by actually doing something and seeing what works.
+                  </p>
+                </div>
+                <!-- the numbers sit inside a normal sentence and count up when the camera arrives -->
+                <p class="numbers-line">
+                  So far I've sold review cards to <span class="count" style="--to: 8"></span> local
+                  businesses, helped build <span class="count" style="--to: 4"></span> huts in
+                  <span class="count" style="--to: 2"></span> days, placed in the top
+                  <span class="count" style="--to: 1" data-prefix="0." data-suffix="%"></span> of ICSE
+                  candidates in Physical Education, and I'm doing
+                  <span class="count" style="--to: 2"></span> degrees at once.
+                </p>
+              </div>
+            </section>
+
+            <section class="room" id="records" style="--r: 1">
+              <header class="plate">
+                <p class="plate-no">302</p>
                 <h2 data-decode>Records room</h2>
                 <p class="note">Education, tools and languages.</p>
               </header>
@@ -433,9 +560,9 @@
               </div>
             </section>
 
-            <section class="room" id="vault" data-exit="right">
+            <section class="room" id="vault" style="--r: 2">
               <header class="plate">
-                <p class="plate-no">12</p>
+                <p class="plate-no">303</p>
                 <h2 data-decode>Vault</h2>
                 <p class="note">Two certificates. Turn them over.</p>
               </header>
@@ -463,9 +590,9 @@
               </div>
             </section>
 
-            <section class="room" id="print" data-exit="right">
+            <section class="room" id="print" style="--r: 3">
               <header class="plate">
-                <p class="plate-no">13</p>
+                <p class="plate-no">304</p>
                 <h2 data-decode>Print room</h2>
                 <p class="note">The one-page version.</p>
               </header>
@@ -539,48 +666,9 @@
               </div>
             </section>
 
-            <!-- room 14: about me -->
-            <section class="room" id="office" data-exit="down">
+            <section class="room flood" id="vacant" style="--r: 4">
               <header class="plate">
-                <p class="plate-no">14</p>
-                <h2 data-decode>Office</h2>
-                <p class="note">Who is building this.</p>
-              </header>
-              <div class="room-body office-body">
-                <div class="about-cols">
-                  <p class="text">
-                    Finance is mostly a tool for me. Understanding money properly seemed like the right
-                    place to start, so I'm doing my BSc Finance at NMIMS Bengaluru along with the BBA in
-                    Digital Business &amp; Entrepreneurship from IIM Bangalore. What I'm looking for next
-                    is ambitious people from different backgrounds to start the first one with.
-                  </p>
-                  <p class="text">
-                    Outside class I keep trying small things, like selling, editing and research, because
-                    I learn fastest by actually doing something and seeing what works.
-                  </p>
-                </div>
-                <!-- the numbers sit inside a normal sentence and count up when the camera arrives -->
-                <p class="numbers-line">
-                  So far I've sold review cards to <span class="count" style="--to: 8"></span> local
-                  businesses, helped build <span class="count" style="--to: 4"></span> huts in
-                  <span class="count" style="--to: 2"></span> days, placed in the top
-                  <span class="count" style="--to: 1" data-prefix="0." data-suffix="%"></span> of ICSE
-                  candidates in Physical Education, and I'm doing
-                  <span class="count" style="--to: 2"></span> degrees at once.
-                </p>
-              </div>
-            </section>
-
-            <!-- room 15: just one sentence. it fills in as the camera arrives -->
-            <section class="room" id="corridor" data-exit="left">
-              <p class="lead"><span class="fill">I study finance because it's the language of business, and I plan to own a few.</span></p>
-              <p class="note">Next door is the reason for all of this.</p>
-            </section>
-
-            <!-- room 16, in the middle of the building: empty, kept for the first business. this is the contact part -->
-            <section class="room flood" id="vacant">
-              <header class="plate">
-                <p class="plate-no">16</p>
+                <p class="plate-no">305</p>
                 <h2 data-decode>Vacant</h2>
                 <p class="note">Kept for the first business. Got an idea, or want to build one with me? Knock here.</p>
               </header>
@@ -612,13 +700,13 @@
             </section>
           </div>
         </div>
-      </div>
+      </section>
     </main>
 
     <footer>
       <p class="footer-name"><span class="fill">Aadi Nagar</span></p>
       <div class="footer-row">
-        <p>Aadi Nagar, Bengaluru. Floor plan last revised 17 November 2026.</p>
+        <p>Aadi Nagar, Bengaluru. Plans last revised 17 November 2026.</p>
         <p>The dark and neon look is borrowed from landonorris.com.</p>
         <p><a href="#hero" data-text="lobby">Back to the lobby</a></p>
       </div>

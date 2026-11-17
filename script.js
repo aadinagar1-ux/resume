@@ -4,7 +4,7 @@
 // 3. buttons that lean towards the mouse
 // 4. the bengaluru clock
 // 5. headings that start as random letters and settle
-// 6. the map in the bottom corner and the room links
+// 6. the lift display in the bottom corner and the room links
 // 7. my name leaning away from the mouse
 // 8. the lime wipe when you jump to a room
 // 9. the small simulation in the research lab
@@ -144,46 +144,54 @@ if (!calm) {
   document.querySelectorAll("[data-decode]").forEach((h) => seen.observe(h));
 }
 
-// 6. the floor plan. every room has a css variable --at: how far through the scroll (in %)
-// the camera reaches it. this reads those numbers once and uses them for two things:
-// the room name next to the corner map, and jumping to a room from a link
-const plan = document.querySelector(".plan");
-const stage = document.querySelector(".stage");
+// 6. the floors. plan.css gives every room a variable --a: how far through its floor's scroll
+// (in %) the row of rooms stops on it. this reads those numbers once and uses them for two things:
+// the lift display in the corner, and jumping to a room from a link
 const where = document.getElementById("where");
+const floorNo = document.getElementById("floor-no");
 const rooms = [];
 
 document.querySelectorAll(".room").forEach((room) => {
   const title = room.querySelector(".plate h2");
+  const floor = room.closest(".floor");
   rooms.push({
     id: room.id,
-    name: title ? title.textContent.toLowerCase() : room.id === "hero" ? "lobby" : "corridor",
-    at: parseFloat(getComputedStyle(room).getPropertyValue("--at")) / 100,
+    name: title ? title.textContent.toLowerCase() : "lobby",
+    floor: floor,
+    label: floor.querySelector(".lift-no").textContent,
+    at: parseFloat(getComputedStyle(room).getPropertyValue("--a")) / 100,
   });
 });
 
-// true when the camera version is running (big screen, browser supports it)
+// true when the floors are sliding (big screen, browser supports it, motion on)
 function pinned() {
-  return getComputedStyle(stage).position === "sticky";
+  return getComputedStyle(document.querySelector(".floor-pin")).position === "sticky";
 }
 
-// how far through the plan the page is scrolled, from 0 to 1
-function progress() {
-  const span = plan.offsetHeight - window.innerHeight;
-  return Math.min(1, Math.max(0, (window.scrollY - plan.offsetTop) / span));
+// how far through its own floor the page is scrolled, from 0 to 1
+function through(floor) {
+  const span = floor.offsetHeight - window.innerHeight;
+  return (window.scrollY - floor.offsetTop) / span;
 }
 
 if (where) {
   let current = "";
   window.addEventListener("scroll", () => {
     if (!pinned()) return;
-    const now = progress() + 0.012; // name the room a moment before the camera stops
+    // the room whose stop is nearest, on the floor that is on screen
     let room = rooms[0];
-    for (let i = 0; i < rooms.length; i++) {
-      if (rooms[i].at <= now) room = rooms[i];
+    let best = Infinity;
+    for (const r of rooms) {
+      const gap = Math.abs(through(r.floor) - r.at);
+      if (gap < best) {
+        best = gap;
+        room = r;
+      }
     }
-    if (room.name !== current) {
-      current = room.name;
-      where.parentElement.classList.toggle("is-on", room.id !== "hero"); // no map over my name in the lobby
+    if (room.id !== current) {
+      current = room.id;
+      where.parentElement.classList.toggle("is-on", room.id !== "hero"); // nothing over my name in the lobby
+      floorNo.textContent = room.label;
       where.dataset.real = room.name;
       if (calm) where.textContent = room.name;
       else scramble(where);
@@ -191,16 +199,15 @@ if (where) {
   });
 }
 
-// where to scroll to for a room: its place on the route when the camera is running,
-// or just the top of the room when the rooms are stacked
+// where to scroll to for a room: its stop on its floor when the floors are sliding,
+// or just the top of the room when they are stacked
 function scrollSpot(id) {
   const el = document.getElementById(id);
   if (!el) return null;
   if (!pinned()) return el.getBoundingClientRect().top + window.scrollY;
   const room = rooms.find((r) => r.id === id);
-  const span = plan.offsetHeight - window.innerHeight;
-  // a little past the room's own mark, so the camera has fully stopped (the lobby is just the top)
-  return plan.offsetTop + (room.at ? room.at + 0.006 : 0) * span;
+  if (room.id === "hero") return 0;
+  return room.floor.offsetTop + room.at * (room.floor.offsetHeight - window.innerHeight);
 }
 
 // 7. the mouse position goes into two css variables (-0.5 to 0.5) and the css moves my name with them
@@ -214,7 +221,7 @@ if (hero && finePointer && !calm) {
   (function lean() {
     nowX += (aimX - nowX) * 0.06;
     nowY += (aimY - nowY) * 0.06;
-    if (window.scrollY < window.innerHeight) {
+    if (window.scrollY < window.innerHeight * 2) {
       hero.style.setProperty("--px", nowX.toFixed(3));
       hero.style.setProperty("--py", nowY.toFixed(3));
     }
@@ -309,7 +316,7 @@ if (sim) {
   document.getElementById("again").addEventListener("click", runSim);
 }
 
-// 10. motion button: remembers the choice and reloads, so the page starts again with or without the camera
+// 10. motion button: remembers the choice and reloads, so the page starts again with or without the movement
 const motion = document.getElementById("motion");
 if (motion) {
   motion.textContent = calm ? "motion: off" : "motion: on";
